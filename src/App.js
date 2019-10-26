@@ -1,12 +1,25 @@
+// import dependencies
 import React from 'react'
-import './App.css'
+import { Route } from 'react-router-dom'
+import styled from 'styled-components'
 
-function App() {
+// import components
+import NavBar from './components/NavBar'
+import Login from './components/Login'
+
+// App component
+export default function App() {
   return (
-    <div className="App">
+    <AppWrapper className="App">
+      <Route path='/' component={NavBar} />
+      <Route path='/login' component={Login} />
       <p>App test.</p>
-    </div>
+    </AppWrapper>
   )
 }
 
-export default App
+// styled components
+const AppWrapper = styled.div`
+  max-width: 1100px
+  margin: 0 auto
+`
