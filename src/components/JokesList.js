@@ -16,7 +16,7 @@ function JokesList({ getPublicJokes, jokes }) {
 
   // render the following
   return (
-    <>
+    <div>
       {jokes ? (
         jokes.map(joke => {
           return <SingleJokeCard joke={joke} key={joke.dadjokeid} />;
@@ -24,7 +24,7 @@ function JokesList({ getPublicJokes, jokes }) {
       ) : (
         <p>No jokes are in database - add them now!</p>
       )}
-    </>
+    </div>
   );
 }
 

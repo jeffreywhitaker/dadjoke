@@ -1,36 +1,23 @@
 // import dependencies
 import React from "react";
-import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 // import functions
 
 // NavBar component
-function NavBar() {
+function BottomNav() {
   return (
     <NavBarSection>
-      <NavLinkStyled exact to={"/"}>
-        Home
+      <NavLinkStyled exact to={"/addjoke"}>
+        Add Public Joke
       </NavLinkStyled>
-      <NavLinkStyled to={"/jokes"}>Jokes</NavLinkStyled>
-      <NavLinkStyled to={"/profile"}>Profile</NavLinkStyled>
-      <NavLinkStyled to={"/login"}>Login</NavLinkStyled>
-      <NavLinkStyled to={"/signup"}>Signup</NavLinkStyled>
     </NavBarSection>
   );
 }
 
-// connect Redux state
-const mapStateToProps = state => {
-  return {
-    login: state.login
-    //   user: state.user
-  };
-};
-
 // export NavBar
-export default connect(mapStateToProps, {})(NavBar);
+export default BottomNav;
 
 // styled components
 const NavBarSection = styled.section`

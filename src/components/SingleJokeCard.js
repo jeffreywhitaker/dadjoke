@@ -25,5 +25,5 @@ const SingleJokeCardDiv = styled.div`
   margin: 20px auto
   background: cyan
   border-radius: 15px
-  padding: 5px
+  padding: 5px 15px
 `;
