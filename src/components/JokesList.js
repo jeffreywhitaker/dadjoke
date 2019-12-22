@@ -1,7 +1,6 @@
 // import dependencies
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 
 // import actions
 import { getPublicJokes } from "../actions/actions";
@@ -17,7 +16,7 @@ function JokesList({ getPublicJokes, jokes }) {
 
   // render the following
   return (
-    <JokesListDiv>
+    <>
       {jokes ? (
         jokes.map(joke => {
           return <SingleJokeCard joke={joke} key={joke.dadjokeid} />;
@@ -25,7 +24,7 @@ function JokesList({ getPublicJokes, jokes }) {
       ) : (
         <p>No jokes are in database - add them now!</p>
       )}
-    </JokesListDiv>
+    </>
   );
 }
 
@@ -38,9 +37,3 @@ const mapStateToProps = state => {
 
 // export component
 export default connect(mapStateToProps, { getPublicJokes })(JokesList);
-
-// styled components
-const JokesListDiv = styled.div`
-  width: 200px
-  margin: 20px auto
-`;

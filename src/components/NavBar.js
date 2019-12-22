@@ -9,15 +9,15 @@ import styled from "styled-components";
 // NavBar component
 function NavBar() {
   return (
-    <>
-      <NavLink exact to={"/"}>
+    <NavBarSection>
+      <NavLinkStyled exact to={"/"}>
         Home
-      </NavLink>
-      <NavLink to={"/jokes"}>Jokes</NavLink>
-      <NavLink to={"/profile"}>Profile</NavLink>
-      <NavLink to={"/login"}>Login</NavLink>
-      <NavLink to={"/signup"}>Signup</NavLink>
-    </>
+      </NavLinkStyled>
+      <NavLinkStyled to={"/jokes"}>Jokes</NavLinkStyled>
+      <NavLinkStyled to={"/profile"}>Profile</NavLinkStyled>
+      <NavLinkStyled to={"/login"}>Login</NavLinkStyled>
+      <NavLinkStyled to={"/signup"}>Signup</NavLinkStyled>
+    </NavBarSection>
   );
 }
 
@@ -31,3 +31,20 @@ const mapStateToProps = state => {
 
 // export NavBar
 export default connect(mapStateToProps, {})(NavBar);
+
+// styled components
+const NavBarSection = styled.section`
+  display: flex
+  justify-content: space-around
+  padding: 5px 0
+`;
+
+const NavLinkStyled = styled(NavLink)`
+  background: lightpink;
+  text-decoration: none;
+  color: black;
+  padding: 5px 10px;
+  &.active {
+    filter: brightness(75%);
+  }
+`;

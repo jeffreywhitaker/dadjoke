@@ -11,7 +11,7 @@ function SingleJokeCard(props) {
   return (
     <SingleJokeCardDiv>
       <p>{joke.dadjokequestion}</p>
-      <p>{joke.dadjokeanswer}</p>
+      <p>>>> {joke.dadjokeanswer}</p>
     </SingleJokeCardDiv>
   );
 }
@@ -21,6 +21,9 @@ export default SingleJokeCard;
 
 // styled components
 const SingleJokeCardDiv = styled.div`
-  width: 200px
+  width: 80%
   margin: 20px auto
+  background: cyan
+  border-radius: 15px
+  padding: 5px
 `;
