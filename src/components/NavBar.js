@@ -13,6 +13,8 @@ function NavBar() {
       <NavLink exact to={"/"}>
         Home
       </NavLink>
+      <NavLink to={"/jokes"}>Jokes</NavLink>
+      <NavLink to={"/profile"}>Profile</NavLink>
       <NavLink to={"/login"}>Login</NavLink>
       <NavLink to={"/signup"}>Signup</NavLink>
     </>

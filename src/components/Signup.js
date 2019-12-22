@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { userSignup } from "../actions/actions";
 
 // login page component
-function Signup({ userSignup, history, login }) {
+function Signup({ userSignup }) {
   // local state login credentials
   const [credentials, setCredentials] = useState({
     username: "",

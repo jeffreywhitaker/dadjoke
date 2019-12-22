@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 // import components
 import NavBar from "./components/NavBar";
+import JokesList from "./components/JokesList";
+import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 
@@ -13,6 +15,8 @@ export default function App() {
   return (
     <AppWrapper className="App">
       <Route path="/" component={NavBar} />
+      <Route path="/jokes" component={JokesList} />
+      <Route path="/profile" component={Profile} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <p>App test.</p>

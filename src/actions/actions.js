@@ -30,7 +30,7 @@ export const userLogout = () => dispatch => {
   localStorage.setItem("token", null);
 };
 
-// signup existing user
+// signup new user
 export const SIGNUP_USER_START = "SIGNUP_USER_START";
 export const SIGNUP_USER_SUCCESS = "SIGNUP_USER_SUCCESS";
 export const SIGNUP_USER_FAILURE = "SIGNUP_USER_FAILURE";
@@ -44,7 +44,25 @@ export const userSignup = credentials => dispatch => {
       dispatch({ type: SIGNUP_USER_SUCCESS, payload: res.data });
     })
     .catch(err => {
-      console.log(`unable to login user: ${err}`);
+      console.log(`unable to signup new user: ${err}`);
       dispatch({ type: SIGNUP_USER_FAILURE, payload: err });
+    });
+};
+
+// get public flagged jokes
+export const FETCH_JOKES_START = "FETCH_JOKES_START";
+export const FETCH_JOKES_SUCCESS = "FETCH_JOKES_SUCCESS";
+export const FETCH_JOKES_FAILURE = "FETCH_JOKES_FAILURE";
+export const getPublicJokes = () => dispatch => {
+  dispatch({ type: FETCH_JOKES_START });
+  axios
+    .get("https://jwhit-dadjokes.herokuapp.com/dadjokes/public")
+    .then(res => {
+      console.log(res);
+      dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      console.log(`unable to fetch public jokes: ${err}`);
+      dispatch({ type: FETCH_JOKES_FAILURE, payload: err });
     });
 };
