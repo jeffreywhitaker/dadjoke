@@ -66,3 +66,21 @@ export const getPublicJokes = () => dispatch => {
       dispatch({ type: FETCH_JOKES_FAILURE, payload: err });
     });
 };
+
+// add joke
+export const ADD_JOKE_START = "ADD_JOKE_START";
+export const ADD_JOKE_SUCCESS = "ADD_JOKE_SUCCESS";
+export const ADD_JOKE_FAILURE = "ADD_JOKE_FAILURE";
+export const addJoke = jokeToAdd => dispatch => {
+  dispatch({ type: ADD_JOKE_START });
+  axiosWithAuth()
+    .post("https://jwhit-dadjokes.herokuapp.com/dadjokes/add", jokeToAdd)
+    .then(res => {
+      console.log(res);
+      dispatch({ type: ADD_JOKE_SUCCESS, payload: jokeToAdd });
+    })
+    .catch(err => {
+      console.log(`unable to add new joke: ${err}`);
+      dispatch({ type: ADD_JOKE_FAILURE, payload: err });
+    });
+};

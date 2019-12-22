@@ -10,6 +10,7 @@ import JokesList from "./components/JokesList";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import AddJoke from "./components/AddJoke";
 import BottomNav from "./components/BottomNav";
 
 // App component
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/jokes/add" component={AddJoke} />
       </ContentContainer>
       <Route component={BottomNav} />
     </AppWrapper>
@@ -31,7 +33,7 @@ export default function App() {
 
 // styled components
 const AppWrapper = styled.div`
-  max-width: 1100px
+  max-width: 414px
   width: 100%
   height: 100vh
   margin: 0 auto
@@ -39,6 +41,8 @@ const AppWrapper = styled.div`
   display: flex
   flex-direction: column
 `;
+
+// set max width to 1100px eventually
 
 const ContentContainer = styled.article`
   flex-grow: 1;

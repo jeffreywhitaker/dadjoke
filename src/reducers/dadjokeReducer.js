@@ -2,7 +2,10 @@
 import {
   FETCH_JOKES_START,
   FETCH_JOKES_SUCCESS,
-  FETCH_JOKES_FAILURE
+  FETCH_JOKES_FAILURE,
+  ADD_JOKE_START,
+  ADD_JOKE_SUCCESS,
+  ADD_JOKE_FAILURE
 } from "../actions/actions";
 
 // create initial login state
@@ -10,7 +13,7 @@ const initialState = {
   isFetching: false,
   error: "",
   isLoggedIn: false,
-  jokes: null
+  jokes: []
 };
 
 // export login reducer
@@ -32,7 +35,25 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: `Unable to login user: ${action.payload}`
+        error: `Unable to fetch jokes: ${action.payload}`
+      };
+    case ADD_JOKE_START:
+      return {
+        ...state,
+        isFetching: true,
+        error: ""
+      };
+    case ADD_JOKE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        jokes: [...state.jokes, action.payload]
+      };
+    case ADD_JOKE_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        error: `Unable to add new joke: ${action.payload}`
       };
     default:
       return state;

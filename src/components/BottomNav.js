@@ -9,9 +9,15 @@ import styled from "styled-components";
 function BottomNav() {
   return (
     <NavBarSection>
-      <NavLinkStyled exact to={"/addjoke"}>
-        Add Public Joke
-      </NavLinkStyled>
+      {window.location.pathname !== "/jokes/add" ? (
+        <NavLinkStyled exact to={"/jokes/add"}>
+          Add Public Joke
+        </NavLinkStyled>
+      ) : (
+        <NavLinkStyled exact to={"/jokes"}>
+          Don't Add New Joke
+        </NavLinkStyled>
+      )}
     </NavBarSection>
   );
 }
