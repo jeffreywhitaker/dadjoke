@@ -1,17 +1,17 @@
 // import dependencies
-import React from "react";
-import { Route } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react'
+import { Route } from 'react-router-dom'
+import styled from 'styled-components'
 
 // import components
-import NavBar from "./components/NavBar";
-import Home from "./components/Home";
-import JokesList from "./components/JokesList";
-import Profile from "./components/Profile";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import AddJoke from "./components/AddJoke";
-import BottomNav from "./components/BottomNav";
+import NavBar from './components/NavBar'
+import Home from './components/Home'
+import JokesList from './components/JokesList'
+import Profile from './components/Profile'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import AddJoke from './components/AddJoke'
+import BottomNav from './components/BottomNav'
 
 // App component
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
       </ContentContainer>
       <Route component={BottomNav} />
     </AppWrapper>
-  );
+  )
 }
 
 // styled components
@@ -40,10 +40,10 @@ const AppWrapper = styled.div`
   background: lightblue
   display: flex
   flex-direction: column
-`;
+`
 
 // set max width to 1100px eventually
 
 const ContentContainer = styled.article`
   flex-grow: 1;
-`;
+`

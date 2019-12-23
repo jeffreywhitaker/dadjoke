@@ -1,11 +1,11 @@
 // import dependencies
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
 // login page component
 function SingleJokeCard(props) {
   // destructure props
-  let { joke } = props;
+  let { joke } = props
 
   // render the following
   return (
@@ -13,11 +13,11 @@ function SingleJokeCard(props) {
       <p>{joke.dadjokequestion}</p>
       <p>>>> {joke.dadjokeanswer}</p>
     </SingleJokeCardDiv>
-  );
+  )
 }
 
 // export component
-export default SingleJokeCard;
+export default SingleJokeCard
 
 // styled components
 const SingleJokeCardDiv = styled.div`
@@ -26,4 +26,4 @@ const SingleJokeCardDiv = styled.div`
   background: cyan
   border-radius: 15px
   padding: 5px 15px
-`;
+`

@@ -1,25 +1,25 @@
 // import dependencies
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import styled from "styled-components";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 // import actions
-import { userSignup } from "../actions/actions";
+import { userSignup } from '../actions/actions'
 
 // login page component
 function Signup({ userSignup }) {
   // local state login credentials
   const [credentials, setCredentials] = useState({
-    username: "",
-    password: ""
-  });
+    username: '',
+    password: '',
+  })
 
   // call login function
-  const callLogin = e => {
-    e.preventDefault();
-    userSignup(credentials);
-  };
+  const callLogin = (e) => {
+    e.preventDefault()
+    userSignup(credentials)
+  }
 
   // // if logged in, redirect to game list
   // useEffect(() => {
@@ -27,12 +27,12 @@ function Signup({ userSignup }) {
   // }, [login.isLoggedIn, history])
 
   // handle form values, save to local state
-  const handleValueChange = e => {
+  const handleValueChange = (e) => {
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value
-    });
-  };
+      [e.target.name]: e.target.value,
+    })
+  }
 
   // render the following
   return (
@@ -66,21 +66,21 @@ function Signup({ userSignup }) {
       <h2>Already registered?</h2>
       <Link to="/login">Log In!</Link>
     </SignupDiv>
-  );
+  )
 }
 
 // connect component to redux store
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    login: state.login
-  };
-};
+    login: state.login,
+  }
+}
 
 // export component
-export default connect(mapStateToProps, { userSignup })(Signup);
+export default connect(mapStateToProps, { userSignup })(Signup)
 
 // styled components
 const SignupDiv = styled.div`
   width: 200px
   margin: 20px auto
-`;
+`

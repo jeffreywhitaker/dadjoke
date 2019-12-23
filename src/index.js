@@ -15,15 +15,14 @@ import App from './App'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 // create store and use thunk
-const store = createStore(
-    reducer,
-    composeEnhancers(applyMiddleware(thunk))
-)
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
 
 // render App with React Router and Redux
 ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>, document.getElementById("root"));
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById('root'),
+)
