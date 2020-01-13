@@ -1,6 +1,7 @@
 // import dependencies
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import '../styles/loadingSpinner.css'
 
 // import actions
 import { getPublicJokes } from '../actions/actions'
@@ -18,7 +19,23 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
   return (
     <div>
       {isLoading ? (
-        <p>Content is currently loading...</p>
+        <>
+          <p>Content is currently loading...</p>
+          <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </>
       ) : jokes ? (
         jokes.map((joke) => {
           return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
@@ -34,7 +51,7 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
 const mapStateToProps = (state) => {
   return {
     jokes: state.jokes.jokes,
-    isLoading: state.jokes.isLoading,
+    isLoading: state.jokes.isFetching,
   }
 }
 

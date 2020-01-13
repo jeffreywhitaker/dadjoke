@@ -37,12 +37,15 @@ function AddJoke({ addJoke }) {
   // render the following
   return (
     <AddJokeCardDiv>
+      <span>Q: </span>
       <input
         type="text"
         name="dadjokequestion"
         value={newJoke.dadjokequestion}
         onChange={handleValueChange}
       />
+      <br />
+      <span>A: </span>
       <input
         type="text"
         name="dadjokeanswer"
