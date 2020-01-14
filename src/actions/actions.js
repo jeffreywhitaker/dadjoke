@@ -67,6 +67,24 @@ export const getPublicJokes = () => (dispatch) => {
     })
 }
 
+// get private flagged jokes
+export const FETCH_PRIVATE_JOKES_START = 'FETCH_PRIVATE_JOKES_START'
+export const FETCH_PRIVATE_JOKES_SUCCESS = 'FETCH_JOKES_PRIVATE_SUCCESS'
+export const FETCH_PRIVATE_JOKES_FAILURE = 'FETCH_JOKES_PRIVATE_FAILURE'
+export const getPrivateJokes = () => (dispatch) => {
+  dispatch({ type: FETCH_PRIVATE_JOKES_START })
+  axiosWithAuth()
+    .get('https://jwhit-dadjokes.herokuapp.com/dadjokes/private')
+    .then((res) => {
+      console.log(res)
+      dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
+    })
+    .catch((err) => {
+      console.log(`unable to fetch public jokes: ${err}`)
+      dispatch({ type: FETCH_PRIVATE_JOKES_FAILURE, payload: err })
+    })
+}
+
 // add joke
 export const ADD_JOKE_START = 'ADD_JOKE_START'
 export const ADD_JOKE_SUCCESS = 'ADD_JOKE_SUCCESS'
