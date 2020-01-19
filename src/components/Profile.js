@@ -1,5 +1,5 @@
 // import dependencies
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import SingleJokeCard from './SingleJokeCard'
@@ -7,6 +7,10 @@ import { getPrivateJokes } from '../actions/actions'
 
 // Home component
 function Profile({ getPrivateJokes, privateJokes, isLoading }) {
+  useEffect(() => {
+    getPrivateJokes()
+  }, [getPrivateJokes])
+
   return (
     <div>
       {isLoading ? (
