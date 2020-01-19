@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { userLogin } from '../actions/actions'
 
 // login page component
-function Login({ userLogin, history, login }) {
+function Login({ userLogin }) {
   // local state login credentials
   const [credentials, setCredentials] = useState({
     username: '',
@@ -62,15 +62,8 @@ function Login({ userLogin, history, login }) {
   )
 }
 
-// connect component to redux store
-const mapStateToProps = (state) => {
-  return {
-    login: state.login,
-  }
-}
-
 // export component
-export default connect(mapStateToProps, { userLogin })(Login)
+export default connect(null, { userLogin })(Login)
 
 // styled components
 const LoginDiv = styled.div`

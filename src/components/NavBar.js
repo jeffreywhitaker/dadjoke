@@ -21,16 +21,8 @@ function NavBar() {
   )
 }
 
-// connect Redux state
-const mapStateToProps = (state) => {
-  return {
-    login: state.login,
-    //   user: state.user
-  }
-}
-
 // export NavBar
-export default connect(mapStateToProps, {})(NavBar)
+export default connect(null, {})(NavBar)
 
 // styled components
 const NavBarSection = styled.section`

@@ -15,9 +15,7 @@ import {
 const initialState = {
   isFetching: false,
   error: '',
-  isLoggedIn: false,
   jokes: [],
-  privateJokes: [],
 }
 
 // export login reducer
@@ -33,7 +31,7 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        jokes: action.payload,
+        jokes: [...state.jokes, action.payload],
       }
     case FETCH_JOKES_FAILURE:
       return {
@@ -51,7 +49,7 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        privateJokes: action.payload,
+        jokes: [...state.jokes, action.payload],
       }
     case FETCH_PRIVATE_JOKES_FAILURE:
       return {

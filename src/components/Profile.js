@@ -6,7 +6,7 @@ import SingleJokeCard from './SingleJokeCard'
 import { getPrivateJokes } from '../actions/actions'
 
 // Home component
-function Profile({ getPrivateJokes, privateJokes, isLoading }) {
+function Profile({ getPrivateJokes, jokes, isLoading }) {
   useEffect(() => {
     getPrivateJokes()
   }, [getPrivateJokes])
@@ -31,9 +31,11 @@ function Profile({ getPrivateJokes, privateJokes, isLoading }) {
             <div></div>
           </div>
         </>
-      ) : privateJokes ? (
-        privateJokes.map((joke) => {
-          return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
+      ) : jokes ? (
+        jokes.map((joke) => {
+          if (joke.isprivate === true) {
+            return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
+          } else return null
         })
       ) : (
         <p>No jokes are in database - add them now!</p>
@@ -45,8 +47,8 @@ function Profile({ getPrivateJokes, privateJokes, isLoading }) {
 // connect component to redux store
 const mapStateToProps = (state) => {
   return {
-    privateJokes: state.jokes.privateJokes,
-    isLoading: state.jokes.isFetching,
+    jokes: state.jokeReducer.jokes,
+    isLoading: state.jokeReducer.isFetching,
   }
 }
 

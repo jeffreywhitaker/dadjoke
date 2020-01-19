@@ -38,7 +38,9 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
         </>
       ) : jokes ? (
         jokes.map((joke) => {
-          return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
+          if (joke.isprivate === false) {
+            return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
+          } else return null
         })
       ) : (
         <p>No jokes are in database - add them now!</p>
@@ -50,8 +52,8 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
 // connect component to redux store
 const mapStateToProps = (state) => {
   return {
-    jokes: state.jokes.jokes,
-    isLoading: state.jokes.isFetching,
+    jokes: state.jokeReducer.jokes,
+    isLoading: state.jokeReducer.isFetching,
   }
 }
 

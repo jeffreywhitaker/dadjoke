@@ -69,15 +69,8 @@ function Signup({ userSignup }) {
   )
 }
 
-// connect component to redux store
-const mapStateToProps = (state) => {
-  return {
-    login: state.login,
-  }
-}
-
 // export component
-export default connect(mapStateToProps, { userSignup })(Signup)
+export default connect(null, { userSignup })(Signup)
 
 // styled components
 const SignupDiv = styled.div`

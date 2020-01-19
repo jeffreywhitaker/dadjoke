@@ -60,7 +60,7 @@ function AddJoke({ addJoke }) {
 // connect component to redux store
 const mapStateToProps = (state) => {
   return {
-    jokes: state.jokes.jokes,
+    jokes: state.jokeReducer.jokes,
   }
 }
 
