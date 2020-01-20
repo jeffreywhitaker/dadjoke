@@ -19,7 +19,7 @@ function AddJoke({ addJoke }) {
 
   // call add joke function
   const callAddJoke = (e) => {
-    console.log('stuff is happening')
+    console.log('callAddJoke in AddJoke has triggered')
     e.preventDefault()
     addJoke(newJoke)
     setNewJoke({ dadjokequestion: '', dadjokeanswer: '', isprivate: false })

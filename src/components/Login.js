@@ -1,6 +1,6 @@
 // import dependencies
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -8,7 +8,10 @@ import styled from 'styled-components'
 import { userLogin } from '../actions/actions'
 
 // login page component
-function Login({ userLogin }) {
+function Login({ userLogin, isLoggedIn }) {
+  // useHistory
+  let history = useHistory()
+
   // local state login credentials
   const [credentials, setCredentials] = useState({
     username: '',
@@ -21,10 +24,12 @@ function Login({ userLogin }) {
     userLogin(credentials)
   }
 
-  // // if logged in, redirect to game list
-  // useEffect(() => {
-  //     if (login.isLoggedIn) {history.push('/gamelist')}
-  // }, [login.isLoggedIn, history])
+  // if logged in, redirect to game list
+  useEffect(() => {
+    if (isLoggedIn) {
+      history.push('/gamelist')
+    }
+  }, [history, isLoggedIn])
 
   // handle form values, save to local state
   const handleValueChange = (e) => {
@@ -62,8 +67,15 @@ function Login({ userLogin }) {
   )
 }
 
+// connect component to redux store
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
 // export component
-export default connect(null, { userLogin })(Login)
+export default connect(mapStateToProps, { userLogin })(Login)
 
 // styled components
 const LoginDiv = styled.div`

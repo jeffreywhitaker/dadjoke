@@ -11,7 +11,7 @@ export const userLogin = (credentials) => (dispatch) => {
   axiosLogin()
     .post('https://jwhit-dadjokes.herokuapp.com/login', credentials)
     .then((res) => {
-      console.log(res)
+      console.log('user login: ', res)
       localStorage.setItem('token', res.data.access_token)
       dispatch({ type: LOGIN_USER_SUCCESS, payload: res.data })
     })
@@ -39,7 +39,7 @@ export const userSignup = (credentials) => (dispatch) => {
   axiosLogin()
     .post('https://jwhit-dadjokes.herokuapp.com/createnewuser', credentials)
     .then((res) => {
-      console.log(res)
+      console.log('user signup: ', res)
       localStorage.setItem('token', res.data.access_token)
       dispatch({ type: SIGNUP_USER_SUCCESS, payload: res.data })
     })
@@ -58,7 +58,7 @@ export const getPublicJokes = () => (dispatch) => {
   axios
     .get('https://jwhit-dadjokes.herokuapp.com/dadjokes/public')
     .then((res) => {
-      console.log(res)
+      console.log('public jokes: ', res)
       dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
@@ -76,7 +76,7 @@ export const getPrivateJokes = () => (dispatch) => {
   axiosWithAuth()
     .get('https://jwhit-dadjokes.herokuapp.com/dadjokes/private')
     .then((res) => {
-      console.log(res)
+      console.log('private jokes: ', res)
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {

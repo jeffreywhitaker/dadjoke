@@ -9,7 +9,6 @@ import SingleJokeCard from './SingleJokeCard'
 
 // login page component
 function JokesList({ getPublicJokes, jokes, isLoading }) {
-  console.log('jokes', jokes)
   // get jokes on page load
   useEffect(() => {
     getPublicJokes()
@@ -21,7 +20,7 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
       {isLoading ? (
         <>
           <p>Content is currently loading...</p>
-          <div class="lds-spinner">
+          <div className="lds-spinner">
             <div></div>
             <div></div>
             <div></div>
@@ -52,7 +51,7 @@ function JokesList({ getPublicJokes, jokes, isLoading }) {
 // connect component to redux store
 const mapStateToProps = (state) => {
   return {
-    jokes: state.jokeReducer.jokes,
+    jokes: state.jokeReducer.publicJokes,
     isLoading: state.jokeReducer.isFetching,
   }
 }

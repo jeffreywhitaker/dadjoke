@@ -1,6 +1,6 @@
 // import dependencies
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -8,23 +8,29 @@ import styled from 'styled-components'
 import { userSignup } from '../actions/actions'
 
 // login page component
-function Signup({ userSignup }) {
+function Signup({ userSignup, isLoggedIn }) {
+  // useHistory
+  let history = useHistory()
+
   // local state login credentials
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
+    priamryemail: '',
   })
 
   // call login function
-  const callLogin = (e) => {
+  const callSignup = (e) => {
     e.preventDefault()
     userSignup(credentials)
   }
 
-  // // if logged in, redirect to game list
-  // useEffect(() => {
-  //     if (login.isLoggedIn) {history.push('/gamelist')}
-  // }, [login.isLoggedIn, history])
+  // if logged in, redirect to game list
+  useEffect(() => {
+    if (isLoggedIn) {
+      history.push('/gamelist')
+    }
+  }, [isLoggedIn, history])
 
   // handle form values, save to local state
   const handleValueChange = (e) => {
@@ -37,7 +43,7 @@ function Signup({ userSignup }) {
   // render the following
   return (
     <SignupDiv>
-      <form onSubmit={callLogin}>
+      <form onSubmit={callSignup}>
         <p>Username:</p>
         <input
           type="text"
@@ -55,13 +61,13 @@ function Signup({ userSignup }) {
         <p>Email:</p>
         <input
           type="email"
-          name="email"
-          value={credentials.email}
+          name="primaryemail"
+          value={credentials.primaryemail}
           onChange={handleValueChange}
         />
         <br />
         <br />
-        <button>Log in</button>
+        <button>Sign Up</button>
       </form>
       <h2>Already registered?</h2>
       <Link to="/login">Log In!</Link>
@@ -69,8 +75,15 @@ function Signup({ userSignup }) {
   )
 }
 
+// connect component to redux store
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
 // export component
-export default connect(null, { userSignup })(Signup)
+export default connect(mapStateToProps, { userSignup })(Signup)
 
 // styled components
 const SignupDiv = styled.div`
