@@ -1,5 +1,6 @@
 // import dependencies
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -12,8 +13,21 @@ import Signup from './components/Signup'
 import AddJoke from './components/AddJoke'
 import BottomNav from './components/BottomNav'
 
+import { makeLoggedInTrue } from './actions/actions'
+
 // App component
-export default function App() {
+function App(props) {
+  // destructure props
+  const { makeLoggedInTrue } = props
+
+  // use effect to check for token
+  useEffect(() => {
+    if (localStorage.token) {
+      makeLoggedInTrue()
+    }
+  }, [makeLoggedInTrue])
+
+  // return components
   return (
     <AppWrapper className="App">
       <Route component={NavBar} />
@@ -29,6 +43,9 @@ export default function App() {
     </AppWrapper>
   )
 }
+
+// export component
+export default connect(null, { makeLoggedInTrue })(App)
 
 // styled components
 const AppWrapper = styled.div`

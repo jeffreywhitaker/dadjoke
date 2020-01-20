@@ -22,12 +22,17 @@ export const userLogin = (credentials) => (dispatch) => {
 }
 
 // logout existing user
-export const LOGOUT_USER_START = 'LOGOUT_USER_START'
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
-export const LOGOUT_USER_FAILURE = 'LOGOUT_USER_FAILURE'
 export const userLogout = () => (dispatch) => {
-  dispatch({ type: LOGOUT_USER_SUCCESS })
+  console.log('ssoidfnsoidfno')
   localStorage.setItem('token', null)
+  dispatch({ type: LOGOUT_USER_SUCCESS })
+}
+
+// use saved token
+export const USE_SAVED_TOKEN_SUCCESS = 'USE_SAVED_TOKEN_SUCCESS'
+export const makeLoggedInTrue = () => (dispatch) => {
+  dispatch({ type: USE_SAVED_TOKEN_SUCCESS })
 }
 
 // signup new user

@@ -27,7 +27,7 @@ function Login({ userLogin, isLoggedIn }) {
   // if logged in, redirect to jokes
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/jokes')
+      history.push('/publicjokes')
     }
   }, [history, isLoggedIn])
 

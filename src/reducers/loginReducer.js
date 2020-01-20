@@ -7,6 +7,7 @@ import {
   SIGNUP_USER_START,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_FAILURE,
+  USE_SAVED_TOKEN_SUCCESS,
 } from '../actions/actions'
 
 // create initial login state
@@ -48,6 +49,14 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: false,
+      }
+
+    // use saved token
+    case USE_SAVED_TOKEN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isLoggedIn: true,
       }
 
     // signup user actions

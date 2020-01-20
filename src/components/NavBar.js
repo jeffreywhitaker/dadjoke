@@ -10,7 +10,7 @@ import { userLogout } from '../actions/actions'
 // NavBar component
 function NavBar(props) {
   // destructure props
-  const { isLoggedIn } = props
+  const { isLoggedIn, userLogout } = props
 
   // use history
   const history = useHistory()
@@ -19,7 +19,7 @@ function NavBar(props) {
   const handleLogout = (e) => {
     e.preventDefault()
     userLogout()
-    history.push('/jokes')
+    history.push('/publicjokes')
   }
 
   // return nav bar
@@ -28,7 +28,7 @@ function NavBar(props) {
       <NavLinkStyled to={'/publicjokes'}>Public</NavLinkStyled>
       <NavLinkStyled to={'/privatejokes'}>Private</NavLinkStyled>
       {isLoggedIn ? (
-        <NavLinkStyled onClick={handleLogout} to={'/'}>
+        <NavLinkStyled onClick={handleLogout} to={' '}>
           Log Out
         </NavLinkStyled>
       ) : (
