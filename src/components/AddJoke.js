@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -8,7 +8,7 @@ import { addJoke } from '../actions/actions'
 
 // add joke component
 function AddJoke({ addJoke }) {
-  const history = useHistory()
+  // const history = useHistory()
 
   // local state for adding new joke
   const [newJoke, setNewJoke] = useState({
@@ -23,7 +23,7 @@ function AddJoke({ addJoke }) {
     e.preventDefault()
     addJoke(newJoke)
     setNewJoke({ dadjokequestion: '', dadjokeanswer: '', isprivate: false })
-    history.push('/jokes')
+    // history.push('/jokes')
   }
 
   // handle change values, save to local state

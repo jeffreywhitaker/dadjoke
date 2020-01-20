@@ -1,28 +1,55 @@
 // import dependencies
 import React from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import functions
+import { userLogout } from '../actions/actions'
 
 // NavBar component
-function NavBar() {
+function NavBar(props) {
+  // destructure props
+  const { isLoggedIn } = props
+
+  // use history
+  const history = useHistory()
+
+  // helper functions
+  const handleLogout = (e) => {
+    e.preventDefault()
+    userLogout()
+    history.push('/jokes')
+  }
+
+  // return nav bar
   return (
     <NavBarSection>
-      <NavLinkStyled exact to={'/'}>
-        Home
-      </NavLinkStyled>
-      <NavLinkStyled to={'/jokes'}>Jokes</NavLinkStyled>
-      <NavLinkStyled to={'/profile'}>Profile</NavLinkStyled>
-      <NavLinkStyled to={'/login'}>Login</NavLinkStyled>
-      <NavLinkStyled to={'/signup'}>Signup</NavLinkStyled>
+      <NavLinkStyled to={'/publicjokes'}>Public</NavLinkStyled>
+      <NavLinkStyled to={'/privatejokes'}>Private</NavLinkStyled>
+      {isLoggedIn ? (
+        <NavLinkStyled onClick={handleLogout} to={'/'}>
+          Log Out
+        </NavLinkStyled>
+      ) : (
+        <>
+          <NavLinkStyled to={'/login'}>Login</NavLinkStyled>
+          <NavLinkStyled to={'/signup'}>Signup</NavLinkStyled>
+        </>
+      )}
     </NavBarSection>
   )
 }
 
+// connect component to redux store
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
 // export NavBar
-export default connect(null, {})(NavBar)
+export default connect(mapStateToProps, { userLogout })(NavBar)
 
 // styled components
 const NavBarSection = styled.section`

@@ -12,8 +12,8 @@ import {
 // create initial login state
 const initialState = {
   isFetching: false,
-  error: '',
   isLoggedIn: false,
+  error: '',
 }
 
 // export login reducer
@@ -27,6 +27,8 @@ export const loginReducer = (state = initialState, action) => {
         error: '',
       }
     case LOGIN_USER_SUCCESS:
+      console.log(state)
+      console.log(action)
       return {
         ...state,
         isFetching: false,

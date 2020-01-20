@@ -9,8 +9,8 @@ import { userSignup } from '../actions/actions'
 
 // login page component
 function Signup({ userSignup, isLoggedIn }) {
-  // useHistory
-  let history = useHistory()
+  // use history
+  const history = useHistory()
 
   // local state login credentials
   const [credentials, setCredentials] = useState({
@@ -28,9 +28,9 @@ function Signup({ userSignup, isLoggedIn }) {
   // if logged in, redirect to game list
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/gamelist')
+      history.push('/jokes')
     }
-  }, [isLoggedIn, history])
+  }, [history, isLoggedIn])
 
   // handle form values, save to local state
   const handleValueChange = (e) => {

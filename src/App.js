@@ -1,13 +1,12 @@
 // import dependencies
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import components
 import NavBar from './components/NavBar'
-import Home from './components/Home'
-import JokesList from './components/JokesList'
-import Profile from './components/Profile'
+import PublicJokes from './components/PublicJokes'
+import PrivateJokes from './components/PrivateJokes'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import AddJoke from './components/AddJoke'
@@ -19,9 +18,9 @@ export default function App() {
     <AppWrapper className="App">
       <Route component={NavBar} />
       <ContentContainer>
-        <Route exact path="/" component={Home} />
-        <Route path="/jokes" component={JokesList} />
-        <Route path="/profile" component={Profile} />
+        <Redirect exact path="/" to="/login" />
+        <Route path="/publicjokes" component={PublicJokes} />
+        <Route path="/privatejokes" component={PrivateJokes} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/jokes/add" component={AddJoke} />

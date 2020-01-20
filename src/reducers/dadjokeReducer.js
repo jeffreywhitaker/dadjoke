@@ -1,4 +1,4 @@
-// import login actions
+// import actions
 import {
   FETCH_JOKES_START,
   FETCH_JOKES_SUCCESS,
@@ -11,17 +11,18 @@ import {
   ADD_JOKE_FAILURE,
 } from '../actions/actions'
 
-// create initial login state
+// create initial state
 const initialState = {
-  isFetching: false,
-  error: '',
   publicJokes: [],
   privateJokes: [],
+  isFetching: false,
+  error: '',
 }
 
-// export login reducer
+// export reducer
 export const dadjokeReducer = (state = initialState, action) => {
   switch (action.type) {
+    // fetch public jokes actions
     case FETCH_JOKES_START:
       return {
         ...state,
@@ -40,6 +41,8 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         error: `Unable to fetch jokes: ${action.payload}`,
       }
+
+    // fetch private jokes actions
     case FETCH_PRIVATE_JOKES_START:
       return {
         ...state,
@@ -58,6 +61,8 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         error: `Unable to fetch private jokes: ${action.payload}`,
       }
+
+    // add joke actions
     case ADD_JOKE_START:
       return {
         ...state,
@@ -76,6 +81,8 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         error: `Unable to add new joke: ${action.payload}`,
       }
+
+    // set default
     default:
       return state
   }

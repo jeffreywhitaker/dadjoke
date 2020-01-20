@@ -10,7 +10,7 @@ import { userLogin } from '../actions/actions'
 // login page component
 function Login({ userLogin, isLoggedIn }) {
   // useHistory
-  let history = useHistory()
+  const history = useHistory()
 
   // local state login credentials
   const [credentials, setCredentials] = useState({
@@ -24,10 +24,10 @@ function Login({ userLogin, isLoggedIn }) {
     userLogin(credentials)
   }
 
-  // if logged in, redirect to game list
+  // if logged in, redirect to jokes
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/gamelist')
+      history.push('/jokes')
     }
   }, [history, isLoggedIn])
 
