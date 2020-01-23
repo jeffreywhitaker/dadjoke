@@ -15,11 +15,6 @@ function PublicJokes({ getPublicJokes, publicJokes, isLoading, isLoggedIn }) {
     getPublicJokes()
   }, [getPublicJokes])
 
-  // login check
-  if (!isLoggedIn) {
-    return <p>You need to be logged in to do that!</p>
-  }
-
   // loading check
   if (isLoading) return <Loading />
 
@@ -34,7 +29,7 @@ function PublicJokes({ getPublicJokes, publicJokes, isLoading, isLoggedIn }) {
     <>
       <p>Public Jokes!</p>
       {publicJokes.map((joke) => {
-        return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
+        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
       })}
     </>
   )
@@ -45,7 +40,6 @@ const mapStateToProps = (state) => {
   return {
     publicJokes: state.jokeReducer.publicJokes,
     isLoading: state.jokeReducer.isFetching,
-    isLoggedIn: state.loginReducer.isLoggedIn,
   }
 }
 
