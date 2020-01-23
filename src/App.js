@@ -37,7 +37,8 @@ function App(props) {
         <Route path="/privatejokes" component={PrivateJokes} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/jokes/add" component={AddJoke} />
+        <Route path="/publicjokes/add" component={AddJoke} />
+        <Route path="/privatejokes/add" component={AddJoke} />
       </ContentContainer>
       <Route component={BottomNav} />
     </AppWrapper>

@@ -9,23 +9,23 @@ import styled from 'styled-components'
 function BottomNav() {
   return (
     <NavBarSection>
-      {window.location.pathname === '/jokes' && (
-        <NavLinkStyled exact to={'/jokes/add'}>
+      {window.location.pathname === '/publicjokes' && (
+        <NavLinkStyled exact to={'/publicjokes/add'}>
           Add Public Joke
         </NavLinkStyled>
       )}
-      {window.location.pathname === '/jokes/add' && (
-        <NavLinkStyled exact to={'/jokes'}>
+      {window.location.pathname === '/publicjokes/add' && (
+        <NavLinkStyled exact to={'/publicjokes'}>
           Don't Add New Joke
         </NavLinkStyled>
       )}
-      {window.location.pathname === '/profile' && (
-        <NavLinkStyled exact to={'/profile/add'}>
+      {window.location.pathname === '/privatejokes' && (
+        <NavLinkStyled exact to={'/privatejokes/add'}>
           Add Private Joke
         </NavLinkStyled>
       )}
-      {window.location.pathname === '/profile/add' && (
-        <NavLinkStyled exact to={'/profile'}>
+      {window.location.pathname === '/privatejokes/add' && (
+        <NavLinkStyled exact to={'/privatejokes'}>
           Don't Add New Joke
         </NavLinkStyled>
       )}

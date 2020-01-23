@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useState } from 'react'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -8,7 +8,7 @@ import { addJoke } from '../actions/actions'
 
 // add joke component
 function AddJoke({ addJoke }) {
-  // const history = useHistory()
+  const history = useHistory()
 
   // local state for adding new joke
   const [newJoke, setNewJoke] = useState({
@@ -19,19 +19,21 @@ function AddJoke({ addJoke }) {
 
   // call add joke function
   const callAddJoke = (e) => {
-    console.log('callAddJoke in AddJoke has triggered')
     e.preventDefault()
     addJoke(newJoke)
     setNewJoke({ dadjokequestion: '', dadjokeanswer: '', isprivate: false })
-    // history.push('/jokes')
+    history.push('/publicjokes')
   }
 
   // handle change values, save to local state
   const handleValueChange = (e) => {
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
     setNewJoke({
       ...newJoke,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     })
+    console.log(newJoke)
   }
 
   // render the following
@@ -50,6 +52,14 @@ function AddJoke({ addJoke }) {
         type="text"
         name="dadjokeanswer"
         value={newJoke.dadjokeanswer}
+        onChange={handleValueChange}
+      />
+      <br />
+      <span>is Private?</span>
+      <input
+        type="checkbox"
+        name="isprivate"
+        checked={newJoke.isprivate}
         onChange={handleValueChange}
       />
       <button onClick={callAddJoke}>Add</button>

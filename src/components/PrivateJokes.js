@@ -30,9 +30,14 @@ function PrivateJokes(props) {
   }
 
   // return jokes if all checks pass
-  return privateJokes.map((joke) => {
-    return <SingleJokeCard joke={joke} key={joke.dadjokeid} />
-  })
+  return (
+    <>
+      <p>Private Jokes!</p>
+      {privateJokes.map((joke) => {
+        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
+      })}
+    </>
+  )
 }
 
 // connect component to redux store

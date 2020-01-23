@@ -92,7 +92,8 @@ export const getPrivateJokes = () => (dispatch) => {
 
 // add joke
 export const ADD_JOKE_START = 'ADD_JOKE_START'
-export const ADD_JOKE_SUCCESS = 'ADD_JOKE_SUCCESS'
+export const ADD_PUBLIC_JOKE_SUCCESS = 'ADD_PUBLIC_JOKE_SUCCESS'
+export const ADD_PRIVATE_JOKE_SUCCESS = 'ADD_PRIVATE_JOKE_SUCCESS'
 export const ADD_JOKE_FAILURE = 'ADD_JOKE_FAILURE'
 export const addJoke = (jokeToAdd) => (dispatch) => {
   dispatch({ type: ADD_JOKE_START })
@@ -100,10 +101,34 @@ export const addJoke = (jokeToAdd) => (dispatch) => {
     .post('https://jwhit-dadjokes.herokuapp.com/dadjokes/add', jokeToAdd)
     .then((res) => {
       console.log(res)
-      dispatch({ type: ADD_JOKE_SUCCESS, payload: jokeToAdd })
+      if (jokeToAdd.isprivate) {
+        console.log('private joke is being added', jokeToAdd)
+        dispatch({ type: ADD_PRIVATE_JOKE_SUCCESS, payload: jokeToAdd })
+      } else {
+        console.log('public joke is being added', jokeToAdd)
+        dispatch({ type: ADD_PUBLIC_JOKE_SUCCESS, payload: jokeToAdd })
+      }
     })
     .catch((err) => {
       console.log(`unable to add new joke: ${err}`)
       dispatch({ type: ADD_JOKE_FAILURE, payload: err })
+    })
+}
+
+// delete joke
+export const DELETE_JOKE_START = 'DELETE_JOKE_START'
+export const DELETE_JOKE_SUCCESS = 'DELETE_JOKE_SUCCESS'
+export const DELETE_JOKE_FAILURE = 'DELETE_JOKE_FAILURE'
+export const deleteJoke = (jokeId) => (dispatch) => {
+  dispatch({ type: DELETE_JOKE_START })
+  axiosWithAuth()
+    .delete(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
+    .then((res) => {
+      console.log(res)
+      dispatch({ type: DELETE_JOKE_SUCCESS, payload: jokeId })
+    })
+    .catch((err) => {
+      console.log(`unable to add new joke: ${err}`)
+      dispatch({ type: DELETE_JOKE_FAILURE, payload: err })
     })
 }

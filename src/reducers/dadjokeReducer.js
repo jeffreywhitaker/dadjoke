@@ -7,8 +7,12 @@ import {
   FETCH_PRIVATE_JOKES_SUCCESS,
   FETCH_PRIVATE_JOKES_FAILURE,
   ADD_JOKE_START,
-  ADD_JOKE_SUCCESS,
+  ADD_PUBLIC_JOKE_SUCCESS,
+  ADD_PRIVATE_JOKE_SUCCESS,
   ADD_JOKE_FAILURE,
+  DELETE_JOKE_START,
+  DELETE_JOKE_SUCCESS,
+  DELETE_JOKE_FAILURE,
 } from '../actions/actions'
 
 // create initial state
@@ -69,17 +73,51 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: true,
         error: '',
       }
-    case ADD_JOKE_SUCCESS:
+    case ADD_PUBLIC_JOKE_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        jokes: [...state.jokes, action.payload],
+        publicJokes: [...state.publicJokes, action.payload],
       }
+
+    case ADD_PRIVATE_JOKE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        privateJokes: [...state.privateJokes, action.payload],
+      }
+
     case ADD_JOKE_FAILURE:
       return {
         ...state,
         isFetching: false,
         error: `Unable to add new joke: ${action.payload}`,
+      }
+
+    // delete joke actions
+    case DELETE_JOKE_START:
+      return {
+        ...state,
+        isFetching: true,
+        error: '',
+      }
+    case DELETE_JOKE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        // publicJokes: state.publicJokes.filter(
+        //   (joke) => joke.dadjokeid !== action.payload,
+        // ),
+        privateJokes: state.privateJokes.filter(
+          (joke) => joke.dadjokeid !== action.payload,
+        ),
+      }
+
+    case DELETE_JOKE_FAILURE:
+      return {
+        ...state,
+        isFetchinig: false,
+        error: `Unable to delete joke: ${action.payload}`,
       }
 
     // set default
