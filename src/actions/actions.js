@@ -128,7 +128,25 @@ export const deleteJoke = (jokeId) => (dispatch) => {
       dispatch({ type: DELETE_JOKE_SUCCESS, payload: jokeId })
     })
     .catch((err) => {
-      console.log(`unable to add new joke: ${err}`)
+      console.log(`unable to delete joke: ${err}`)
       dispatch({ type: DELETE_JOKE_FAILURE, payload: err })
+    })
+}
+
+// update joke
+export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
+export const UPDATE_JOKE_SUCCESS = 'UPDATE_JOKE_SUCCESS'
+export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
+export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
+  dispatch({ type: UPDATE_JOKE_START })
+  axiosWithAuth()
+    .put(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
+    .then((res) => {
+      console.log(res)
+      dispatch({ type: UPDATE_JOKE_SUCCESS, payload: jokeToUpdate })
+    })
+    .catch((err) => {
+      console.log(`unable to update joke: ${err}`)
+      dispatch({ type: UPDATE_JOKE_FAILURE, payload: err })
     })
 }
