@@ -24,7 +24,7 @@ export const userLogin = (credentials) => (dispatch) => {
 // logout existing user
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
 export const userLogout = () => (dispatch) => {
-  console.log('ssoidfnsoidfno')
+  console.log('logout user')
   localStorage.setItem('token', null)
   dispatch({ type: LOGOUT_USER_SUCCESS })
 }
@@ -85,7 +85,7 @@ export const getPrivateJokes = () => (dispatch) => {
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
-      console.log(`unable to fetch public jokes: ${err}`)
+      console.log(`unable to fetch private jokes: ${err}`)
       dispatch({ type: FETCH_PRIVATE_JOKES_FAILURE, payload: err })
     })
 }
@@ -115,6 +115,31 @@ export const addJoke = (jokeToAdd) => (dispatch) => {
     })
 }
 
+// update joke
+export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
+export const UPDATE_PUBLIC_JOKE_SUCCESS = 'UPDATE_PUBLIC_JOKE_SUCCESS'
+export const UPDATE_PRIVATE_JOKE_SUCCESS = 'UPDATE_PRIVATE_JOKE_SUCCESS'
+export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
+export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
+  dispatch({ type: UPDATE_JOKE_START })
+  axiosWithAuth()
+    .put(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
+    .then((res) => {
+      console.log(res)
+      if (jokeToUpdate.isprivate) {
+        console.log('private joke is being updated', jokeToUpdate)
+        dispatch({ type: UPDATE_PRIVATE_JOKE_SUCCESS, payload: jokeToUpdate })
+      } else {
+        console.log('public joke is being updated', jokeToUpdate)
+        dispatch({ type: UPDATE_PUBLIC_JOKE_SUCCESS, payload: jokeToUpdate })
+      }
+    })
+    .catch((err) => {
+      console.log(`unable to update joke: ${err}`)
+      dispatch({ type: UPDATE_JOKE_FAILURE, payload: err })
+    })
+}
+
 // delete joke
 export const DELETE_JOKE_START = 'DELETE_JOKE_START'
 export const DELETE_JOKE_SUCCESS = 'DELETE_JOKE_SUCCESS'
@@ -130,23 +155,5 @@ export const deleteJoke = (jokeId) => (dispatch) => {
     .catch((err) => {
       console.log(`unable to delete joke: ${err}`)
       dispatch({ type: DELETE_JOKE_FAILURE, payload: err })
-    })
-}
-
-// update joke
-export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
-export const UPDATE_JOKE_SUCCESS = 'UPDATE_JOKE_SUCCESS'
-export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
-export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
-  dispatch({ type: UPDATE_JOKE_START })
-  axiosWithAuth()
-    .put(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
-    .then((res) => {
-      console.log(res)
-      dispatch({ type: UPDATE_JOKE_SUCCESS, payload: jokeToUpdate })
-    })
-    .catch((err) => {
-      console.log(`unable to update joke: ${err}`)
-      dispatch({ type: UPDATE_JOKE_FAILURE, payload: err })
     })
 }
