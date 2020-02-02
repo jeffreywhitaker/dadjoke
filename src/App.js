@@ -16,7 +16,7 @@ import BottomNav from './components/BottomNav'
 import { makeLoggedInTrue } from './actions/actions'
 
 // App component
-function App(props) {
+export function App(props) {
   // destructure props
   const { makeLoggedInTrue } = props
 
