@@ -11,7 +11,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import React from 'react'
 import { App } from '../App'
-import renderer from 'react-test-renderer'
+import ShallowRenderer from 'react-test-renderer/shallow'
 // import 'jest-styled-components';
 
 describe('App component', () => {
@@ -22,13 +22,9 @@ describe('App component', () => {
     //   }),
     // }))
 
-    const tree = renderer
-      .create(
-        <Router>
-          <App props={() => {}} />
-        </Router>,
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const renderer = new ShallowRenderer()
+    renderer.render(<App props={() => {}} />)
+
+    expect(renderer.getRenderOutput()).toMatchSnapshot()
   })
 })

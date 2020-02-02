@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddJoke component renders correctly 1`] = `
+<div
+  className="sc-bdVaJa hkJhzp"
+>
+  <span>
+    Q: 
+  </span>
+  <input
+    name="dadjokequestion"
+    onChange={[Function]}
+    type="text"
+    value=""
+  />
+  <br />
+  <span>
+    A: 
+  </span>
+  <input
+    name="dadjokeanswer"
+    onChange={[Function]}
+    type="text"
+    value=""
+  />
+  <br />
+  <span>
+    is Private?
+  </span>
+  <input
+    checked={false}
+    name="isprivate"
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <button
+    onClick={[Function]}
+  >
+    Add
+  </button>
+</div>
+`;

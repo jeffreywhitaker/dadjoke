@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App component renders correctly 1`] = `
+<ForwardRef(styled.div)
+  className="App"
+>
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(NavBar)",
+        "type": [Function],
+      }
+    }
+  />
+  <ForwardRef(styled.article)>
+    <Redirect
+      exact={true}
+      path="/"
+      to="/login"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(PublicJokes)",
+          "type": [Function],
+        }
+      }
+      path="/publicjokes"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(PrivateJokes)",
+          "type": [Function],
+        }
+      }
+      path="/privatejokes"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(Login)",
+          "type": [Function],
+        }
+      }
+      path="/login"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(Signup)",
+          "type": [Function],
+        }
+      }
+      path="/signup"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(AddJoke)",
+          "type": [Function],
+        }
+      }
+      path="/publicjokes/add"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(AddJoke)",
+          "type": [Function],
+        }
+      }
+      path="/privatejokes/add"
+    />
+  </ForwardRef(styled.article)>
+  <Route
+    component={[Function]}
+  />
+</ForwardRef(styled.div)>
+`;
