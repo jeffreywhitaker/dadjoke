@@ -10,9 +10,13 @@ function SingleJokeCard(props) {
   // destructure props
   let { joke, deleteJoke } = props
 
-  // helper function
+  // helper functions
   function handleDelete(id) {
     deleteJoke(id)
+  }
+
+  function handleUpdate(id) {
+    console.log('id', id)
   }
 
   // render the following
@@ -20,6 +24,7 @@ function SingleJokeCard(props) {
     <SingleJokeCardDiv>
       <p>{joke.dadjokequestion}</p>
       <p>>>> {joke.dadjokeanswer}</p>
+      <button onClick={() => handleUpdate(joke.dadjokeid)}>Edit</button>
       {joke.isprivate === true && (
         <button onClick={() => handleDelete(joke.dadjokeid)}>Del</button>
       )}
