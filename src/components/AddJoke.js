@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { addJoke } from '../actions/actions'
 
 // add joke component
-function AddJoke({ addJoke }) {
+export function AddJoke({ addJoke }) {
   const history = useHistory()
 
   // local state for adding new joke
