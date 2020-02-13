@@ -1,14 +1,22 @@
 // import dependencies
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { deleteJoke } from '../actions/actions'
+import { updateJoke } from '../actions/actions'
 
 // login page component
 function SingleJokeCard(props) {
   // destructure props
   let { joke, deleteJoke } = props
+
+  // set local update state
+  const [isUpdate, setIsUpdate] = useState({
+    dadjokequestion: '',
+    dadjokeanswer: '',
+    isprivate: false,
+  })
 
   // helper functions
   function handleDelete(id) {
@@ -17,6 +25,7 @@ function SingleJokeCard(props) {
 
   function handleUpdate(id) {
     console.log('id', id)
+    updateJoke()
   }
 
   // render the following
