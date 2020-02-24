@@ -26,9 +26,16 @@ function SingleJokeCard(props) {
   }
 
   function toggleUpdate(id) {
+    console.log('toggleUpdate:', isBeingUpdated)
     if (isBeingUpdated) {
       // set update to false
       setIsBeingUpdated(false)
+      setUpdatedJoke({
+        dadjokeid: '',
+        dadjokequestion: '',
+        dadjokeanswer: '',
+        isprivate: false,
+      })
     } else {
       // set update to true and update the local state
       setIsBeingUpdated(true)
@@ -56,11 +63,11 @@ function SingleJokeCard(props) {
   // render the following
   return (
     <SingleJokeCardDiv>
-      <p>{joke.dadjokequestion}</p>
-      <p>>>> {joke.dadjokeanswer}</p>
-      <button onClick={() => toggleUpdate(joke.dadjokeid)}>Edit</button>
-      {joke.isprivate === true && (
-        <button onClick={() => handleDelete(joke.dadjokeid)}>Del</button>
+      {!isBeingUpdated && (
+        <>
+          <p>{joke.dadjokequestion}</p>
+          <p>>>> {joke.dadjokeanswer}</p>
+        </>
       )}
       {isBeingUpdated && (
         <>
@@ -69,12 +76,34 @@ function SingleJokeCard(props) {
             name="dadjokequestion"
             value={updatedJoke.dadjokequestion}
             onChange={handleValueChange}
-          >
-            {updatedJoke.dadjokequestion}
-          </input>
-          <p>{updatedJoke.dadjokeanswer}</p>
+            size={50}
+          />
+          <p>
+            >>>{' '}
+            <input
+              type="text"
+              name="dadjokeanswer"
+              value={updatedJoke.dadjokeanswer}
+              onChange={handleValueChange}
+              size={50}
+            />
+          </p>
           <button>Accept Changes</button>
+          {
+            // need to add handleUpdate onClick to above button
+          }
+          <button onClick={() => toggleUpdate(joke.dadjokeid)}>
+            Cancel Edit
+          </button>
         </>
+      )}
+
+      {!isBeingUpdated && (
+        <button onClick={() => toggleUpdate(joke.dadjokeid)}>Edit Joke</button>
+      )}
+
+      {joke.isprivate === true && (
+        <button onClick={() => handleDelete(joke.dadjokeid)}>Del</button>
       )}
     </SingleJokeCardDiv>
   )
