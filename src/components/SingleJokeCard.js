@@ -12,7 +12,9 @@ function SingleJokeCard(props) {
   let { joke, deleteJoke } = props
 
   // set local update state
-  const [isUpdate, setIsUpdate] = useState({
+  const [isBeingUpdated, setIsBeingUpdated] = useState(false)
+  const [updatedJoke, setUpdatedJoke] = useState({
+    dadjokeid: '',
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
@@ -23,9 +25,32 @@ function SingleJokeCard(props) {
     deleteJoke(id)
   }
 
-  function handleUpdate(id) {
-    console.log('id', id)
-    updateJoke()
+  function toggleUpdate(id) {
+    if (isBeingUpdated) {
+      // set update to false
+      setIsBeingUpdated(false)
+    } else {
+      // set update to true and update the local state
+      setIsBeingUpdated(true)
+      setUpdatedJoke({
+        dadjokeid: joke.dadjokeid,
+        dadjokequestion: joke.dadjokequestion,
+        dadjokeanswer: joke.dadjokeanswer,
+        isprivate: joke.isprivate,
+      })
+    }
+    // updateJoke()
+  }
+
+  // handle change values, save to local state
+  const handleValueChange = (e) => {
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    setUpdatedJoke({
+      ...updatedJoke,
+      [e.target.name]: value,
+    })
+    console.log('updated joke', updatedJoke)
   }
 
   // render the following
@@ -33,9 +58,23 @@ function SingleJokeCard(props) {
     <SingleJokeCardDiv>
       <p>{joke.dadjokequestion}</p>
       <p>>>> {joke.dadjokeanswer}</p>
-      <button onClick={() => handleUpdate(joke.dadjokeid)}>Edit</button>
+      <button onClick={() => toggleUpdate(joke.dadjokeid)}>Edit</button>
       {joke.isprivate === true && (
         <button onClick={() => handleDelete(joke.dadjokeid)}>Del</button>
+      )}
+      {isBeingUpdated && (
+        <>
+          <input
+            type="text"
+            name="dadjokequestion"
+            value={updatedJoke.dadjokequestion}
+            onChange={handleValueChange}
+          >
+            {updatedJoke.dadjokequestion}
+          </input>
+          <p>{updatedJoke.dadjokeanswer}</p>
+          <button>Accept Changes</button>
+        </>
       )}
     </SingleJokeCardDiv>
   )
