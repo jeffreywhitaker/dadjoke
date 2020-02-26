@@ -3,39 +3,40 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { deleteJoke } from '../actions/actions'
-import { updateJoke } from '../actions/actions'
+import { deleteJoke, updateJoke } from '../actions/actions'
 
-// login page component
+// joke card component
 function SingleJokeCard(props) {
   // destructure props
-  let { joke, deleteJoke } = props
+  let { joke, deleteJoke, updateJoke } = props
 
-  // set local update state
-  const [isBeingUpdated, setIsBeingUpdated] = useState(false)
-  const [updatedJoke, setUpdatedJoke] = useState({
+  // empty joke object
+  const emptyJoke = {
     dadjokeid: '',
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
-  })
+  }
+
+  // set local update state
+  const [isBeingUpdated, setIsBeingUpdated] = useState(false)
+  const [updatedJoke, setUpdatedJoke] = useState(emptyJoke)
 
   // helper functions
   function handleDelete(id) {
     deleteJoke(id)
   }
 
-  function toggleUpdate(id) {
+  function handleUpdate(updatedJoke) {
+    updateJoke(updatedJoke, updatedJoke.dadjokeid)
+  }
+
+  function toggleUpdate() {
     console.log('toggleUpdate:', isBeingUpdated)
     if (isBeingUpdated) {
-      // set update to false
+      // set update to false and empty the updated Joke state
       setIsBeingUpdated(false)
-      setUpdatedJoke({
-        dadjokeid: '',
-        dadjokequestion: '',
-        dadjokeanswer: '',
-        isprivate: false,
-      })
+      setUpdatedJoke(emptyJoke)
     } else {
       // set update to true and update the local state
       setIsBeingUpdated(true)
@@ -46,11 +47,6 @@ function SingleJokeCard(props) {
         isprivate: joke.isprivate,
       })
     }
-    // updateJoke()
-  }
-
-  function handleUpdate() {
-    // put stuff here
   }
 
   // handle change values, save to local state
@@ -92,18 +88,18 @@ function SingleJokeCard(props) {
               size={50}
             />
           </p>
-          <button onClick={handleUpdate}>Accept Changes</button>
+          <button onClick={() => handleUpdate(updatedJoke)}>
+            Accept Changes
+          </button>
           {
             // need to add handleUpdate onClick to above button
           }
-          <button onClick={() => toggleUpdate(joke.dadjokeid)}>
-            Cancel Edit
-          </button>
+          <button onClick={() => toggleUpdate()}>Cancel Edit</button>
         </>
       )}
 
       {!isBeingUpdated && (
-        <button onClick={() => toggleUpdate(joke.dadjokeid)}>Edit Joke</button>
+        <button onClick={() => toggleUpdate()}>Edit Joke</button>
       )}
 
       {joke.isprivate === true && (
@@ -114,7 +110,7 @@ function SingleJokeCard(props) {
 }
 
 // export component
-export default connect(null, { deleteJoke })(SingleJokeCard)
+export default connect(null, { deleteJoke, updateJoke })(SingleJokeCard)
 
 // styled components
 const SingleJokeCardDiv = styled.div`
