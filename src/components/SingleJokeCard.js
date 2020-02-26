@@ -49,6 +49,10 @@ function SingleJokeCard(props) {
     // updateJoke()
   }
 
+  function handleUpdate() {
+    // put stuff here
+  }
+
   // handle change values, save to local state
   const handleValueChange = (e) => {
     const value =
@@ -88,7 +92,7 @@ function SingleJokeCard(props) {
               size={50}
             />
           </p>
-          <button>Accept Changes</button>
+          <button onClick={handleUpdate}>Accept Changes</button>
           {
             // need to add handleUpdate onClick to above button
           }
