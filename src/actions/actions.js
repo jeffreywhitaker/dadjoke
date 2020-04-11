@@ -120,12 +120,14 @@ export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
 export const UPDATE_PUBLIC_JOKE_SUCCESS = 'UPDATE_PUBLIC_JOKE_SUCCESS'
 export const UPDATE_PRIVATE_JOKE_SUCCESS = 'UPDATE_PRIVATE_JOKE_SUCCESS'
 export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
-export const updateJoke = (jokeToUpdate) => (dispatch) => {
+export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
   dispatch({ type: UPDATE_JOKE_START })
-  let jokeId = jokeToUpdate.dadjokeid
   console.log('begin updateJoke', jokeToUpdate, jokeId)
   axiosWithAuth()
-    .put(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
+    .put(
+      `https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`,
+      jokeToUpdate,
+    )
     .then((res) => {
       console.log(res)
       if (jokeToUpdate.isprivate) {

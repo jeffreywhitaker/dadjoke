@@ -28,7 +28,7 @@ function SingleJokeCard(props) {
   }
 
   function handleUpdate(updatedJoke) {
-    updateJoke(updatedJoke, updatedJoke.dadjokeid)
+    updateJoke(updatedJoke, joke.dadjokeid)
   }
 
   function toggleUpdate() {

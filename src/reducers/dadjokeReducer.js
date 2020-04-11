@@ -107,15 +107,23 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        // update joke logic here
+        publicJokes: [
+          ...state.publicJokes.filter(
+            (joke) => joke.dadjokeid !== action.payload.dadjokeid,
+          ),
+          action.payload,
+        ],
       }
     case UPDATE_PRIVATE_JOKE_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        // privateJokes: state.privateJokes.filter(
-        //   (joke) => joke.dadjokeid === action.payload
-        // )
+        privateJokes: [
+          ...state.privateJokes.filter(
+            (joke) => joke.dadjokeid !== action.payload.dadjokeid,
+          ),
+          action.payload,
+        ],
       }
     case UPDATE_JOKE_FAILURE:
       return {
