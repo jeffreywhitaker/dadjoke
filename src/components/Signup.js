@@ -26,7 +26,7 @@ const Signup = ({
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
-    priamryemail: '',
+    primaryemail: '',
   })
 
   // call login function
@@ -65,7 +65,7 @@ const Signup = ({
           <p className="error">{errors.password}</p>
         )}
         <p>Email:</p>
-        <Field type="email" name="email" />
+        <Field type="email" name="primaryemail" />
         {touched.email && errors.email && (
           <p className="error">{errors.email}</p>
         )}
@@ -107,18 +107,18 @@ const Signup = ({
 
 // Formik component
 const FormikSignup = withFormik({
-  mapPropsToValues({ username, password, email }) {
+  mapPropsToValues({ username, password, primaryemail }) {
     return {
       username: username || '',
       password: password || '',
-      email: email || '',
+      primaryemail: primaryemail || '',
     }
   },
 
   validationSchema: Yup.object().shape({
     username: Yup.string().required('Name is a required field'),
     password: Yup.string().required('Password is a required field'),
-    email: Yup.string().required('Email is a required field'),
+    primaryemail: Yup.string().required('Email is a required field'),
   }),
 
   handleSubmit: (values, { props, setSubmitting }) => {
