@@ -38,6 +38,7 @@ export const dadjokeReducer = (state = initialState, action) => {
         error: '',
       }
     case FETCH_JOKES_SUCCESS:
+      console.log('fetch jokes success', action.payload)
       return {
         ...state,
         isFetching: false,
