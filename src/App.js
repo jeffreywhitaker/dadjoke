@@ -50,7 +50,7 @@ export default connect(null, { makeLoggedInTrue })(App)
 
 // styled components
 const AppWrapper = styled.div`
-  max-width: 414px
+  max-width: 900px
   width: 100%
   height: 100vh
   margin: 0 auto

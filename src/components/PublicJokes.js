@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import '../styles/loadingSpinner.css'
+import styled from 'styled-components'
 
 // import actions
 import { getPublicJokes } from '../actions/actions'
@@ -27,7 +28,7 @@ function PublicJokes({ getPublicJokes, publicJokes, isLoading, isLoggedIn }) {
   // render the following if checks pass
   return (
     <>
-      <p>Public Jokes!</p>
+      <DisplayP>Public Jokes</DisplayP>
       {publicJokes.map((joke) => {
         return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
       })}
@@ -45,3 +46,14 @@ const mapStateToProps = (state) => {
 
 // export component
 export default connect(mapStateToProps, { getPublicJokes })(PublicJokes)
+
+// styled components
+const DisplayP = styled.p`
+  text-align: center
+  font-size: 20p
+  background: cyan
+  width: 50%
+  margin: 0 auto
+  border-radius: 20px
+  padding: 10px 0
+`

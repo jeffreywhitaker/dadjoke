@@ -1,6 +1,7 @@
 // import dependencies
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
@@ -32,7 +33,7 @@ function PrivateJokes(props) {
   // return jokes if all checks pass
   return (
     <>
-      <p>Private Jokes!</p>
+      <DisplayP>Private Jokes</DisplayP>
       {privateJokes.map((joke) => {
         return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
       })}
@@ -51,3 +52,14 @@ const mapStateToProps = (state) => {
 
 // export component
 export default connect(mapStateToProps, { getPrivateJokes })(PrivateJokes)
+
+// styled components
+const DisplayP = styled.p`
+  text-align: center
+  font-size: 20p
+  background: cyan
+  width: 50%
+  margin: 0 auto
+  border-radius: 20px
+  padding: 10px 0
+`
