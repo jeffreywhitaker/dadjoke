@@ -126,8 +126,11 @@ const SingleJokeCardDiv = styled.div`
 `
 
 const StyledButton = styled.button`
-  background: lightpink;
-  text-decoration: none;
-  color: black;
-  padding: 5px 10px;
+  background: lightpink
+  text-decoration: none
+  color: black
+  padding: 5px 10px
+  outline: none
+  border: 0
+  margin: 5px 10px
 `

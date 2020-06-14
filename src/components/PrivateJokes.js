@@ -56,10 +56,10 @@ export default connect(mapStateToProps, { getPrivateJokes })(PrivateJokes)
 // styled components
 const DisplayP = styled.p`
   text-align: center
-  font-size: 20p
+  font-size: 20px
   background: cyan
   width: 50%
   margin: 0 auto
-  border-radius: 20px
+  border-radius: 15px
   padding: 10px 0
 `
