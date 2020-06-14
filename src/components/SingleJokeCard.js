@@ -88,22 +88,26 @@ function SingleJokeCard(props) {
               size={50}
             />
           </p>
-          <button onClick={() => handleUpdate(updatedJoke)}>
+          <StyledButton onClick={() => handleUpdate(updatedJoke)}>
             Accept Changes
-          </button>
+          </StyledButton>
           {
             // need to add handleUpdate onClick to above button
           }
-          <button onClick={() => toggleUpdate()}>Cancel Edit</button>
+          <StyledButton onClick={() => toggleUpdate()}>
+            Cancel Edit
+          </StyledButton>
         </>
       )}
 
       {!isBeingUpdated && (
-        <button onClick={() => toggleUpdate()}>Edit Joke</button>
+        <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>
       )}
 
       {joke.isprivate === true && (
-        <button onClick={() => handleDelete(joke.dadjokeid)}>Del</button>
+        <StyledButton onClick={() => handleDelete(joke.dadjokeid)}>
+          Del
+        </StyledButton>
       )}
     </SingleJokeCardDiv>
   )
@@ -119,4 +123,11 @@ const SingleJokeCardDiv = styled.div`
   background: cyan
   border-radius: 15px
   padding: 5px 15px
+`
+
+const StyledButton = styled.button`
+  background: lightpink;
+  text-decoration: none;
+  color: black;
+  padding: 5px 10px;
 `
