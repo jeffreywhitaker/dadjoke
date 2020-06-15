@@ -119,8 +119,8 @@ export default connect(null, { deleteJoke, updateJoke })(SingleJokeCard)
 // styled components
 const SingleJokeCardDiv = styled.div`
   width: 80%
-  margin: 20px auto
-  background: cyan
+  margin: 10px auto
+  background: lightblue
   border-radius: 15px
   padding: 5px 15px
 `
@@ -133,4 +133,5 @@ const StyledButton = styled.button`
   outline: none
   border: 0
   margin: 5px 10px
+  border-radius: 5px;
 `

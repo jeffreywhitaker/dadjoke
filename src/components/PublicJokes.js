@@ -51,7 +51,7 @@ export default connect(mapStateToProps, { getPublicJokes })(PublicJokes)
 const DisplayP = styled.p`
   text-align: center
   font-size: 20px
-  background: cyan
+  background: lightblue
   width: 50%
   margin: 0 auto
   border-radius: 15px

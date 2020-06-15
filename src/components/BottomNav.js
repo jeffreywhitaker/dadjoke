@@ -44,11 +44,12 @@ const NavBarSection = styled.section`
 `
 
 const NavLinkStyled = styled(NavLink)`
-  background: lightpink;
+  background: darksalmon;
   text-decoration: none;
   color: black;
   padding: 5px 10px;
   &.active {
     filter: brightness(75%);
   }
+  border-radius: 5px;
 `

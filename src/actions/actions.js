@@ -13,6 +13,10 @@ export const userLogin = (credentials) => (dispatch) => {
     .then((res) => {
       console.log('user login: ', res)
       localStorage.setItem('token', res.data.access_token)
+      localStorage.setItem(
+        'tokenExpiry',
+        new Date(new Date().getTime() + res.data.expires_in * 1000),
+      )
       dispatch({ type: LOGIN_USER_SUCCESS, payload: res.data })
     })
     .catch((err) => {
@@ -25,14 +29,28 @@ export const userLogin = (credentials) => (dispatch) => {
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
 export const userLogout = () => (dispatch) => {
   console.log('logout user')
-  localStorage.setItem('token', null)
+  localStorage.removeItem('token')
+  localStorage.removeItem('tokenExpiry')
   dispatch({ type: LOGOUT_USER_SUCCESS })
 }
 
 // use saved token
 export const USE_SAVED_TOKEN_SUCCESS = 'USE_SAVED_TOKEN_SUCCESS'
-export const makeLoggedInTrue = () => (dispatch) => {
-  dispatch({ type: USE_SAVED_TOKEN_SUCCESS })
+export const checkTokenValidity = () => (dispatch) => {
+  // if token is expired
+  if (
+    !localStorage.getItem('token') ||
+    new Date(localStorage.getItem('tokenExpiry')) < Date.now()
+  ) {
+    // log out user, remove token
+    localStorage.removeItem('token')
+    localStorage.removeItem('tokenExpiry')
+    dispatch({ type: LOGOUT_USER_SUCCESS })
+    // if token is not expired
+  } else {
+    // log in user, use token
+    dispatch({ type: USE_SAVED_TOKEN_SUCCESS })
+  }
 }
 
 // signup new user
@@ -46,6 +64,10 @@ export const userSignup = (credentials) => (dispatch) => {
     .then((res) => {
       console.log('user signup: ', res)
       localStorage.setItem('token', res.data.access_token)
+      localStorage.setItem(
+        'tokenExpiry',
+        new Date(new Date().getTime() + res.data.expires_in * 1000),
+      )
       dispatch({ type: SIGNUP_USER_SUCCESS, payload: res.data })
     })
     .catch((err) => {

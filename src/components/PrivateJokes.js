@@ -14,12 +14,18 @@ function PrivateJokes(props) {
 
   // get private jokes
   useEffect(() => {
-    getPrivateJokes()
-  }, [getPrivateJokes])
+    if (isLoggedIn) {
+      getPrivateJokes()
+    }
+  }, [isLoggedIn, getPrivateJokes])
 
   // login check
   if (!isLoggedIn) {
-    return <p>You need to be logged in to do that!</p>
+    return (
+      <p style={{ textAlign: 'center' }}>
+        You need to be logged in to do that!
+      </p>
+    )
   }
 
   // loading check
@@ -27,7 +33,11 @@ function PrivateJokes(props) {
 
   // empty check
   if (!privateJokes) {
-    return <p>No jokes are in the database - add them now!</p>
+    return (
+      <p style={{ textAlign: 'center' }}>
+        No jokes are in the database - add them now!
+      </p>
+    )
   }
 
   // return jokes if all checks pass
@@ -57,7 +67,7 @@ export default connect(mapStateToProps, { getPrivateJokes })(PrivateJokes)
 const DisplayP = styled.p`
   text-align: center
   font-size: 20px
-  background: cyan
+  background: lightblue
   width: 50%
   margin: 0 auto
   border-radius: 15px

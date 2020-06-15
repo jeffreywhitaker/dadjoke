@@ -13,19 +13,19 @@ import Signup from './components/Signup'
 import AddJoke from './components/AddJoke'
 import BottomNav from './components/BottomNav'
 
-import { makeLoggedInTrue } from './actions/actions'
+import { checkTokenValidity } from './actions/actions'
 
 // App component
 export function App(props) {
   // destructure props
-  const { makeLoggedInTrue } = props
+  const { checkTokenValidity } = props
 
   // use effect to check for token
   useEffect(() => {
     if (localStorage.token) {
-      makeLoggedInTrue()
+      checkTokenValidity()
     }
-  }, [makeLoggedInTrue])
+  }, [checkTokenValidity])
 
   // return components
   return (
@@ -46,15 +46,16 @@ export function App(props) {
 }
 
 // export component
-export default connect(null, { makeLoggedInTrue })(App)
+export default connect(null, { checkTokenValidity })(App)
 
 // styled components
 const AppWrapper = styled.div`
   max-width: 900px
   width: 100%
-  height: 100vh
+  height: 100%
+  min-height: 100vh
   margin: 0 auto
-  background: lightblue
+  background: lightslategray
   display: flex
   flex-direction: column
 `
