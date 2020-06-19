@@ -7,6 +7,10 @@ function Loading() {
   return (
     <LoadingContainer>
       <p>Content is currently loading...</p>
+      <p>
+        Heroku takes about 20 seconds to start up if it hasn't been recently
+        used. Please be patient!
+      </p>
       <div className="lds-spinner">
         <div></div>
         <div></div>
