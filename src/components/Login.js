@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { userLogin } from '../actions/actions'
 
 // login page component
-function Login({ userLogin, isLoggedIn }) {
+function Login({ userLogin, isLoggedIn, loginError }) {
   // useHistory
   const history = useHistory()
 
@@ -115,6 +115,7 @@ function Login({ userLogin, isLoggedIn }) {
         ) : null}
         <br />
         <br />
+        {loginError && <ErrorP>{loginError}</ErrorP>}
         <button disabled={buttonDisabled}>Log in</button>
       </form>
       <h2>Not registered?</h2>
@@ -127,6 +128,7 @@ function Login({ userLogin, isLoggedIn }) {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
+    loginError: state.loginReducer.loginError,
   }
 }
 

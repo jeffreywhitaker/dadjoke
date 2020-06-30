@@ -24,7 +24,8 @@ export const userLogin = (credentials) => (dispatch) => {
     })
     .catch((err) => {
       console.log(`unable to login user: ${err}`)
-      dispatch({ type: LOGIN_USER_FAILURE, payload: err })
+      console.log(err.response)
+      dispatch({ type: LOGIN_USER_FAILURE, payload: err.response.data.error })
     })
 }
 
@@ -75,7 +76,8 @@ export const userSignup = (credentials) => (dispatch) => {
     })
     .catch((err) => {
       console.log(`unable to signup new user: ${err}`)
-      dispatch({ type: SIGNUP_USER_FAILURE, payload: err })
+      console.log(err.response)
+      dispatch({ type: SIGNUP_USER_FAILURE, payload: err.response.data.detail })
     })
 }
 

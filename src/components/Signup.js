@@ -18,6 +18,7 @@ const Signup = ({
   userSignup,
   isLoggedIn,
   handleSubmit,
+  signupError,
 }) => {
   // use history
   const history = useHistory()
@@ -69,6 +70,7 @@ const Signup = ({
         {touched.email && errors.email && (
           <p className="error">{errors.email}</p>
         )}
+        {signupError && <ErrorP>{signupError}</ErrorP>}
         <button className="button" type="submit">
           Submit
         </button>
@@ -132,6 +134,7 @@ const FormikSignup = withFormik({
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
+    signupError: state.loginReducer.signupError,
   }
 }
 
@@ -142,4 +145,9 @@ export default connect(mapStateToProps, { userSignup })(FormikSignup)
 const SignupDiv = styled.div`
   width: 200px
   margin: 20px auto
+`
+
+const ErrorP = styled.p`
+  color: red
+  font-size: 11px
 `

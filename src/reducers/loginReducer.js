@@ -14,7 +14,8 @@ import {
 const initialState = {
   isFetching: false,
   isLoggedIn: false,
-  error: '',
+  loginError: '',
+  signupError: '',
 }
 
 // export login reducer
@@ -25,7 +26,7 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
-        error: '',
+        loginError: '',
       }
     case LOGIN_USER_SUCCESS:
       console.log(state)
@@ -40,7 +41,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: false,
-        error: `Unable to login user: ${action.payload}`,
+        loginError: `Unable to login user: ${action.payload}`,
       }
 
     // logout user action
@@ -64,21 +65,21 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
-        error: '',
+        signupError: '',
       }
     case SIGNUP_USER_SUCCESS:
       return {
         ...state,
         isFetching: false,
         isLoggedIn: true,
-        error: '',
+        signupError: '',
       }
     case SIGNUP_USER_FAILURE:
       return {
         ...state,
         isFetching: false,
         isLoggedIn: false,
-        error: `Unable to signup user: ${action.payload}`,
+        signupError: `Unable to signup user: ${action.payload}`,
       }
 
     // set default
