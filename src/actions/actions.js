@@ -2,6 +2,9 @@
 import axios from 'axios'
 import { axiosWithAuth, axiosLogin } from '../utils/axiosWithAuth'
 
+// const URI_STRING = "https://jwhit-dadjokes.herokuapp.com"
+const URI_STRING = 'http://localhost:2019'
+
 // login existing user
 export const LOGIN_USER_START = 'LOGIN_USER_START'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
@@ -9,7 +12,7 @@ export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const userLogin = (credentials) => (dispatch) => {
   dispatch({ type: LOGIN_USER_START })
   axiosLogin()
-    .post('https://jwhit-dadjokes.herokuapp.com/login', credentials)
+    .post(`${URI_STRING}/login`, credentials)
     .then((res) => {
       console.log('user login: ', res)
       localStorage.setItem('token', res.data.access_token)
@@ -60,7 +63,7 @@ export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE'
 export const userSignup = (credentials) => (dispatch) => {
   dispatch({ type: SIGNUP_USER_START })
   axiosLogin()
-    .post('https://jwhit-dadjokes.herokuapp.com/createnewuser', credentials)
+    .post(`${URI_STRING}/createnewuser`, credentials)
     .then((res) => {
       console.log('user signup: ', res)
       localStorage.setItem('token', res.data.access_token)
@@ -83,7 +86,7 @@ export const FETCH_JOKES_FAILURE = 'FETCH_JOKES_FAILURE'
 export const getPublicJokes = () => (dispatch) => {
   dispatch({ type: FETCH_JOKES_START })
   axios
-    .get('https://jwhit-dadjokes.herokuapp.com/dadjokes/public')
+    .get(`${URI_STRING}/dadjokes/public`)
     .then((res) => {
       console.log('public jokes: ', res)
       dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data })
@@ -101,18 +104,16 @@ export const FETCH_PRIVATE_JOKES_FAILURE = 'FETCH_JOKES_PRIVATE_FAILURE'
 export const getPrivateJokes = () => (dispatch) => {
   dispatch({ type: FETCH_PRIVATE_JOKES_START })
   axiosWithAuth()
-    .get('https://jwhit-dadjokes.herokuapp.com/dadjokes/private')
+    .get(`${URI_STRING}/dadjokes/private`)
     .then((res) => {
       console.log('private jokes: ', res)
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
       console.log(`unable to fetch private jokes: ${err.response}`)
-      console.log(err.response)
-      console.log(err)
       dispatch({
         type: FETCH_PRIVATE_JOKES_FAILURE,
-        payload: err.response.data.error,
+        payload: err.response.data.detail,
       })
     })
 }
@@ -125,7 +126,7 @@ export const ADD_JOKE_FAILURE = 'ADD_JOKE_FAILURE'
 export const addJoke = (jokeToAdd) => (dispatch) => {
   dispatch({ type: ADD_JOKE_START })
   axiosWithAuth()
-    .post('https://jwhit-dadjokes.herokuapp.com/dadjokes/add', jokeToAdd)
+    .post(`${URI_STRING}/dadjokes/add`, jokeToAdd)
     .then((res) => {
       console.log(res)
       if (jokeToAdd.isprivate) {
@@ -151,10 +152,7 @@ export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
   dispatch({ type: UPDATE_JOKE_START })
   console.log('begin updateJoke', jokeToUpdate, jokeId)
   axiosWithAuth()
-    .put(
-      `https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`,
-      jokeToUpdate,
-    )
+    .put(`${URI_STRING}/dadjokes/${jokeId}`, jokeToUpdate)
     .then((res) => {
       console.log(res)
       if (jokeToUpdate.isprivate) {
@@ -186,7 +184,7 @@ export const DELETE_JOKE_FAILURE = 'DELETE_JOKE_FAILURE'
 export const deleteJoke = (jokeId) => (dispatch) => {
   dispatch({ type: DELETE_JOKE_START })
   axiosWithAuth()
-    .delete(`https://jwhit-dadjokes.herokuapp.com/dadjokes/${jokeId}`)
+    .delete(`${URI_STRING}/dadjokes/${jokeId}`)
     .then((res) => {
       console.log(res)
       dispatch({ type: DELETE_JOKE_SUCCESS, payload: jokeId })

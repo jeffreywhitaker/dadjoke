@@ -68,10 +68,7 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error:
-          action.payload === 'invalid_token'
-            ? 'You do not have sufficient permission to access this area.'
-            : null,
+        error: action.payload,
       }
 
     // add joke actions
