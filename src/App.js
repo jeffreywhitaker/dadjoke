@@ -32,7 +32,7 @@ export function App(props) {
     <AppWrapper className="App">
       <Route component={NavBar} />
       <ContentContainer>
-        <Redirect exact path="/" to="/login" />
+        <Redirect exact path="/" to="/publicjokes" />
         <Route path="/publicjokes" component={PublicJokes} />
         <Route path="/privatejokes" component={PrivateJokes} />
         <Route path="/login" component={Login} />

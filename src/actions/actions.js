@@ -107,8 +107,13 @@ export const getPrivateJokes = () => (dispatch) => {
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
-      console.log(`unable to fetch private jokes: ${err}`)
-      dispatch({ type: FETCH_PRIVATE_JOKES_FAILURE, payload: err })
+      console.log(`unable to fetch private jokes: ${err.response}`)
+      console.log(err.response)
+      console.log(err)
+      dispatch({
+        type: FETCH_PRIVATE_JOKES_FAILURE,
+        payload: err.response.data.error,
+      })
     })
 }
 
@@ -161,8 +166,16 @@ export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log(`unable to update joke: ${err}`)
-      dispatch({ type: UPDATE_JOKE_FAILURE, payload: err })
+      console.log(err.response)
+      console.log(`unable to update joke: ${err.response.data.detail}`)
+      dispatch({
+        type: UPDATE_JOKE_FAILURE,
+        payload: {
+          msg: err.response.data.detail,
+          jokeId: jokeId,
+          isPrivate: jokeToUpdate.isprivate,
+        },
+      })
     })
 }
 

@@ -10,7 +10,13 @@ import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 
 // login page component
-function PublicJokes({ getPublicJokes, publicJokes, isLoading, isLoggedIn }) {
+function PublicJokes({
+  getPublicJokes,
+  publicJokes,
+  jokeError,
+  isLoading,
+  isLoggedIn,
+}) {
   // get jokes on page load
   useEffect(() => {
     getPublicJokes()
@@ -30,7 +36,13 @@ function PublicJokes({ getPublicJokes, publicJokes, isLoading, isLoggedIn }) {
     <>
       <DisplayP>Public Jokes</DisplayP>
       {publicJokes.map((joke) => {
-        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
+        return (
+          <SingleJokeCard
+            joke={joke}
+            jokeError={jokeError}
+            key={joke.dadjokequestion}
+          />
+        )
       })}
     </>
   )

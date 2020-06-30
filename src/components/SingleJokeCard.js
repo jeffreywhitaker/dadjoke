@@ -100,9 +100,13 @@ function SingleJokeCard(props) {
         </>
       )}
 
+      <AuthorP>submitted by: {joke.user.username}</AuthorP>
+
       {!isBeingUpdated && (
         <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>
       )}
+
+      {joke.error && <ErrorP>{joke.error}</ErrorP>}
 
       {joke.isprivate === true && (
         <StyledButton onClick={() => handleDelete(joke.dadjokeid)}>
@@ -134,4 +138,15 @@ const StyledButton = styled.button`
   border: 0
   margin: 5px 10px
   border-radius: 5px;
+`
+
+const AuthorP = styled.p`
+  font-size: 12px;
+`
+
+const ErrorP = styled.p`
+  color: red
+  font-size: 12px
+  text-align: right
+  display: inline-block
 `

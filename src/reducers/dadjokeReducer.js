@@ -68,7 +68,10 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: `Unable to fetch private jokes: ${action.payload}`,
+        error:
+          action.payload === 'invalid_token'
+            ? 'You do not have sufficient permission to access this area.'
+            : null,
       }
 
     // add joke actions
@@ -130,7 +133,32 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: `Unable to update joke: ${action.payload}`,
+        privateJokes: action.payload.isPrivate
+          ? [
+              ...state.privateJokes.map((joke) => {
+                if (joke.dadjokeid === action.payload.jokeId) {
+                  return {
+                    ...joke,
+                    error: `Unable to update joke: ${action.payload.msg}`,
+                  }
+                }
+                return joke
+              }),
+            ]
+          : state.privateJokes,
+        publicJokes: !action.payload.isPrivate
+          ? [
+              ...state.publicJokes.map((joke) => {
+                if (joke.dadjokeid === action.payload.jokeId) {
+                  return {
+                    ...joke,
+                    error: `Unable to update joke: ${action.payload.msg}`,
+                  }
+                }
+                return joke
+              }),
+            ]
+          : state.publicJokes,
       }
 
     // delete joke actions

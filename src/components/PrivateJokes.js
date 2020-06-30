@@ -10,7 +10,13 @@ import { getPrivateJokes } from '../actions/actions'
 // Private Jokes component
 function PrivateJokes(props) {
   // destructure props
-  const { getPrivateJokes, privateJokes, isLoading, isLoggedIn } = props
+  const {
+    getPrivateJokes,
+    privateJokes,
+    jokesError,
+    isLoading,
+    isLoggedIn,
+  } = props
 
   // get private jokes
   useEffect(() => {
@@ -44,6 +50,9 @@ function PrivateJokes(props) {
   return (
     <>
       <DisplayP>Private Jokes</DisplayP>
+
+      {jokesError && <ErrorP>{jokesError}</ErrorP>}
+
       {privateJokes.map((joke) => {
         return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
       })}
@@ -57,6 +66,7 @@ const mapStateToProps = (state) => {
     privateJokes: state.jokeReducer.privateJokes,
     isLoading: state.jokeReducer.isFetching,
     isLoggedIn: state.loginReducer.isLoggedIn,
+    jokesError: state.jokeReducer.error,
   }
 }
 
@@ -72,4 +82,8 @@ const DisplayP = styled.p`
   margin: 0 auto
   border-radius: 15px
   padding: 10px 0
+`
+
+const ErrorP = styled.p`
+  text-align: center;
 `
