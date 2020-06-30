@@ -2,8 +2,8 @@
 import axios from 'axios'
 import { axiosWithAuth, axiosLogin } from '../utils/axiosWithAuth'
 
-// const URI_STRING = "https://jwhit-dadjokes.herokuapp.com"
-const URI_STRING = 'http://localhost:2019'
+const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
+// const URI_STRING = 'http://localhost:2019'
 
 // login existing user
 export const LOGIN_USER_START = 'LOGIN_USER_START'
