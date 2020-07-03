@@ -2,8 +2,8 @@
 import axios from 'axios'
 import { axiosWithAuth, axiosLogin } from '../utils/axiosWithAuth'
 
-const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
-// const URI_STRING = 'http://localhost:2019'
+// const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
+const URI_STRING = 'http://localhost:2019'
 
 // login existing user
 export const LOGIN_USER_START = 'LOGIN_USER_START'
@@ -14,13 +14,20 @@ export const userLogin = (credentials) => (dispatch) => {
   axiosLogin()
     .post(`${URI_STRING}/login`, credentials)
     .then((res) => {
-      console.log('user login: ', res)
+      // set token, expiry, and username to local storage
       localStorage.setItem('token', res.data.access_token)
       localStorage.setItem(
         'tokenExpiry',
         new Date(new Date().getTime() + res.data.expires_in * 1000),
       )
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: res.data })
+      localStorage.setItem('username', credentials.username)
+      // create object to send
+      let toSend = {
+        username: credentials.username,
+        data: res.data,
+      }
+
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: toSend })
     })
     .catch((err) => {
       console.log(`unable to login user: ${err}`)
@@ -35,6 +42,7 @@ export const userLogout = () => (dispatch) => {
   console.log('logout user')
   localStorage.removeItem('token')
   localStorage.removeItem('tokenExpiry')
+  localStorage.removeItem('username')
   dispatch({ type: LOGOUT_USER_SUCCESS })
 }
 
@@ -49,6 +57,7 @@ export const checkTokenValidity = () => (dispatch) => {
     // log out user, remove token
     localStorage.removeItem('token')
     localStorage.removeItem('tokenExpiry')
+    localStorage.removeItem('username')
     dispatch({ type: LOGOUT_USER_SUCCESS })
     // if token is not expired
   } else {
@@ -66,13 +75,21 @@ export const userSignup = (credentials) => (dispatch) => {
   axiosLogin()
     .post(`${URI_STRING}/createnewuser`, credentials)
     .then((res) => {
-      console.log('user signup: ', res)
+      // set token, expiry, and username
       localStorage.setItem('token', res.data.access_token)
       localStorage.setItem(
         'tokenExpiry',
         new Date(new Date().getTime() + res.data.expires_in * 1000),
       )
-      dispatch({ type: SIGNUP_USER_SUCCESS, payload: res.data })
+      localStorage.setItem('username', credentials.username)
+
+      // create object to send
+      let toSend = {
+        username: credentials.username,
+        data: res.data,
+      }
+
+      dispatch({ type: SIGNUP_USER_SUCCESS, payload: toSend })
     })
     .catch((err) => {
       console.log(`unable to signup new user: ${err}`)
@@ -90,7 +107,7 @@ export const getPublicJokes = () => (dispatch) => {
   axios
     .get(`${URI_STRING}/dadjokes/public`)
     .then((res) => {
-      console.log('public jokes: ', res)
+      console.log('GET public jokes: ', res)
       dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
@@ -108,7 +125,7 @@ export const getPrivateJokes = () => (dispatch) => {
   axiosWithAuth()
     .get(`${URI_STRING}/dadjokes/private`)
     .then((res) => {
-      console.log('private jokes: ', res)
+      console.log('GET private jokes: ', res)
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
     .catch((err) => {
@@ -130,13 +147,15 @@ export const addJoke = (jokeToAdd) => (dispatch) => {
   axiosWithAuth()
     .post(`${URI_STRING}/dadjokes/add`, jokeToAdd)
     .then((res) => {
-      console.log(res)
+      // if joke is private, dispatch response to reducer
       if (jokeToAdd.isprivate) {
-        console.log('private joke is being added', jokeToAdd)
-        dispatch({ type: ADD_PRIVATE_JOKE_SUCCESS, payload: jokeToAdd })
+        console.log('private joke is being added', res.data)
+        dispatch({ type: ADD_PRIVATE_JOKE_SUCCESS, payload: res.data })
+
+        // if joke is public, dispatch response to reducer
       } else {
-        console.log('public joke is being added', jokeToAdd)
-        dispatch({ type: ADD_PUBLIC_JOKE_SUCCESS, payload: jokeToAdd })
+        console.log('public joke is being added', res.data)
+        dispatch({ type: ADD_PUBLIC_JOKE_SUCCESS, payload: res.data })
       }
     })
     .catch((err) => {
@@ -158,11 +177,11 @@ export const updateJoke = (jokeToUpdate, jokeId) => (dispatch) => {
     .then((res) => {
       console.log(res)
       if (jokeToUpdate.isprivate) {
-        console.log('private joke is being updated', jokeToUpdate)
-        dispatch({ type: UPDATE_PRIVATE_JOKE_SUCCESS, payload: jokeToUpdate })
+        console.log('private joke is being updated', res.data)
+        dispatch({ type: UPDATE_PRIVATE_JOKE_SUCCESS, payload: res.data })
       } else {
-        console.log('public joke is being updated', jokeToUpdate)
-        dispatch({ type: UPDATE_PUBLIC_JOKE_SUCCESS, payload: jokeToUpdate })
+        console.log('public joke is being updated', res.data)
+        dispatch({ type: UPDATE_PUBLIC_JOKE_SUCCESS, payload: res.data })
       }
     })
     .catch((err) => {

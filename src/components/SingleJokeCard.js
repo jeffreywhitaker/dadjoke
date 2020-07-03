@@ -16,6 +16,7 @@ function SingleJokeCard(props) {
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
+    username: '',
   }
 
   // set local update state
@@ -45,6 +46,7 @@ function SingleJokeCard(props) {
         dadjokequestion: joke.dadjokequestion,
         dadjokeanswer: joke.dadjokeanswer,
         isprivate: joke.isprivate,
+        username: joke.username,
       })
     }
   }
@@ -79,7 +81,7 @@ function SingleJokeCard(props) {
             size={50}
           />
           <p>
-            >>>{' '}
+            >>>
             <input
               type="text"
               name="dadjokeanswer"
@@ -100,7 +102,7 @@ function SingleJokeCard(props) {
         </>
       )}
 
-      <AuthorP>submitted by: {joke.user.username}</AuthorP>
+      <AuthorP>submitted by: {joke.username}</AuthorP>
 
       {!isBeingUpdated && (
         <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>

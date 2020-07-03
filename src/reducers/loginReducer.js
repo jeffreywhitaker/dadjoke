@@ -14,6 +14,7 @@ import {
 const initialState = {
   isFetching: false,
   isLoggedIn: false,
+  username: null,
   loginError: '',
   signupError: '',
 }
@@ -27,6 +28,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: true,
         loginError: '',
+        username: '',
       }
     case LOGIN_USER_SUCCESS:
       console.log(state)
@@ -35,6 +37,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: true,
+        username: action.payload.username,
       }
     case LOGIN_USER_FAILURE:
       return {
@@ -50,6 +53,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: false,
+        username: '',
       }
 
     // use saved token
@@ -58,6 +62,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: true,
+        // TODO: set username
       }
 
     // signup user actions
@@ -66,6 +71,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: true,
         signupError: '',
+        username: '',
       }
     case SIGNUP_USER_SUCCESS:
       return {
@@ -73,6 +79,7 @@ export const loginReducer = (state = initialState, action) => {
         isFetching: false,
         isLoggedIn: true,
         signupError: '',
+        username: action.payload.username,
       }
     case SIGNUP_USER_FAILURE:
       return {
@@ -80,6 +87,7 @@ export const loginReducer = (state = initialState, action) => {
         isFetching: false,
         isLoggedIn: false,
         signupError: `Unable to signup user: ${action.payload}`,
+        username: '',
       }
 
     // set default

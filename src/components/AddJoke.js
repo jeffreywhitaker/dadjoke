@@ -7,21 +7,24 @@ import styled from 'styled-components'
 import { addJoke } from '../actions/actions'
 
 // add joke component
-export function AddJoke({ addJoke }) {
+export function AddJoke({ addJoke, usernameFromState }) {
   const history = useHistory()
 
-  // local state for adding new joke
-  const [newJoke, setNewJoke] = useState({
+  let blankJoke = {
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
-  })
+  }
+  // local state for adding new joke
+  const [newJoke, setNewJoke] = useState(blankJoke)
 
   // call add joke function
   const callAddJoke = (e) => {
     e.preventDefault()
+    console.log('new joke:')
+    console.log(newJoke)
     addJoke(newJoke)
-    setNewJoke({ dadjokequestion: '', dadjokeanswer: '', isprivate: false })
+    setNewJoke(blankJoke)
     history.push('/publicjokes')
   }
 
@@ -71,6 +74,7 @@ export function AddJoke({ addJoke }) {
 const mapStateToProps = (state) => {
   return {
     jokes: state.jokeReducer.jokes,
+    usernameFromState: state.loginReducer.username,
   }
 }
 
