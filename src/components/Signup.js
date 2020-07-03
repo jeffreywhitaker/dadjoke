@@ -39,7 +39,7 @@ const Signup = ({
   // if logged in, redirect to game list
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/jokes')
+      history.push('/publicjokes')
     }
   }, [history, isLoggedIn])
 
