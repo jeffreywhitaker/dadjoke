@@ -16,6 +16,7 @@ function PublicJokes({
   jokeError,
   isLoading,
   isLoggedIn,
+  username,
 }) {
   // get jokes on page load
   useEffect(() => {
@@ -40,6 +41,7 @@ function PublicJokes({
           <SingleJokeCard
             joke={joke}
             jokeError={jokeError}
+            username={username}
             key={joke.dadjokequestion}
           />
         )
@@ -53,6 +55,7 @@ const mapStateToProps = (state) => {
   return {
     publicJokes: state.jokeReducer.publicJokes,
     isLoading: state.jokeReducer.isFetching,
+    username: state.loginReducer.username,
   }
 }
 

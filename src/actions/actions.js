@@ -62,7 +62,10 @@ export const checkTokenValidity = () => (dispatch) => {
     // if token is not expired
   } else {
     // log in user, use token
-    dispatch({ type: USE_SAVED_TOKEN_SUCCESS })
+    dispatch({
+      type: USE_SAVED_TOKEN_SUCCESS,
+      payload: { username: localStorage.getItem('username') },
+    })
   }
 }
 

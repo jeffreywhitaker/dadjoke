@@ -31,8 +31,8 @@ export const loginReducer = (state = initialState, action) => {
         username: '',
       }
     case LOGIN_USER_SUCCESS:
-      console.log(state)
-      console.log(action)
+      console.log('state ', state)
+      console.log('action', action)
       return {
         ...state,
         isFetching: false,
@@ -62,7 +62,7 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: true,
-        // TODO: set username
+        username: action.payload.username,
       }
 
     // signup user actions
@@ -74,6 +74,8 @@ export const loginReducer = (state = initialState, action) => {
         username: '',
       }
     case SIGNUP_USER_SUCCESS:
+      console.log('state ', state)
+      console.log('action', action)
       return {
         ...state,
         isFetching: false,

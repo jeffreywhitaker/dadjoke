@@ -8,7 +8,9 @@ import { deleteJoke, updateJoke } from '../actions/actions'
 // joke card component
 function SingleJokeCard(props) {
   // destructure props
-  let { joke, deleteJoke, updateJoke } = props
+  let { joke, deleteJoke, updateJoke, username } = props
+
+  console.log('username:', username)
 
   // empty joke object
   const emptyJoke = {
@@ -110,7 +112,7 @@ function SingleJokeCard(props) {
 
       {joke.error && <ErrorP>{joke.error}</ErrorP>}
 
-      {joke.isprivate === true && (
+      {(joke.isprivate === true || joke.username === username) && (
         <StyledButton onClick={() => handleDelete(joke.dadjokeid)}>
           Del
         </StyledButton>
