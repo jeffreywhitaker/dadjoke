@@ -53,9 +53,9 @@ export default connect(mapStateToProps, { userLogout })(NavBar)
 
 // styled components
 const NavBarSection = styled.section`
-  display: flex
-  justify-content: space-around
-  padding: 10px 0px 15px 0px
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0px 15px 0px;
 `
 
 const NavLinkStyled = styled(NavLink)`
@@ -65,6 +65,9 @@ const NavLinkStyled = styled(NavLink)`
   padding: 5px 10px;
   &.active {
     filter: brightness(75%);
+  }
+  :hover {
+    filter: brightness(90%);
   }
   border-radius: 5px;
 `

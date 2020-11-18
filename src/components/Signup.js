@@ -58,17 +58,17 @@ const Signup = ({
         <p>Username:</p>
         <Field type="text" name="username" />
         {touched.username && errors.username && (
-          <p className="error">{errors.username}</p>
+          <ErrorP className="error">{errors.username}</ErrorP>
         )}
         <p>Password:</p>
         <Field type="password" name="password" />
         {touched.password && errors.password && (
-          <p className="error">{errors.password}</p>
+          <ErrorP className="error">{errors.password}</ErrorP>
         )}
         <p>Email:</p>
         <Field type="email" name="primaryemail" />
         {touched.email && errors.email && (
-          <p className="error">{errors.email}</p>
+          <ErrorP className="error">{errors.email}</ErrorP>
         )}
         {signupError && <ErrorP>{signupError}</ErrorP>}
         <button className="button" type="submit">
@@ -118,7 +118,7 @@ const FormikSignup = withFormik({
   },
 
   validationSchema: Yup.object().shape({
-    username: Yup.string().required('Name is a required field'),
+    username: Yup.string().required('Username is a required field'),
     password: Yup.string().required('Password is a required field'),
     primaryemail: Yup.string().required('Email is a required field'),
   }),
@@ -143,11 +143,12 @@ export default connect(mapStateToProps, { userSignup })(FormikSignup)
 
 // styled components
 const SignupDiv = styled.div`
-  width: 200px
-  margin: 20px auto
+  width: 200px;
+  margin: 20px auto;
 `
 
 const ErrorP = styled.p`
-  color: red
-  font-size: 11px
+  color: red;
+  font-size: 12px;
+  background-color: lightgray;
 `

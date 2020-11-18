@@ -50,14 +50,14 @@ export default connect(null, { checkTokenValidity })(App)
 
 // styled components
 const AppWrapper = styled.div`
-  max-width: 900px
-  width: 100%
-  height: 100%
-  min-height: 100vh
-  margin: 0 auto
-  background: lightslategray
-  display: flex
-  flex-direction: column
+  max-width: 1100px;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: lightslategray;
+  display: flex;
+  flex-direction: column;
 `
 
 // set max width to 1100px eventually

@@ -29,7 +29,7 @@ function PrivateJokes(props) {
   if (!isLoggedIn) {
     return (
       <p style={{ textAlign: 'center' }}>
-        You need to be logged in to do that!
+        You must be logged in to see your private jokes. Please log in above!
       </p>
     )
   }
@@ -75,13 +75,13 @@ export default connect(mapStateToProps, { getPrivateJokes })(PrivateJokes)
 
 // styled components
 const DisplayP = styled.p`
-  text-align: center
-  font-size: 20px
-  background: lightblue
-  width: 50%
-  margin: 0 auto
-  border-radius: 15px
-  padding: 10px 0
+  text-align: center;
+  font-size: 20px;
+  background: lightblue;
+  width: 50%;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 10px 0;
 `
 
 const ErrorP = styled.p`
