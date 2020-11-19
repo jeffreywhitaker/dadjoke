@@ -69,6 +69,10 @@ const NavBarSection = styled.section`
     font-size: 16px;
     font-weight: bold;
   }
+
+  @media screen and (max-width: 400px) {
+    flex-direction: column;
+  }
 `
 
 const NavLinkStyled = styled(NavLink)`
@@ -83,4 +87,9 @@ const NavLinkStyled = styled(NavLink)`
     filter: brightness(90%);
   }
   border-radius: 5px;
+
+  @media screen and (max-width: 400px) {
+    padding: 2px 10px;
+    margin: 5px auto;
+  }
 `
