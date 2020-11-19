@@ -1,4 +1,4 @@
-// import dependencies
+// main imports
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -7,10 +7,11 @@ import styled from 'styled-components'
 import { addJoke } from '../actions/actions'
 
 // add joke component
-export function AddJoke({ addJoke, usernameFromState }) {
+// TODO: make work export const AddJoke: React.FC = (): ReactElement =>
+export const AddJoke = () => {
   const history = useHistory()
 
-  let blankJoke = {
+  const blankJoke = {
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
@@ -19,7 +20,7 @@ export function AddJoke({ addJoke, usernameFromState }) {
   const [newJoke, setNewJoke] = useState(blankJoke)
 
   // call add joke function
-  const callAddJoke = (e) => {
+  const callAddJoke = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     console.log('new joke:')
     console.log(newJoke)
@@ -29,7 +30,7 @@ export function AddJoke({ addJoke, usernameFromState }) {
   }
 
   // handle change values, save to local state
-  const handleValueChange = (e) => {
+  const handleValueChange = (e: { target: { type: string; checked: any; value: any; name: any } }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
     setNewJoke({
@@ -71,15 +72,23 @@ export function AddJoke({ addJoke, usernameFromState }) {
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: { jokeReducer: { jokes: Array<Record<string, unknown>> }; loginReducer: { username: string } }) => {
   return {
     jokes: state.jokeReducer.jokes,
     usernameFromState: state.loginReducer.username,
   }
 }
 
+// // props
+// type PropsFromRedux = ConnectedProps<typeof connector>
+// interface Props extends PropsFromRedux {
+//   addJoke: any,
+//   usernameFromState: string,
+// }
+
 // export component
-export default connect(mapStateToProps, { addJoke })(AddJoke)
+const connector = connect(mapStateToProps, { addJoke })
+export default connector(AddJoke)
 
 // styled components
 const AddJokeCardDiv = styled.div`

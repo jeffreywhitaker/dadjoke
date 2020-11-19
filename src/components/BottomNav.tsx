@@ -7,7 +7,7 @@ import styled from 'styled-components'
 // import functions
 
 // NavBar component
-function BottomNav(props) {
+function BottomNav(props: { isLoggedIn: boolean, location: { pathname: string} }) {
   // destructure props
   const { isLoggedIn } = props
 
@@ -23,22 +23,22 @@ function BottomNav(props) {
   return (
     <NavBarSection>
       {window.location.pathname === '/publicjokes' && (
-        <NavLinkStyled disabled exact to={'/publicjokes/add'}>
+        <NavLinkStyled exact to={'/publicjokes/add'}>
           Add Public Joke
         </NavLinkStyled>
       )}
       {window.location.pathname === '/publicjokes/add' && (
-        <NavLinkStyled disabled exact to={'/publicjokes'}>
+        <NavLinkStyled exact to={'/publicjokes'}>
           Don't Add New Joke
         </NavLinkStyled>
       )}
       {window.location.pathname === '/privatejokes' && (
-        <NavLinkStyled disabled exact to={'/privatejokes/add'}>
+        <NavLinkStyled exact to={'/privatejokes/add'}>
           Add Private Joke
         </NavLinkStyled>
       )}
       {window.location.pathname === '/privatejokes/add' && (
-        <NavLinkStyled disabled exact to={'/privatejokes'}>
+        <NavLinkStyled exact to={'/privatejokes'}>
           Don't Add New Joke
         </NavLinkStyled>
       )}
@@ -47,7 +47,7 @@ function BottomNav(props) {
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean } }) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
   }

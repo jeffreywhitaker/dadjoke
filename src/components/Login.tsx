@@ -9,7 +9,9 @@ import styled from 'styled-components'
 import { userLogin } from '../actions/actions'
 
 // login page component
-function Login({ userLogin, isLoggedIn, loginError }) {
+function Login(props: { userLogin: any, isLoggedIn: boolean, loginError: string }) {
+  // destructure props
+  const { userLogin, isLoggedIn, loginError} = props
   // useHistory
   const history = useHistory()
 
@@ -21,6 +23,7 @@ function Login({ userLogin, isLoggedIn, loginError }) {
 
   const [errors, setErrors] = useState({
     username: '',
+    email: '',
     password: '',
   })
 
@@ -35,7 +38,7 @@ function Login({ userLogin, isLoggedIn, loginError }) {
   })
 
   // call login function
-  const callLogin = (e) => {
+  const callLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     userLogin(credentials)
   }
@@ -45,7 +48,7 @@ function Login({ userLogin, isLoggedIn, loginError }) {
     if (isLoggedIn) {
       history.push('/publicjokes')
     } else {
-      formSchema.isValid(credentials).then((valid) => {
+      formSchema.isValid(credentials).then((valid: boolean) => {
         setButtonDisabled(!valid)
       })
     }
@@ -63,19 +66,19 @@ function Login({ userLogin, isLoggedIn, loginError }) {
   //   return () => mounted = false;
   // }, [credentials, formSchema])
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { persist: () => void; target: { name: any; value: any } }) => {
     e.persist()
     Yup.reach(formSchema, e.target.name)
       .validate(e.target.value)
       // if valid, clear error messages
-      .then((valid) => {
+      .then(() => {
         setErrors({
           ...errors,
           [e.target.name]: '',
         })
       })
       // if errors, set them
-      .catch((err) => {
+      .catch((err: { errors: any[] }) => {
         setErrors({
           ...errors,
           [e.target.name]: err.errors[0],
@@ -125,7 +128,7 @@ function Login({ userLogin, isLoggedIn, loginError }) {
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: { loginReducer: { isLoggedIn: any; loginError: any } }) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     loginError: state.loginReducer.loginError,
@@ -137,11 +140,11 @@ export default connect(mapStateToProps, { userLogin })(Login)
 
 // styled components
 const LoginDiv = styled.div`
-  width: 200px
-  margin: 20px auto
+  width: 200px;
+  margin: 20px auto;
 `
 
 const ErrorP = styled.p`
-  color: red
-  font-size: 11px
+  color: red;
+  font-size: 11px;
 `
