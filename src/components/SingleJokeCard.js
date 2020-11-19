@@ -70,7 +70,9 @@ function SingleJokeCard(props) {
       {!isBeingUpdated && (
         <>
           <p>{joke.dadjokequestion}</p>
-          <p>>>> {joke.dadjokeanswer}</p>
+          <p>
+            {'>>>'} {joke.dadjokeanswer}
+          </p>
         </>
       )}
       {isBeingUpdated && (
@@ -83,7 +85,7 @@ function SingleJokeCard(props) {
             size={50}
           />
           <p>
-            >>>
+            {'>>>'}
             <input
               type="text"
               name="dadjokeanswer"
@@ -126,22 +128,27 @@ export default connect(null, { deleteJoke, updateJoke })(SingleJokeCard)
 
 // styled components
 const SingleJokeCardDiv = styled.div`
-  width: 80%
-  margin: 10px auto
-  background: lightblue
-  border-radius: 15px
-  padding: 5px 15px
+  width: 80%;
+  margin: 10px auto;
+  background: lightblue;
+  border-radius: 15px;
+  padding: 5px 15px;
 `
 
 const StyledButton = styled.button`
-  background: lightpink
-  text-decoration: none
-  color: black
-  padding: 5px 10px
-  outline: none
-  border: 0
-  margin: 5px 10px
+  background: lightpink;
+  text-decoration: none;
+  color: black;
+  padding: 5px 10px;
+  outline: none;
+  border: 0;
+  margin: 5px 10px;
   border-radius: 5px;
+
+  :hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
 `
 
 const AuthorP = styled.p`
@@ -149,8 +156,8 @@ const AuthorP = styled.p`
 `
 
 const ErrorP = styled.p`
-  color: red
-  font-size: 12px
-  text-align: right
-  display: inline-block
+  color: red;
+  font-size: 12px;
+  text-align: right;
+  display: inline-block;
 `

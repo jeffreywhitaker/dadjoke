@@ -83,9 +83,9 @@ export default connect(mapStateToProps, { addJoke })(AddJoke)
 
 // styled components
 const AddJokeCardDiv = styled.div`
-  width: 80%
-  margin: 20px auto
-  background: lightblue
-  border-radius: 15px
-  padding: 5px 15px
+  width: 80%;
+  margin: 20px auto;
+  background: lightblue;
+  border-radius: 15px;
+  padding: 5px 15px;
 `

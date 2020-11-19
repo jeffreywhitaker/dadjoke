@@ -63,5 +63,6 @@ const AppWrapper = styled.div`
 // set max width to 1100px eventually
 
 const ContentContainer = styled.article`
+  margin-top: 10px;
   flex-grow: 1;
 `

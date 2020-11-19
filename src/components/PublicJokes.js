@@ -64,11 +64,11 @@ export default connect(mapStateToProps, { getPublicJokes })(PublicJokes)
 
 // styled components
 const DisplayP = styled.p`
-  text-align: center
-  font-size: 20px
-  background: lightblue
-  width: 50%
-  margin: 0 auto
-  border-radius: 15px
-  padding: 10px 0
+  text-align: center;
+  font-size: 20px;
+  background: lightblue;
+  width: 50%;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 10px 0;
 `

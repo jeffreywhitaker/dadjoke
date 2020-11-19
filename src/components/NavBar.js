@@ -10,7 +10,7 @@ import { userLogout } from '../actions/actions'
 // NavBar component
 function NavBar(props) {
   // destructure props
-  const { isLoggedIn, userLogout } = props
+  const { isLoggedIn, userLogout, username } = props
 
   // use history
   const history = useHistory()
@@ -28,9 +28,14 @@ function NavBar(props) {
       <NavLinkStyled to={'/publicjokes'}>Public</NavLinkStyled>
       <NavLinkStyled to={'/privatejokes'}>Private</NavLinkStyled>
       {isLoggedIn ? (
-        <NavLinkStyled onClick={handleLogout} to={' '}>
-          Log Out
-        </NavLinkStyled>
+        <>
+          <span>
+            {'>>'} {username}
+          </span>
+          <NavLinkStyled onClick={handleLogout} to={' '}>
+            Log Out
+          </NavLinkStyled>
+        </>
       ) : (
         <>
           <NavLinkStyled to={'/login'}>Login</NavLinkStyled>
@@ -45,6 +50,7 @@ function NavBar(props) {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
+    username: state.loginReducer.username,
   }
 }
 
@@ -56,10 +62,17 @@ const NavBarSection = styled.section`
   display: flex;
   justify-content: space-around;
   padding: 10px 0px 15px 0px;
+  background-color: lightblue;
+  align-items: center;
+
+  span {
+    font-size: 16px;
+    font-weight: bold;
+  }
 `
 
 const NavLinkStyled = styled(NavLink)`
-  background: darksalmon;
+  background: lightpink;
   text-decoration: none;
   color: black;
   padding: 5px 10px;

@@ -58,13 +58,13 @@ export default connect(mapStateToProps, {})(BottomNav)
 
 // styled components
 const NavBarSection = styled.section`
-  display: flex
-  justify-content: space-around
-  padding: 10px 0
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
 `
 
 const NavLinkStyled = styled(NavLink)`
-  background: darksalmon;
+  background: lightpink;
   text-decoration: none;
   color: black;
   padding: 5px 10px;
