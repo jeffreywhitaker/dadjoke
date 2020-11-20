@@ -1,14 +1,15 @@
 // main imports
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
 import { addJoke } from '../actions/actions'
 
 // add joke component
 // TODO: make work export const AddJoke: React.FC = (): ReactElement =>
-export const AddJoke: React.FC = () => {
+export const AddJoke: React.FC<Props> = (props: Props) => {
+  const { addJoke } = props
   const history = useHistory()
 
   const blankJoke = {
@@ -20,7 +21,7 @@ export const AddJoke: React.FC = () => {
   const [newJoke, setNewJoke] = useState(blankJoke)
 
   // call add joke function
-  const callAddJoke = (e: { preventDefault: () => void }) => {
+  const callAddJoke = (e: { preventDefault: () => unknown }) => {
     e.preventDefault()
     console.log('new joke:')
     console.log(newJoke)
@@ -31,7 +32,12 @@ export const AddJoke: React.FC = () => {
 
   // handle change values, save to local state
   const handleValueChange = (e: {
-    target: { type: string; checked: any; value: any; name: any }
+    target: {
+      type: string
+      checked: boolean
+      value: string | boolean
+      name: string
+    }
   }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -93,6 +99,8 @@ const mapStateToProps = (state: {
 
 // export component
 const connector = connect(mapStateToProps, { addJoke })
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux
 export default connector(AddJoke)
 
 // styled components

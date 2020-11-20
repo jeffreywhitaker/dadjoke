@@ -1,19 +1,20 @@
 // import dependencies
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
 import { deleteJoke, updateJoke } from '../actions/actions'
+import { Joke } from '../types/types'
 
 // joke card component
-function SingleJokeCard(props) {
+function SingleJokeCard(props: Props) {
   // destructure props
-  let { joke, deleteJoke, updateJoke, username } = props
+  const { joke, deleteJoke, updateJoke, username } = props
 
   console.log('username:', username)
 
   // empty joke object
-  const emptyJoke = {
+  const emptyJoke: Joke = {
     dadjokeid: '',
     dadjokequestion: '',
     dadjokeanswer: '',
@@ -26,12 +27,12 @@ function SingleJokeCard(props) {
   const [updatedJoke, setUpdatedJoke] = useState(emptyJoke)
 
   // helper functions
-  function handleDelete(id) {
+  function handleDelete(id: string) {
     deleteJoke(id)
   }
 
-  function handleUpdate(updatedJoke) {
-    updateJoke(updatedJoke, joke.dadjokeid)
+  function handleUpdate(updatedJoke: Joke) {
+    updateJoke(updatedJoke, joke.dadjokeid as string)
   }
 
   function toggleUpdate() {
@@ -54,7 +55,14 @@ function SingleJokeCard(props) {
   }
 
   // handle change values, save to local state
-  const handleValueChange = (e) => {
+  const handleValueChange = (e: {
+    target: {
+      type: string
+      checked: boolean
+      value: string | boolean
+      name: string
+    }
+  }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
     setUpdatedJoke({
@@ -115,7 +123,7 @@ function SingleJokeCard(props) {
       {joke.error && <ErrorP>{joke.error}</ErrorP>}
 
       {(joke.isprivate === true || joke.username === username) && (
-        <StyledButton onClick={() => handleDelete(joke.dadjokeid)}>
+        <StyledButton onClick={() => handleDelete(joke.dadjokeid as string)}>
           Del
         </StyledButton>
       )}
@@ -124,7 +132,14 @@ function SingleJokeCard(props) {
 }
 
 // export component
-export default connect(null, { deleteJoke, updateJoke })(SingleJokeCard)
+const connector = connect(null, { deleteJoke, updateJoke })
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux & {
+  joke: Joke
+  username?: string
+}
+
+export default connector(SingleJokeCard)
 
 // styled components
 const SingleJokeCardDiv = styled.div`

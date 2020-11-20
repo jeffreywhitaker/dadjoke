@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import components
@@ -37,15 +37,13 @@ export const App: React.FC<Props> = (props) => {
     <AppWrapper className="App">
       <Route component={NavBar} />
       <ContentContainer>
-        <Switch>
-          <Redirect exact path="/" to="/publicjokes" />
-          <Route path="/publicjokes" component={PublicJokes} />
-          <Route path="/privatejokes" component={PrivateJokes} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/publicjokes/add" component={AddJoke} />
-          <Route path="/privatejokes/add" component={AddJoke} />
-        </Switch>
+        <Redirect exact path="/" to="/publicjokes" />
+        <Route path="/publicjokes" component={PublicJokes} />
+        <Route path="/privatejokes" component={PrivateJokes} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/publicjokes/add" component={AddJoke} />
+        <Route path="/privatejokes/add" component={AddJoke} />
       </ContentContainer>
       <Route component={BottomNav} />
     </AppWrapper>

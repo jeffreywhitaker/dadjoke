@@ -1,19 +1,12 @@
 // import dependencies
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import * as Yup from 'yup'
 import styled from 'styled-components'
 
 // import actions
 import { userLogin } from '../actions/actions'
-
-// typing
-type Props = {
-  userLogin: (credentials: Record<string, unknown>) => void
-  isLoggedIn: boolean
-  loginError: string
-}
 
 // login page component
 const Login: React.FC<Props> = (props) => {
@@ -75,7 +68,7 @@ const Login: React.FC<Props> = (props) => {
 
   const handleInputChange = (e: {
     persist: () => void
-    target: { name: any; value: any }
+    target: { name: string; value: string | boolean }
   }) => {
     e.persist()
     Yup.reach(formSchema, e.target.name)
@@ -88,7 +81,7 @@ const Login: React.FC<Props> = (props) => {
         })
       })
       // if errors, set them
-      .catch((err: { errors: any[] }) => {
+      .catch((err: { errors: string[] }) => {
         setErrors({
           ...errors,
           [e.target.name]: err.errors[0],
@@ -137,10 +130,13 @@ const Login: React.FC<Props> = (props) => {
   )
 }
 
+interface LoginReducer {
+  isLoggedIn: boolean
+  loginError: string
+}
+
 // connect component to redux store
-const mapStateToProps = (state: {
-  loginReducer: { isLoggedIn: any; loginError: any }
-}) => {
+const mapStateToProps = (state: { loginReducer: LoginReducer }) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     loginError: state.loginReducer.loginError,
@@ -148,7 +144,10 @@ const mapStateToProps = (state: {
 }
 
 // export component
-export default connect(mapStateToProps, { userLogin })(Login)
+const connector = connect(mapStateToProps, { userLogin })
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux
+export default connector(Login)
 
 // styled components
 const LoginDiv = styled.div`
@@ -158,5 +157,6 @@ const LoginDiv = styled.div`
 
 const ErrorP = styled.p`
   color: red;
-  font-size: 11px;
+  font-size: 12px;
+  background-color: lightgray;
 `
