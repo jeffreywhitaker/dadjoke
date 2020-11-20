@@ -1,9 +1,11 @@
 // import dependencies and functions
 import axios from 'axios'
 import { axiosWithAuth, axiosLogin } from '../utils/axiosWithAuth'
+import { Thunk } from '../types/types'
 
 const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 // const URI_STRING = 'http://localhost:2019'
+
 
 // types
 import { Joke } from '../types/types'
@@ -17,7 +19,7 @@ interface Credentials {
 export const LOGIN_USER_START = 'LOGIN_USER_START'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
-export const userLogin = (credentials: Credentials) => (dispatch: ({}) => void): void => {
+export const userLogin = (credentials: Credentials): Thunk => (dispatch) => {
   dispatch({ type: LOGIN_USER_START })
   axiosLogin()
     .post(`${URI_STRING}/login`, credentials)
@@ -26,7 +28,7 @@ export const userLogin = (credentials: Credentials) => (dispatch: ({}) => void):
       localStorage.setItem('token', res.data.access_token)
       localStorage.setItem(
         'tokenExpiry',
-        new Date(new Date().getTime() + res.data.expires_in * 1000).toString(),
+        new Date(new Date().getTime() + res.data.expires_in * 1000) as unknown as string,
       )
       localStorage.setItem('username', credentials.username)
       // create object to send
@@ -46,7 +48,7 @@ export const userLogin = (credentials: Credentials) => (dispatch: ({}) => void):
 
 // logout existing user
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
-export const userLogout = () => (dispatch: ({}) => void): void => {
+export const userLogout = (): Thunk => (dispatch) => {
   console.log('logout user')
   localStorage.removeItem('token')
   localStorage.removeItem('tokenExpiry')
@@ -56,10 +58,10 @@ export const userLogout = () => (dispatch: ({}) => void): void => {
 
 // use saved token
 export const USE_SAVED_TOKEN_SUCCESS = 'USE_SAVED_TOKEN_SUCCESS'
-export const checkTokenValidity = () => (dispatch: ({}) => void): void => {
+export const checkTokenValidity = (): Thunk => (dispatch) => {
   // get token Date
   const tokenDate: string | null = localStorage.getItem('tokenExpiry')
-  
+
   // if token is expired
   if (
     !localStorage.getItem('token') || ( tokenDate !== null &&
@@ -84,7 +86,7 @@ export const checkTokenValidity = () => (dispatch: ({}) => void): void => {
 export const SIGNUP_USER_START = 'SIGNUP_USER_START'
 export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS'
 export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE'
-export const userSignup = (credentials: Credentials) => (dispatch: ({}) => void): void => {
+export const userSignup = (credentials: Credentials): Thunk => (dispatch) => {
   dispatch({ type: SIGNUP_USER_START })
   axiosLogin()
     .post(`${URI_STRING}/createnewuser`, credentials)
@@ -93,7 +95,7 @@ export const userSignup = (credentials: Credentials) => (dispatch: ({}) => void)
       localStorage.setItem('token', res.data.access_token)
       localStorage.setItem(
         'tokenExpiry',
-        new Date(new Date().getTime() + res.data.expires_in * 1000).toString(),
+        new Date(new Date().getTime() + res.data.expires_in * 1000) as unknown as string,
       )
       localStorage.setItem('username', credentials.username)
 
@@ -116,7 +118,7 @@ export const userSignup = (credentials: Credentials) => (dispatch: ({}) => void)
 export const FETCH_JOKES_START = 'FETCH_JOKES_START'
 export const FETCH_JOKES_SUCCESS = 'FETCH_JOKES_SUCCESS'
 export const FETCH_JOKES_FAILURE = 'FETCH_JOKES_FAILURE'
-export const getPublicJokes = () => (dispatch: ({}) => void): void => {
+export const getPublicJokes = (): Thunk => (dispatch) => {
   dispatch({ type: FETCH_JOKES_START })
   axios
     .get(`${URI_STRING}/dadjokes/public`)
@@ -134,7 +136,7 @@ export const getPublicJokes = () => (dispatch: ({}) => void): void => {
 export const FETCH_PRIVATE_JOKES_START = 'FETCH_PRIVATE_JOKES_START'
 export const FETCH_PRIVATE_JOKES_SUCCESS = 'FETCH_JOKES_PRIVATE_SUCCESS'
 export const FETCH_PRIVATE_JOKES_FAILURE = 'FETCH_JOKES_PRIVATE_FAILURE'
-export const getPrivateJokes = () => (dispatch: ({}) => void): void => {
+export const getPrivateJokes = (): Thunk => (dispatch) => {
   dispatch({ type: FETCH_PRIVATE_JOKES_START })
   axiosWithAuth()
     .get(`${URI_STRING}/dadjokes/private`)
@@ -156,7 +158,7 @@ export const ADD_JOKE_START = 'ADD_JOKE_START'
 export const ADD_PUBLIC_JOKE_SUCCESS = 'ADD_PUBLIC_JOKE_SUCCESS'
 export const ADD_PRIVATE_JOKE_SUCCESS = 'ADD_PRIVATE_JOKE_SUCCESS'
 export const ADD_JOKE_FAILURE = 'ADD_JOKE_FAILURE'
-export const addJoke = (jokeToAdd: Joke) => (dispatch: ({}) => void): void => {
+export const addJoke = (jokeToAdd: Joke): Thunk => (dispatch) => {
   dispatch({ type: ADD_JOKE_START })
   axiosWithAuth()
     .post(`${URI_STRING}/dadjokes/add`, jokeToAdd)
@@ -183,7 +185,7 @@ export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
 export const UPDATE_PUBLIC_JOKE_SUCCESS = 'UPDATE_PUBLIC_JOKE_SUCCESS'
 export const UPDATE_PRIVATE_JOKE_SUCCESS = 'UPDATE_PRIVATE_JOKE_SUCCESS'
 export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
-export const updateJoke = (jokeToUpdate: Joke, jokeId: string) => (dispatch: ({}) => void): void => {
+export const updateJoke = (jokeToUpdate: Joke, jokeId: string): Thunk => (dispatch) => {
   dispatch({ type: UPDATE_JOKE_START })
   console.log('begin updateJoke', jokeToUpdate, jokeId)
   axiosWithAuth()
@@ -216,7 +218,7 @@ export const updateJoke = (jokeToUpdate: Joke, jokeId: string) => (dispatch: ({}
 export const DELETE_JOKE_START = 'DELETE_JOKE_START'
 export const DELETE_JOKE_SUCCESS = 'DELETE_JOKE_SUCCESS'
 export const DELETE_JOKE_FAILURE = 'DELETE_JOKE_FAILURE'
-export const deleteJoke = (jokeId: string) => (dispatch: ({}) => void): void => {
+export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
   dispatch({ type: DELETE_JOKE_START })
   axiosWithAuth()
     .delete(`${URI_STRING}/dadjokes/${jokeId}`)
