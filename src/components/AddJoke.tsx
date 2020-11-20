@@ -90,13 +90,6 @@ const mapStateToProps = (state: {
   }
 }
 
-// // props
-// type PropsFromRedux = ConnectedProps<typeof connector>
-// interface Props extends PropsFromRedux {
-//   addJoke: any,
-//   usernameFromState: string,
-// }
-
 // export component
 const connector = connect(mapStateToProps, { addJoke })
 type PropsFromRedux = ConnectedProps<typeof connector>

@@ -8,18 +8,13 @@ const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 
 
 // types
-import { Joke } from '../types/types'
-interface Credentials {
-  username: string
-  password: string
-  primaryemail?: string
-}
+import { Joke, LoginCredentials, SignupCredentials } from '../types/types'
 
 // login existing user
 export const LOGIN_USER_START = 'LOGIN_USER_START'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
-export const userLogin = (credentials: Credentials): Thunk => (dispatch) => {
+export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) => {
   dispatch({ type: LOGIN_USER_START })
   axiosLogin()
     .post(`${URI_STRING}/login`, credentials)
@@ -86,7 +81,7 @@ export const checkTokenValidity = (): Thunk => (dispatch) => {
 export const SIGNUP_USER_START = 'SIGNUP_USER_START'
 export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS'
 export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE'
-export const userSignup = (credentials: Credentials): Thunk => (dispatch) => {
+export const userSignup = (credentials: SignupCredentials): Thunk => (dispatch) => {
   dispatch({ type: SIGNUP_USER_START })
   axiosLogin()
     .post(`${URI_STRING}/createnewuser`, credentials)

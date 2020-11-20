@@ -17,3 +17,12 @@ export type Thunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >
+
+export interface LoginCredentials {
+  username: string
+  password: string
+}
+
+export interface SignupCredentials extends LoginCredentials {
+  primaryemail: string
+}
