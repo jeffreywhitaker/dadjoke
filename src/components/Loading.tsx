@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 // Loading component
-function Loading() {
+const Loading: React.FC = () => {
   return (
     <LoadingContainer>
       <p>Content is currently loading...</p>

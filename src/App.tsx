@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import components
@@ -16,7 +16,7 @@ import BottomNav from './components/BottomNav'
 import { checkTokenValidity } from './actions/actions'
 
 // App component
-export function App(props) {
+export const App = (props: { checkTokenValidity: any }) => {
   // destructure props
   const { checkTokenValidity } = props
 
@@ -32,13 +32,15 @@ export function App(props) {
     <AppWrapper className="App">
       <Route component={NavBar} />
       <ContentContainer>
-        <Redirect exact path="/" to="/publicjokes" />
-        <Route path="/publicjokes" component={PublicJokes} />
-        <Route path="/privatejokes" component={PrivateJokes} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/publicjokes/add" component={AddJoke} />
-        <Route path="/privatejokes/add" component={AddJoke} />
+        <Switch>
+          <Redirect exact path="/" to="/publicjokes" />
+          <Route path="/publicjokes" component={PublicJokes} />
+          <Route path="/privatejokes" component={PrivateJokes} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/publicjokes/add" component={AddJoke} />
+          <Route path="/privatejokes/add" component={AddJoke} />
+        </Switch>
       </ContentContainer>
       <Route component={BottomNav} />
     </AppWrapper>

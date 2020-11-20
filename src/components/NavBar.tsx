@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { userLogout } from '../actions/actions'
 
 // NavBar component
-function NavBar(props) {
+export const NavBar = (props: { isLoggedIn: boolean, userLogout: any, username: string}) => {
   // destructure props
   const { isLoggedIn, userLogout, username } = props
 
@@ -16,7 +16,7 @@ function NavBar(props) {
   const history = useHistory()
 
   // helper functions
-  const handleLogout = (e) => {
+  const handleLogout = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     userLogout()
     history.push('/publicjokes')
@@ -47,15 +47,16 @@ function NavBar(props) {
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean; username: string } }) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     username: state.loginReducer.username,
   }
 }
 
-// export NavBar
-export default connect(mapStateToProps, { userLogout })(NavBar)
+// export component
+const connector = connect(mapStateToProps, { userLogout })
+export default connector(NavBar)
 
 // styled components
 const NavBarSection = styled.section`

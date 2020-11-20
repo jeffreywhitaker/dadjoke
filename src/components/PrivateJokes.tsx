@@ -8,7 +8,13 @@ import Loading from './Loading'
 import { getPrivateJokes } from '../actions/actions'
 
 // Private Jokes component
-function PrivateJokes(props) {
+function PrivateJokes(props: {
+  getPrivateJokes: any
+  privateJokes: []
+  jokesError: string
+  isLoading: boolean
+  isLoggedIn: boolean
+}) {
   // destructure props
   const {
     getPrivateJokes,
@@ -52,16 +58,27 @@ function PrivateJokes(props) {
       <DisplayP>Private Jokes</DisplayP>
 
       {jokesError && <ErrorP>{jokesError}</ErrorP>}
-
-      {privateJokes.map((joke) => {
-        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
-      })}
+      {/* TODO: make Jokes type, and other useful types to import and share */}
+      {privateJokes.map(
+        (joke: {
+          dadjokequestion: string
+          dadjokeid: string
+          dadjokeanswer: string
+          isprivate: boolean
+          username: string
+        }) => {
+          return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
+        },
+      )}
     </>
   )
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: {
+  jokeReducer: { privateJokes: []; isFetching: boolean; error: string }
+  loginReducer: { isLoggedIn: boolean }
+}) => {
   return {
     privateJokes: state.jokeReducer.privateJokes,
     isLoading: state.jokeReducer.isFetching,

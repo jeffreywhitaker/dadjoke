@@ -8,7 +8,7 @@ import { addJoke } from '../actions/actions'
 
 // add joke component
 // TODO: make work export const AddJoke: React.FC = (): ReactElement =>
-export const AddJoke = () => {
+export const AddJoke: React.FC = () => {
   const history = useHistory()
 
   const blankJoke = {
@@ -30,7 +30,9 @@ export const AddJoke = () => {
   }
 
   // handle change values, save to local state
-  const handleValueChange = (e: { target: { type: string; checked: any; value: any; name: any } }) => {
+  const handleValueChange = (e: {
+    target: { type: string; checked: any; value: any; name: any }
+  }) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value
     setNewJoke({
@@ -72,7 +74,10 @@ export const AddJoke = () => {
 }
 
 // connect component to redux store
-const mapStateToProps = (state: { jokeReducer: { jokes: Array<Record<string, unknown>> }; loginReducer: { username: string } }) => {
+const mapStateToProps = (state: {
+  jokeReducer: { jokes: Array<Record<string, unknown>> }
+  loginReducer: { username: string }
+}) => {
   return {
     jokes: state.jokeReducer.jokes,
     usernameFromState: state.loginReducer.username,
