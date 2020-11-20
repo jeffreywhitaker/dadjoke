@@ -166,17 +166,21 @@ export const dadjokeReducer = (state = initialState, action) => {
         error: '',
       }
     case DELETE_JOKE_SUCCESS:
+      console.log('payload: ', action.payload)
       return {
         ...state,
         isFetching: false,
-        // publicJokes: state.publicJokes.filter(
-        //   (joke) => joke.dadjokeid !== action.payload,
-        // ),
-        privateJokes: state.privateJokes.filter(
-          (joke) => joke.dadjokeid !== action.payload,
-        ),
+        privateJokes: [
+          ...state.privateJokes.filter(
+            (joke) => joke.dadjokeid !== action.payload,
+          ),
+        ],
+        publicJokes: [
+          ...state.publicJokes.filter(
+            (joke) => joke.dadjokeid !== action.payload,
+          ),
+        ],
       }
-
     case DELETE_JOKE_FAILURE:
       return {
         ...state,

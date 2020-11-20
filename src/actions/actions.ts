@@ -219,6 +219,7 @@ export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
     .delete(`${URI_STRING}/dadjokes/${jokeId}`)
     .then((res) => {
       console.log(res)
+      console.log('deleteJoke: id, ', jokeId)
       dispatch({ type: DELETE_JOKE_SUCCESS, payload: jokeId })
     })
     .catch((err) => {
