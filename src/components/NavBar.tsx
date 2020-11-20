@@ -7,8 +7,15 @@ import styled from 'styled-components'
 // import functions
 import { userLogout } from '../actions/actions'
 
+// types
+type Props = {
+  isLoggedIn: boolean
+  userLogout: () => void
+  username: string
+}
+
 // NavBar component
-export const NavBar = (props: { isLoggedIn: boolean, userLogout: any, username: string}) => {
+export const NavBar: React.FC<Props> = (props) => {
   // destructure props
   const { isLoggedIn, userLogout, username } = props
 
@@ -47,7 +54,9 @@ export const NavBar = (props: { isLoggedIn: boolean, userLogout: any, username: 
 }
 
 // connect component to redux store
-const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean; username: string } }) => {
+const mapStateToProps = (state: {
+  loginReducer: { isLoggedIn: boolean; username: string }
+}) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     username: state.loginReducer.username,

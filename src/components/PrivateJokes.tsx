@@ -19,7 +19,7 @@ type Props = {
 }
 
 // Private Jokes component
-export const PrivateJokes: React.FC<Props> = (props: Props) => {
+export const PrivateJokes: React.FC<Props> = (props) => {
   // destructure props
   const {
     getPrivateJokes,
@@ -63,7 +63,7 @@ export const PrivateJokes: React.FC<Props> = (props: Props) => {
       <DisplayP>Private Jokes</DisplayP>
 
       {jokesError && <ErrorP>{jokesError}</ErrorP>}
-      {/* TODO: make Jokes type, and other useful types to import and share */}
+
       {privateJokes.map((joke: Joke) => {
         return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
       })}

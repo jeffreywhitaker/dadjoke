@@ -21,7 +21,7 @@ type Props = {
 }
 
 // App component
-export const App: React.FC<Props> = (props: Props) => {
+export const App: React.FC<Props> = (props) => {
   // destructure props
   const { checkTokenValidity } = props
 

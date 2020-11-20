@@ -8,10 +8,17 @@ import styled from 'styled-components'
 // import actions
 import { userLogin } from '../actions/actions'
 
+// typing
+type Props = {
+  userLogin: (credentials: Record<string, unknown>) => void
+  isLoggedIn: boolean
+  loginError: string
+}
+
 // login page component
-function Login(props: { userLogin: any, isLoggedIn: boolean, loginError: string }) {
+const Login: React.FC<Props> = (props) => {
   // destructure props
-  const { userLogin, isLoggedIn, loginError} = props
+  const { userLogin, isLoggedIn, loginError } = props
   // useHistory
   const history = useHistory()
 
@@ -66,7 +73,10 @@ function Login(props: { userLogin: any, isLoggedIn: boolean, loginError: string 
   //   return () => mounted = false;
   // }, [credentials, formSchema])
 
-  const handleInputChange = (e: { persist: () => void; target: { name: any; value: any } }) => {
+  const handleInputChange = (e: {
+    persist: () => void
+    target: { name: any; value: any }
+  }) => {
     e.persist()
     Yup.reach(formSchema, e.target.name)
       .validate(e.target.value)
@@ -128,7 +138,9 @@ function Login(props: { userLogin: any, isLoggedIn: boolean, loginError: string 
 }
 
 // connect component to redux store
-const mapStateToProps = (state: { loginReducer: { isLoggedIn: any; loginError: any } }) => {
+const mapStateToProps = (state: {
+  loginReducer: { isLoggedIn: any; loginError: any }
+}) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     loginError: state.loginReducer.loginError,
