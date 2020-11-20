@@ -7,14 +7,19 @@ import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 import { getPrivateJokes } from '../actions/actions'
 
-// Private Jokes component
-function PrivateJokes(props: {
-  getPrivateJokes: any
-  privateJokes: []
+// typing
+import { Joke } from '../types/types'
+
+type Props = {
+  getPrivateJokes: () => void
+  privateJokes: Array<Joke>
   jokesError: string
   isLoading: boolean
   isLoggedIn: boolean
-}) {
+}
+
+// Private Jokes component
+export const PrivateJokes: React.FC<Props> = (props: Props) => {
   // destructure props
   const {
     getPrivateJokes,
@@ -59,17 +64,9 @@ function PrivateJokes(props: {
 
       {jokesError && <ErrorP>{jokesError}</ErrorP>}
       {/* TODO: make Jokes type, and other useful types to import and share */}
-      {privateJokes.map(
-        (joke: {
-          dadjokequestion: string
-          dadjokeid: string
-          dadjokeanswer: string
-          isprivate: boolean
-          username: string
-        }) => {
-          return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
-        },
-      )}
+      {privateJokes.map((joke: Joke) => {
+        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
+      })}
     </>
   )
 }

@@ -15,8 +15,13 @@ import BottomNav from './components/BottomNav'
 
 import { checkTokenValidity } from './actions/actions'
 
+// typing
+type Props = {
+  checkTokenValidity: () => void
+}
+
 // App component
-export const App = (props: { checkTokenValidity: any }) => {
+export const App: React.FC<Props> = (props: Props) => {
   // destructure props
   const { checkTokenValidity } = props
 
