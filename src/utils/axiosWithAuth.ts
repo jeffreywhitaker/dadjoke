@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-export const axiosWithAuth = (): AxiosInstance => {
+export const axiosWithAuth = () => {
   const token = localStorage.getItem('token')
 
   return axios.create({
@@ -11,7 +11,7 @@ export const axiosWithAuth = (): AxiosInstance => {
   })
 }
 
-export const axiosLogin = (): AxiosInstance => {
+export const axiosLogin = () => {
   return axios.create({
     headers: {
       'Content-Type': 'application/json',

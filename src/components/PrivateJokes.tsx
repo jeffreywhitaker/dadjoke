@@ -16,6 +16,7 @@ type Props = {
   jokesError: string
   isLoading: boolean
   isLoggedIn: boolean
+  username: string
 }
 
 // Private Jokes component
@@ -27,6 +28,7 @@ export const PrivateJokes: React.FC<Props> = (props) => {
     jokesError,
     isLoading,
     isLoggedIn,
+    username,
   } = props
 
   // get private jokes
@@ -65,7 +67,13 @@ export const PrivateJokes: React.FC<Props> = (props) => {
       {jokesError && <ErrorP>{jokesError}</ErrorP>}
 
       {privateJokes.map((joke: Joke) => {
-        return <SingleJokeCard joke={joke} key={joke.dadjokequestion} />
+        return (
+          <SingleJokeCard
+            joke={joke}
+            key={joke.dadjokequestion}
+            username={username}
+          />
+        )
       })}
     </>
   )
@@ -74,18 +82,20 @@ export const PrivateJokes: React.FC<Props> = (props) => {
 // connect component to redux store
 const mapStateToProps = (state: {
   jokeReducer: { privateJokes: []; isFetching: boolean; error: string }
-  loginReducer: { isLoggedIn: boolean }
+  loginReducer: { isLoggedIn: boolean; username: string }
 }) => {
   return {
     privateJokes: state.jokeReducer.privateJokes,
     isLoading: state.jokeReducer.isFetching,
     isLoggedIn: state.loginReducer.isLoggedIn,
     jokesError: state.jokeReducer.error,
+    username: state.loginReducer.username,
   }
 }
 
 // export component
-export default connect(mapStateToProps, { getPrivateJokes })(PrivateJokes)
+const connector = connect(mapStateToProps, { getPrivateJokes })
+export default connector(PrivateJokes)
 
 // styled components
 const DisplayP = styled.p`

@@ -12,10 +12,16 @@ export const AddJoke: React.FC<Props> = (props: Props) => {
   const { addJoke } = props
   const history = useHistory()
 
+  function determineIfPrivate(): boolean {
+    if (window.location.pathname === '/publicjokes') {
+      return false
+    } else return true
+  }
+
   const blankJoke = {
     dadjokequestion: '',
     dadjokeanswer: '',
-    isprivate: false,
+    isprivate: determineIfPrivate(),
   }
   // local state for adding new joke
   const [newJoke, setNewJoke] = useState(blankJoke)

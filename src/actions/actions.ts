@@ -136,6 +136,9 @@ export const getPrivateJokes = (): Thunk => (dispatch) => {
   axiosWithAuth()
     .get(`${URI_STRING}/dadjokes/private`)
     .then((res) => {
+      res.data.forEach((joke: Joke): void => {
+        joke.isprivate = true
+      })
       console.log('GET private jokes: ', res)
       dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
     })
@@ -202,7 +205,7 @@ export const updateJoke = (jokeToUpdate: Joke, jokeId: string): Thunk => (dispat
         type: UPDATE_JOKE_FAILURE,
         payload: {
           msg: err.response.data.detail,
-          jokeId: jokeId,
+          dadjokeid: jokeId,
           isPrivate: jokeToUpdate.isprivate,
         },
       })

@@ -19,6 +19,8 @@ import {
   DELETE_JOKE_FAILURE,
 } from '../actions/actions'
 
+import { Joke } from '../types/types'
+
 // create initial state
 const initialState = {
   publicJokes: [],
@@ -27,8 +29,33 @@ const initialState = {
   error: '',
 }
 
+interface JokeState {
+  publicJokes?: Joke[]
+  privateJokes?: Joke[]
+  isFetching?: boolean
+  error?: string
+}
+
+interface UpdateJokeFailurePayload {
+  msg: string,
+  dadjokeid: string,
+  isPrivate: boolean
+}
+
+interface FetchJokesActions {
+  type: typeof FETCH_JOKES_START | typeof FETCH_JOKES_SUCCESS | typeof FETCH_JOKES_FAILURE | typeof FETCH_PRIVATE_JOKES_START | typeof FETCH_PRIVATE_JOKES_SUCCESS | typeof FETCH_PRIVATE_JOKES_FAILURE | typeof ADD_JOKE_START | typeof ADD_PUBLIC_JOKE_SUCCESS | typeof ADD_PRIVATE_JOKE_SUCCESS | typeof ADD_JOKE_FAILURE | typeof DELETE_JOKE_START | typeof DELETE_JOKE_SUCCESS | typeof DELETE_JOKE_FAILURE
+  payload: JokeState | Record<string, unknown> | Joke
+}
+
+interface UpdateJokesActions {
+  type: typeof UPDATE_JOKE_START | typeof UPDATE_PUBLIC_JOKE_SUCCESS | typeof UPDATE_PRIVATE_JOKE_SUCCESS | typeof UPDATE_JOKE_FAILURE
+  payload: UpdateJokeFailurePayload
+}
+
+type JokeActionTypes = FetchJokesActions | UpdateJokesActions
+
 // export reducer
-export const dadjokeReducer = (state = initialState, action) => {
+export const dadjokeReducer = (state = initialState, action: JokeActionTypes): JokeState => {
   switch (action.type) {
     // fetch public jokes actions
     case FETCH_JOKES_START:
@@ -42,7 +69,7 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        publicJokes: action.payload,
+        publicJokes: action.payload as Joke[],
       }
     case FETCH_JOKES_FAILURE:
       return {
@@ -62,13 +89,13 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        privateJokes: action.payload,
+        privateJokes: action.payload as Joke[],
       }
     case FETCH_PRIVATE_JOKES_FAILURE:
       return {
         ...state,
         isFetching: false,
-        error: action.payload,
+        error: action.payload as string,
       }
 
     // add joke actions
@@ -82,13 +109,13 @@ export const dadjokeReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        publicJokes: [...state.publicJokes, action.payload],
+        publicJokes: [...state.publicJokes, action.payload as Joke],
       }
     case ADD_PRIVATE_JOKE_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        privateJokes: [...state.privateJokes, action.payload],
+        privateJokes: [...state.privateJokes, action.payload as Joke],
       }
     case ADD_JOKE_FAILURE:
       return {
@@ -110,9 +137,9 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         publicJokes: [
           ...state.publicJokes.filter(
-            (joke) => joke.dadjokeid !== action.payload.dadjokeid,
+            (joke: Joke): boolean => joke.dadjokeid !== action.payload.dadjokeid,
           ),
-          action.payload,
+          action.payload as unknown as Joke,
         ],
       }
     case UPDATE_PRIVATE_JOKE_SUCCESS:
@@ -121,9 +148,9 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         privateJokes: [
           ...state.privateJokes.filter(
-            (joke) => joke.dadjokeid !== action.payload.dadjokeid,
+            (joke: Joke): boolean => joke.dadjokeid !== action.payload.dadjokeid,
           ),
-          action.payload,
+          action.payload as unknown as Joke,
         ],
       }
     case UPDATE_JOKE_FAILURE:
@@ -132,8 +159,8 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         privateJokes: action.payload.isPrivate
           ? [
-              ...state.privateJokes.map((joke) => {
-                if (joke.dadjokeid === action.payload.jokeId) {
+              ...state.privateJokes.map((joke: Joke) => {
+                if (joke.dadjokeid === action.payload.dadjokeid) {
                   return {
                     ...joke,
                     error: `Unable to update joke: ${action.payload.msg}`,
@@ -145,8 +172,8 @@ export const dadjokeReducer = (state = initialState, action) => {
           : state.privateJokes,
         publicJokes: !action.payload.isPrivate
           ? [
-              ...state.publicJokes.map((joke) => {
-                if (joke.dadjokeid === action.payload.jokeId) {
+              ...state.publicJokes.map((joke: Joke) => {
+                if (joke.dadjokeid === action.payload.dadjokeid) {
                   return {
                     ...joke,
                     error: `Unable to update joke: ${action.payload.msg}`,
@@ -172,19 +199,19 @@ export const dadjokeReducer = (state = initialState, action) => {
         isFetching: false,
         privateJokes: [
           ...state.privateJokes.filter(
-            (joke) => joke.dadjokeid !== action.payload,
+            (joke: Joke): boolean => joke.dadjokeid !== action.payload,
           ),
         ],
         publicJokes: [
           ...state.publicJokes.filter(
-            (joke) => joke.dadjokeid !== action.payload,
+            (joke: Joke): boolean => joke.dadjokeid !== action.payload,
           ),
         ],
       }
     case DELETE_JOKE_FAILURE:
       return {
         ...state,
-        isFetchinig: false,
+        isFetching: false,
         error: `Unable to delete joke: ${action.payload}`,
       }
 
