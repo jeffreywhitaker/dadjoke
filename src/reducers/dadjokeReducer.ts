@@ -38,7 +38,7 @@ interface JokeState {
 
 interface UpdateJokeFailurePayload {
   msg: string,
-  dadjokeid: string,
+  _id: string,
   isPrivate: boolean
 }
 
@@ -137,7 +137,7 @@ export const dadjokeReducer = (state = initialState, action: JokeActionTypes): J
         isFetching: false,
         publicJokes: [
           ...state.publicJokes.filter(
-            (joke: Joke): boolean => joke.dadjokeid !== action.payload.dadjokeid,
+            (joke: Joke): boolean => joke._id !== action.payload._id,
           ),
           action.payload as unknown as Joke,
         ],
@@ -148,7 +148,7 @@ export const dadjokeReducer = (state = initialState, action: JokeActionTypes): J
         isFetching: false,
         privateJokes: [
           ...state.privateJokes.filter(
-            (joke: Joke): boolean => joke.dadjokeid !== action.payload.dadjokeid,
+            (joke: Joke): boolean => joke._id !== action.payload._id,
           ),
           action.payload as unknown as Joke,
         ],
@@ -160,7 +160,7 @@ export const dadjokeReducer = (state = initialState, action: JokeActionTypes): J
         privateJokes: action.payload.isPrivate
           ? [
               ...state.privateJokes.map((joke: Joke) => {
-                if (joke.dadjokeid === action.payload.dadjokeid) {
+                if (joke._id === action.payload._id) {
                   return {
                     ...joke,
                     error: `Unable to update joke: ${action.payload.msg}`,
@@ -173,7 +173,7 @@ export const dadjokeReducer = (state = initialState, action: JokeActionTypes): J
         publicJokes: !action.payload.isPrivate
           ? [
               ...state.publicJokes.map((joke: Joke) => {
-                if (joke.dadjokeid === action.payload.dadjokeid) {
+                if (joke._id === action.payload._id) {
                   return {
                     ...joke,
                     error: `Unable to update joke: ${action.payload.msg}`,
@@ -199,12 +199,12 @@ export const dadjokeReducer = (state = initialState, action: JokeActionTypes): J
         isFetching: false,
         privateJokes: [
           ...state.privateJokes.filter(
-            (joke: Joke): boolean => joke.dadjokeid !== action.payload,
+            (joke: Joke): boolean => joke._id !== action.payload,
           ),
         ],
         publicJokes: [
           ...state.publicJokes.filter(
-            (joke: Joke): boolean => joke.dadjokeid !== action.payload,
+            (joke: Joke): boolean => joke._id !== action.payload,
           ),
         ],
       }

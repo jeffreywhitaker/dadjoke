@@ -27,10 +27,8 @@ export const App: React.FC<Props> = (props) => {
 
   // use effect to check for token
   useEffect(() => {
-    if (localStorage.token) {
-      checkTokenValidity()
-    }
-  }, [checkTokenValidity])
+    checkTokenValidity()
+  }, [checkTokenValidity()])
 
   // return components
   return (

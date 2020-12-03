@@ -4,7 +4,7 @@ import { ThunkAction } from 'redux-thunk'
 
 export type Joke = {
   dadjokequestion: string
-  dadjokeid?: string
+  _id?: string
   dadjokeanswer: string
   isprivate: boolean
   username?: string

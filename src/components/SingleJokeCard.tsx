@@ -15,7 +15,7 @@ function SingleJokeCard(props: Props) {
 
   // empty joke object
   const emptyJoke: Joke = {
-    dadjokeid: '',
+    _id: '',
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
@@ -32,7 +32,7 @@ function SingleJokeCard(props: Props) {
   }
 
   function handleUpdate(updatedJoke: Joke) {
-    updateJoke(updatedJoke, joke.dadjokeid as string)
+    updateJoke(updatedJoke, joke._id as string)
   }
 
   function toggleUpdate() {
@@ -45,7 +45,7 @@ function SingleJokeCard(props: Props) {
       // set update to true and update the local state
       setIsBeingUpdated(true)
       setUpdatedJoke({
-        dadjokeid: joke.dadjokeid,
+        _id: joke._id,
         dadjokequestion: joke.dadjokequestion,
         dadjokeanswer: joke.dadjokeanswer,
         isprivate: joke.isprivate,
@@ -123,7 +123,7 @@ function SingleJokeCard(props: Props) {
       {joke.error && <ErrorP>{joke.error}</ErrorP>}
 
       {(joke.isprivate === true || joke.username === username) && (
-        <StyledButton onClick={() => handleDelete(joke.dadjokeid as string)}>
+        <StyledButton onClick={() => handleDelete(joke._id as string)}>
           Del
         </StyledButton>
       )}

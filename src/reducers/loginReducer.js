@@ -8,6 +8,7 @@ import {
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_FAILURE,
   USE_SAVED_TOKEN_SUCCESS,
+  USE_SAVED_TOKEN_FAILURE,
 } from '../actions/actions'
 
 // create initial login state
@@ -58,13 +59,20 @@ export const loginReducer = (state = initialState, action) => {
 
     // use saved token
     case USE_SAVED_TOKEN_SUCCESS:
+      console.log('payload', action.payload)
       return {
         ...state,
         isFetching: false,
         isLoggedIn: true,
-        username: action.payload.username,
+        username: action.payload.data.username,
       }
-
+    case USE_SAVED_TOKEN_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isLoggedIn: false,
+        username: null,
+      }
     // signup user actions
     case SIGNUP_USER_START:
       return {
