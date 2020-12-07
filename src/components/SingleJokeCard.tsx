@@ -1,6 +1,7 @@
 // import dependencies
 import React, { ChangeEvent, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import Alert from 'react-bootstrap/Alert'
@@ -38,7 +39,9 @@ function SingleJokeCard(props: Props) {
 
   // helper functions
   function handleDelete(id: string) {
-    deleteJoke(id)
+    if (window.confirm('Are you sure you want to delete this joke?')) {
+      deleteJoke(id)
+    }
   }
 
   function handleUpdate(updatedJoke: Joke) {
@@ -99,33 +102,37 @@ function SingleJokeCard(props: Props) {
           >
             <i className="fas fa-thumbs-down"></i>
           </OverlayTrigger>
-          {/* GLOBE OR LOCK ICON */}
-          {joke.isprivate && (
-            <OverlayTrigger
-              key={`${joke._id}_lock`}
-              placement="top"
-              overlay={
-                <Tooltip id={`tooltip-lock`}>
-                  Joke is <strong>Private</strong>
-                </Tooltip>
-              }
-            >
-              <i className="fas fa-lock floatRight"></i>
-            </OverlayTrigger>
-          )}
-          {!joke.isprivate && (
-            <OverlayTrigger
-              key={`${joke._id}_globe`}
-              placement="top"
-              overlay={
-                <Tooltip id={`tooltip-globe`}>
-                  Joke is <strong>Public</strong>
-                </Tooltip>
-              }
-            >
-              <i className="fas fa-globe floatRight"></i>
-            </OverlayTrigger>
-          )}
+          {/* DATE */}
+          <DetailsDiv className="floatRight">
+            {dayjs(joke.createdAt).format("MMM DD, 'YY")} &nbsp;
+            {/* GLOBE OR LOCK ICON */}
+            {joke.isprivate && (
+              <OverlayTrigger
+                key={`${joke._id}_lock`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-lock`}>
+                    Joke is <strong>Private</strong>
+                  </Tooltip>
+                }
+              >
+                <i className="fas fa-lock floatRight"></i>
+              </OverlayTrigger>
+            )}
+            {!joke.isprivate && (
+              <OverlayTrigger
+                key={`${joke._id}_globe`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-globe`}>
+                    Joke is <strong>Public</strong>
+                  </Tooltip>
+                }
+              >
+                <i className="fas fa-globe floatRight"></i>
+              </OverlayTrigger>
+            )}
+          </DetailsDiv>
         </Card.Header>
         <Card.Body>
           {/* QUESTION DISPLAY */}
@@ -162,11 +169,10 @@ function SingleJokeCard(props: Props) {
               </InputGroup>
             )}
           </Card.Text>
-          <footer className="blockquote-footer">
-            submitted by: {joke.username}
-          </footer>
           {/* ERROR DISPLAY */}
           {joke.error && <Alert variant="danger">{joke.error}</Alert>}
+        </Card.Body>
+        <Card.Footer>
           {/* UPDATE BUTTON */}
           {!isBeingUpdated && (
             <Button variant="primary" onClick={() => toggleUpdate()}>
@@ -197,64 +203,12 @@ function SingleJokeCard(props: Props) {
               Del
             </Button>
           )}
-        </Card.Body>
+          {window.location.pathname !== '/privatejokes' && (
+            <span className="floatRight">submitted by: {joke.username}</span>
+          )}
+        </Card.Footer>
       </Card>
     </DivWrapper>
-
-    // <SingleJokeCardDiv>
-    //   {!isBeingUpdated && (
-    //     <>
-    //       <p>{joke.dadjokequestion}</p>
-    //       <p>
-    //         {'>>>'} {joke.dadjokeanswer}
-    //       </p>
-    //     </>
-    //   )}
-    //   {isBeingUpdated && (
-    //     <>
-    //       <input
-    //         type="text"
-    //         name="dadjokequestion"
-    //         value={updatedJoke.dadjokequestion}
-    //         onChange={handleValueChange}
-    //         size={50}
-    //       />
-    //       <p>
-    //         {'>>>'}
-    //         <input
-    //           type="text"
-    //           name="dadjokeanswer"
-    //           value={updatedJoke.dadjokeanswer}
-    //           onChange={handleValueChange}
-    //           size={50}
-    //         />
-    //       </p>
-    //       <StyledButton onClick={() => handleUpdate(updatedJoke)}>
-    //         Accept Changes
-    //       </StyledButton>
-    //       {
-    //         // need to add handleUpdate onClick to above button
-    //       }
-    //       <StyledButton onClick={() => toggleUpdate()}>
-    //         Cancel Edit
-    //       </StyledButton>
-    //     </>
-    //   )}
-
-    //   <AuthorP>submitted by: {joke.username}</AuthorP>
-
-    //   {!isBeingUpdated && (
-    //     <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>
-    //   )}
-
-    //   {joke.error && <ErrorP>{joke.error}</ErrorP>}
-
-    //   {(joke.isprivate === true || joke.username === username) && (
-    //     <StyledButton onClick={() => handleDelete(joke._id as string)}>
-    //       Del
-    //     </StyledButton>
-    //   )}
-    // </SingleJokeCardDiv>
   )
 }
 
@@ -269,6 +223,11 @@ type Props = PropsFromRedux & {
 export default connector(SingleJokeCard)
 
 // styled components
+const DetailsDiv = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const SingleJokeCardDiv = styled.div`
   width: 80%;
   margin: 10px auto;

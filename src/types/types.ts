@@ -9,6 +9,7 @@ export type Joke = {
   isprivate: boolean
   username?: string
   error?: string
+  createdAt?: Date
 }
 
 export type Thunk<ReturnType = void> = ThunkAction<

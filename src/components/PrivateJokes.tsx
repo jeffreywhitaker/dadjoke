@@ -62,19 +62,21 @@ export const PrivateJokes: React.FC<Props> = (props) => {
   // return jokes if all checks pass
   return (
     <>
-      <DisplayP>Private Jokes</DisplayP>
+      <JokeWrapper>
+        <DisplayP>{username}'s Private Jokes</DisplayP>
 
-      {jokesError && <ErrorP>{jokesError}</ErrorP>}
+        {jokesError && <ErrorP>{jokesError}</ErrorP>}
 
-      {privateJokes.map((joke: Joke) => {
-        return (
-          <SingleJokeCard
-            joke={joke}
-            key={joke.dadjokequestion}
-            username={username}
-          />
-        )
-      })}
+        {privateJokes.map((joke: Joke) => {
+          return (
+            <SingleJokeCard
+              joke={joke}
+              key={joke.dadjokequestion}
+              username={username}
+            />
+          )
+        })}
+      </JokeWrapper>
     </>
   )
 }
@@ -110,4 +112,10 @@ const DisplayP = styled.p`
 
 const ErrorP = styled.p`
   text-align: center;
+`
+
+const JokeWrapper = styled.article`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 `

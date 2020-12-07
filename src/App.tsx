@@ -10,7 +10,6 @@ import PublicJokes from './components/PublicJokes'
 import PrivateJokes from './components/PrivateJokes'
 import Login from './components/Login'
 import Signup from './components/Signup'
-import AddJoke from './components/AddJoke'
 
 import { checkTokenValidity } from './actions/actions'
 
@@ -39,8 +38,6 @@ export const App: React.FC<Props> = (props) => {
         <Route path="/privatejokes" component={PrivateJokes} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/publicjokes/add" component={AddJoke} />
-        <Route path="/privatejokes/add" component={AddJoke} />
       </AppWrapper>
     </>
   )
