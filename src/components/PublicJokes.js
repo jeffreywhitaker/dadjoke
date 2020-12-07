@@ -35,17 +35,19 @@ function PublicJokes({
   // render the following if checks pass
   return (
     <>
-      <DisplayP>Public Jokes</DisplayP>
-      {publicJokes.map((joke) => {
-        return (
-          <SingleJokeCard
-            joke={joke}
-            jokeError={jokeError}
-            username={username}
-            key={joke.dadjokequestion}
-          />
-        )
-      })}
+      <JokeWrapper>
+        <DisplayP>Public Jokes</DisplayP>
+        {publicJokes.map((joke) => {
+          return (
+            <SingleJokeCard
+              joke={joke}
+              jokeError={jokeError}
+              username={username}
+              key={joke.dadjokequestion}
+            />
+          )
+        })}
+      </JokeWrapper>
     </>
   )
 }
@@ -63,6 +65,12 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, { getPublicJokes })(PublicJokes)
 
 // styled components
+const JokeWrapper = styled.article`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+`
+
 const DisplayP = styled.p`
   text-align: center;
   font-size: 20px;

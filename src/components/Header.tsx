@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { NavLink, useHistory } from 'react-router-dom'
 
 // bootstrap
+import Button from 'react-bootstrap/Button'
 import Navbar from 'react-bootstrap/navbar'
 import Nav from 'react-bootstrap/nav'
 
@@ -59,12 +60,11 @@ export const Header: React.FC<Props> = (props) => {
         <Nav>
           {isLoggedIn ? (
             <>
-              {/* <Navbar.Text>
-                Signed in as: {'>>'} <a href="/profile">{username}</a> {'<<'}
-              </Navbar.Text> */}
-              <Nav.Link onClick={() => handleLogout} href=" ">
+              <Button variant="primary">Add Joke</Button>
+              &nbsp;
+              <Button variant="danger" onClick={() => handleLogout}>
                 Log Out
-              </Nav.Link>
+              </Button>
             </>
           ) : (
             <>

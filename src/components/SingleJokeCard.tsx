@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
@@ -8,9 +8,13 @@ import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 import { deleteJoke, updateJoke } from '../actions/actions'
 import { Joke } from '../types/types'
+
+import '../styles/styles.css'
 
 // joke card component
 function SingleJokeCard(props: Props) {
@@ -61,16 +65,11 @@ function SingleJokeCard(props: Props) {
   }
 
   // handle change values, save to local state
-  const handleValueChange = (e: {
-    target: {
-      type: string
-      checked: boolean
-      value: string | boolean
-      name: string
-    }
-  }) => {
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value =
-      e.target.type === 'checkbox' ? e.target.checked : e.target.value
+      (e.target as HTMLInputElement).type === 'checkbox'
+        ? e.target.checked
+        : e.target.value
     setUpdatedJoke({
       ...updatedJoke,
       [e.target.name]: value,
@@ -80,73 +79,127 @@ function SingleJokeCard(props: Props) {
 
   // render the following
   return (
-    <Card>
-      <Card.Header>
-        <span>Joke Popularity Goes Here</span>
-        {/* if private, lock icon */}
-        {joke.isprivate && <i className="fas fa-lock"></i>}
-      </Card.Header>
-      <Card.Body>
-        {/* QUESTION DISPLAY */}
-        <Card.Title>
-          {!isBeingUpdated && <span>Q: {joke.dadjokequestion}</span>}
-          {isBeingUpdated && (
-            <InputGroup className="mb-3">
-              <InputGroup.Prepend>
-                <InputGroup.Text>Q</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                aria-label="DadJoke Question Update"
-                value={updatedJoke.dadjokequestion}
-              />
-            </InputGroup>
-          )}
-        </Card.Title>
-
-        {/* ANSWER DISPLAY */}
-        <Card.Text>
-          {!isBeingUpdated && <span>A: {joke.dadjokeanswer}</span>}
-          {isBeingUpdated && (
-            <InputGroup className="mb-3">
-              <InputGroup.Prepend>
-                <InputGroup.Text>A</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                aria-label="DadJoke Answer Update"
-                value={updatedJoke.dadjokeanswer}
-              />
-            </InputGroup>
-          )}
-        </Card.Text>
-
-        <footer className="blockquote-footer">
-          Submitted by: {joke.username}
-        </footer>
-
-        {/* UPDATE BUTTON */}
-        {!isBeingUpdated && (
-          <Button variant="primary" onClick={() => toggleUpdate()}>
-            Edit
-          </Button>
-        )}
-        {isBeingUpdated && (
-          <Button onClick={() => toggleUpdate()}>Cancel Edit</Button>
-        )}
-
-        {/* ERROR DISPLAY */}
-        {joke.error && <Alert variant="danger">{joke.error}</Alert>}
-
-        {/* DELETE BUTTON */}
-        {joke.username === username && (
-          <Button
-            variant="danger"
-            onClick={() => handleDelete(joke._id as string)}
+    <DivWrapper>
+      <Card>
+        <Card.Header>
+          <OverlayTrigger
+            key={`${joke._id}_upvote`}
+            placement="top"
+            overlay={<Tooltip id={`tooltip-upvote`}>Upvote this joke</Tooltip>}
           >
-            Del
-          </Button>
-        )}
-      </Card.Body>
-    </Card>
+            <i className="fas fa-thumbs-up"></i>
+          </OverlayTrigger>
+          &nbsp;47&nbsp;
+          <OverlayTrigger
+            key={`${joke._id}_downvote`}
+            placement="top"
+            overlay={
+              <Tooltip id={`tooltip-downvote`}>Downvote this joke</Tooltip>
+            }
+          >
+            <i className="fas fa-thumbs-down"></i>
+          </OverlayTrigger>
+          {/* GLOBE OR LOCK ICON */}
+          {joke.isprivate && (
+            <OverlayTrigger
+              key={`${joke._id}_lock`}
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-lock`}>
+                  Joke is <strong>Private</strong>
+                </Tooltip>
+              }
+            >
+              <i className="fas fa-lock floatRight"></i>
+            </OverlayTrigger>
+          )}
+          {!joke.isprivate && (
+            <OverlayTrigger
+              key={`${joke._id}_globe`}
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-globe`}>
+                  Joke is <strong>Public</strong>
+                </Tooltip>
+              }
+            >
+              <i className="fas fa-globe floatRight"></i>
+            </OverlayTrigger>
+          )}
+        </Card.Header>
+        <Card.Body>
+          {/* QUESTION DISPLAY */}
+          <Card.Title>
+            {!isBeingUpdated && <span>Q: {joke.dadjokequestion}</span>}
+            {isBeingUpdated && (
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Q</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  aria-label="DadJoke Question Update"
+                  name="dadjokequestion"
+                  value={updatedJoke.dadjokequestion}
+                  onChange={handleValueChange}
+                />
+              </InputGroup>
+            )}
+          </Card.Title>
+          {/* ANSWER DISPLAY */}
+          <Card.Text>
+            {!isBeingUpdated && <span>A: {joke.dadjokeanswer}</span>}
+            {isBeingUpdated && (
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>A</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  aria-label="DadJoke Answer Update"
+                  name="dadjokeanswer"
+                  value={updatedJoke.dadjokeanswer}
+                  onChange={handleValueChange}
+                />
+              </InputGroup>
+            )}
+          </Card.Text>
+          <footer className="blockquote-footer">
+            submitted by: {joke.username}
+          </footer>
+          {/* ERROR DISPLAY */}
+          {joke.error && <Alert variant="danger">{joke.error}</Alert>}
+          {/* UPDATE BUTTON */}
+          {!isBeingUpdated && (
+            <Button variant="primary" onClick={() => toggleUpdate()}>
+              Edit
+            </Button>
+          )}
+          {isBeingUpdated && (
+            <>
+              <Button
+                variant="primary"
+                onClick={() => handleUpdate(updatedJoke)}
+              >
+                Accept Changes
+              </Button>
+              &nbsp;
+              <Button variant="warning" onClick={() => toggleUpdate()}>
+                Cancel Edit
+              </Button>
+            </>
+          )}
+          &nbsp;
+          {/* DELETE BUTTON */}
+          {joke.username === username && (
+            <Button
+              variant="danger"
+              onClick={() => handleDelete(joke._id as string)}
+            >
+              Del
+            </Button>
+          )}
+        </Card.Body>
+      </Card>
+    </DivWrapper>
 
     // <SingleJokeCardDiv>
     //   {!isBeingUpdated && (
@@ -249,4 +302,8 @@ const ErrorP = styled.p`
   font-size: 12px;
   text-align: right;
   display: inline-block;
+`
+
+const DivWrapper = styled.div`
+  margin: 10px;
 `
