@@ -3,6 +3,12 @@ import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
+import Alert from 'react-bootstrap/Alert'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
+
 import { deleteJoke, updateJoke } from '../actions/actions'
 import { Joke } from '../types/types'
 
@@ -74,60 +80,128 @@ function SingleJokeCard(props: Props) {
 
   // render the following
   return (
-    <SingleJokeCardDiv>
-      {!isBeingUpdated && (
-        <>
-          <p>{joke.dadjokequestion}</p>
-          <p>
-            {'>>>'} {joke.dadjokeanswer}
-          </p>
-        </>
-      )}
-      {isBeingUpdated && (
-        <>
-          <input
-            type="text"
-            name="dadjokequestion"
-            value={updatedJoke.dadjokequestion}
-            onChange={handleValueChange}
-            size={50}
-          />
-          <p>
-            {'>>>'}
-            <input
-              type="text"
-              name="dadjokeanswer"
-              value={updatedJoke.dadjokeanswer}
-              onChange={handleValueChange}
-              size={50}
-            />
-          </p>
-          <StyledButton onClick={() => handleUpdate(updatedJoke)}>
-            Accept Changes
-          </StyledButton>
-          {
-            // need to add handleUpdate onClick to above button
-          }
-          <StyledButton onClick={() => toggleUpdate()}>
-            Cancel Edit
-          </StyledButton>
-        </>
-      )}
+    <Card>
+      <Card.Header>
+        <span>Joke Popularity Goes Here</span>
+        {/* if private, lock icon */}
+        {joke.isprivate && <i className="fas fa-lock"></i>}
+      </Card.Header>
+      <Card.Body>
+        {/* QUESTION DISPLAY */}
+        <Card.Title>
+          {!isBeingUpdated && <span>Q: {joke.dadjokequestion}</span>}
+          {isBeingUpdated && (
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text>Q</InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                aria-label="DadJoke Question Update"
+                value={updatedJoke.dadjokequestion}
+              />
+            </InputGroup>
+          )}
+        </Card.Title>
 
-      <AuthorP>submitted by: {joke.username}</AuthorP>
+        {/* ANSWER DISPLAY */}
+        <Card.Text>
+          {!isBeingUpdated && <span>A: {joke.dadjokeanswer}</span>}
+          {isBeingUpdated && (
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text>A</InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                aria-label="DadJoke Answer Update"
+                value={updatedJoke.dadjokeanswer}
+              />
+            </InputGroup>
+          )}
+        </Card.Text>
 
-      {!isBeingUpdated && (
-        <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>
-      )}
+        <footer className="blockquote-footer">
+          Submitted by: {joke.username}
+        </footer>
 
-      {joke.error && <ErrorP>{joke.error}</ErrorP>}
+        {/* UPDATE BUTTON */}
+        {!isBeingUpdated && (
+          <Button variant="primary" onClick={() => toggleUpdate()}>
+            Edit
+          </Button>
+        )}
+        {isBeingUpdated && (
+          <Button onClick={() => toggleUpdate()}>Cancel Edit</Button>
+        )}
 
-      {(joke.isprivate === true || joke.username === username) && (
-        <StyledButton onClick={() => handleDelete(joke._id as string)}>
-          Del
-        </StyledButton>
-      )}
-    </SingleJokeCardDiv>
+        {/* ERROR DISPLAY */}
+        {joke.error && <Alert variant="danger">{joke.error}</Alert>}
+
+        {/* DELETE BUTTON */}
+        {joke.username === username && (
+          <Button
+            variant="danger"
+            onClick={() => handleDelete(joke._id as string)}
+          >
+            Del
+          </Button>
+        )}
+      </Card.Body>
+    </Card>
+
+    // <SingleJokeCardDiv>
+    //   {!isBeingUpdated && (
+    //     <>
+    //       <p>{joke.dadjokequestion}</p>
+    //       <p>
+    //         {'>>>'} {joke.dadjokeanswer}
+    //       </p>
+    //     </>
+    //   )}
+    //   {isBeingUpdated && (
+    //     <>
+    //       <input
+    //         type="text"
+    //         name="dadjokequestion"
+    //         value={updatedJoke.dadjokequestion}
+    //         onChange={handleValueChange}
+    //         size={50}
+    //       />
+    //       <p>
+    //         {'>>>'}
+    //         <input
+    //           type="text"
+    //           name="dadjokeanswer"
+    //           value={updatedJoke.dadjokeanswer}
+    //           onChange={handleValueChange}
+    //           size={50}
+    //         />
+    //       </p>
+    //       <StyledButton onClick={() => handleUpdate(updatedJoke)}>
+    //         Accept Changes
+    //       </StyledButton>
+    //       {
+    //         // need to add handleUpdate onClick to above button
+    //       }
+    //       <StyledButton onClick={() => toggleUpdate()}>
+    //         Cancel Edit
+    //       </StyledButton>
+    //     </>
+    //   )}
+
+    //   <AuthorP>submitted by: {joke.username}</AuthorP>
+
+    //   {!isBeingUpdated && (
+    //     <StyledButton onClick={() => toggleUpdate()}>Edit Joke</StyledButton>
+    //   )}
+
+    //   {joke.error && <ErrorP>{joke.error}</ErrorP>}
+
+    //   {(joke.isprivate === true || joke.username === username) && (
+    //     <StyledButton onClick={() => handleDelete(joke._id as string)}>
+    //       Del
+    //     </StyledButton>
+    //   )}
+    // </SingleJokeCardDiv>
   )
 }
 
