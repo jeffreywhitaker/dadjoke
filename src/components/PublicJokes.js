@@ -14,6 +14,8 @@ function PublicJokes({
   getPublicJokes,
   publicJokes,
   jokeError,
+  jokesUpvoted,
+  jokesDownvoted,
   isLoading,
   isLoggedIn,
   username,
@@ -42,6 +44,8 @@ function PublicJokes({
             <SingleJokeCard
               joke={joke}
               jokeError={jokeError}
+              jokesUpvoted={jokesUpvoted}
+              jokesDownvoted={jokesDownvoted}
               username={username}
               key={joke.dadjokequestion}
             />
@@ -58,6 +62,8 @@ const mapStateToProps = (state) => {
     publicJokes: state.jokeReducer.publicJokes,
     isLoading: state.jokeReducer.isFetching,
     username: state.loginReducer.username,
+    jokesUpvoted: state.loginReducer.jokesUpvoted,
+    jokesDownvoted: state.loginReducer.jokesDownvoted,
   }
 }
 

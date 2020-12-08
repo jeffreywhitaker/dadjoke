@@ -16,6 +16,8 @@ const initialState = {
   isFetching: false,
   isLoggedIn: false,
   username: null,
+  jokesDownvoted: [],
+  jokesUpvoted: [],
   loginError: '',
   signupError: '',
 }
@@ -39,6 +41,8 @@ export const loginReducer = (state = initialState, action) => {
         isFetching: false,
         isLoggedIn: true,
         username: action.payload.username,
+        jokesUpvoted: action.payload.jokesUpvoted,
+        jokesDownvoted: action.payload.jokesDownvoted,
       }
     case LOGIN_USER_FAILURE:
       return {
@@ -55,6 +59,8 @@ export const loginReducer = (state = initialState, action) => {
         isFetching: false,
         isLoggedIn: false,
         username: '',
+        jokesDownvoted: [],
+        jokesUpvoted: [],
       }
 
     // use saved token
@@ -64,7 +70,9 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         isLoggedIn: true,
-        username: action.payload.data.username,
+        username: action.payload.username,
+        jokesUpvoted: action.payload.jokesUpvoted,
+        jokesDownvoted: action.payload.jokesDownvoted,
       }
     case USE_SAVED_TOKEN_FAILURE:
       return {
@@ -72,6 +80,8 @@ export const loginReducer = (state = initialState, action) => {
         isFetching: false,
         isLoggedIn: false,
         username: null,
+        jokesDownvoted: [],
+        jokesUpvoted: [],
       }
     // signup user actions
     case SIGNUP_USER_START:
@@ -90,6 +100,8 @@ export const loginReducer = (state = initialState, action) => {
         isLoggedIn: true,
         signupError: '',
         username: action.payload.username,
+        jokesUpvoted: action.payload.jokesUpvoted,
+        jokesDownvoted: action.payload.jokesDownvoted,
       }
     case SIGNUP_USER_FAILURE:
       return {

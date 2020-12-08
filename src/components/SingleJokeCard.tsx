@@ -20,7 +20,15 @@ import '../styles/styles.css'
 // joke card component
 function SingleJokeCard(props: Props) {
   // destructure props
-  const { joke, deleteJoke, updateJoke, username, voteForJoke } = props
+  const {
+    joke,
+    jokesUpvoted,
+    jokesDownvoted,
+    deleteJoke,
+    updateJoke,
+    username,
+    voteForJoke,
+  } = props
 
   console.log('username:', username)
 
@@ -87,6 +95,17 @@ function SingleJokeCard(props: Props) {
     voteForJoke(joke._id as string, '-1')
   }
 
+  function hasUserVotedOnJoke() {
+    if (jokesUpvoted && jokesUpvoted.indexOf(joke._id as string) !== -1) {
+      return 'upvoted'
+    } else if (
+      jokesDownvoted &&
+      jokesDownvoted.indexOf(joke._id as string) !== -1
+    ) {
+      return 'downvoted'
+    } else return 'neither'
+  }
+
   // render the following
   return (
     <DivWrapper>
@@ -126,6 +145,7 @@ function SingleJokeCard(props: Props) {
               <i className="fas fa-thumbs-down"></i>
             </Button>
           </OverlayTrigger>
+          <span>joke is: {hasUserVotedOnJoke()} </span>
           {/* DATE */}
           <DetailsDiv className="floatRight">
             {dayjs(joke.createdAt).format("MMM DD, 'YY")} &nbsp;
@@ -242,6 +262,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   joke: Joke
   username?: string
+  jokesUpvoted?: string[]
+  jokesDownvoted?: string[]
 }
 
 export default connector(SingleJokeCard)

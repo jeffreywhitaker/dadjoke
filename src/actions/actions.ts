@@ -57,7 +57,8 @@ export const USE_SAVED_TOKEN_FAILURE = 'USE_SAVED_TOKEN_FAILURE'
 export const checkTokenValidity = (): Thunk => (dispatch) => {
   console.log('inside checkToken')
   axios.get(`${URI_STRING}/cookie`, { withCredentials: true }).then((response) => {
-    dispatch({ type: USE_SAVED_TOKEN_SUCCESS, payload: response })
+    console.log('use cookie response:', response)
+    dispatch({ type: USE_SAVED_TOKEN_SUCCESS, payload: response.data })
   }).catch((error) => {
     console.log(error)
     dispatch({ type: USE_SAVED_TOKEN_FAILURE, payload: { error }})
