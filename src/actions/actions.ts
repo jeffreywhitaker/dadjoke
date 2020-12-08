@@ -233,3 +233,15 @@ export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
       dispatch({ type: DELETE_JOKE_FAILURE, payload: err })
     })
 }
+
+// vote for joke
+export const VOTE_FOR_JOKE_START = 'VOTE_FOR_JOKE_START'
+export const VOTE_FOR_JOKE_SUCCESS = 'VOTE_FOR_JOKE_SUCCESS'
+export const VOTE_FOR_JOKE_FAILURE = 'VOTE_FOR_JOKE_FAILURE'
+export const voteForJoke = (jokeId: string, vote: string): Thunk => (dispatch) => {
+  dispatch({ type: VOTE_FOR_JOKE_START})
+  axios.post(`${URI_STRING}/dadjokes/vote/${jokeId}`, { voteNum: vote }, { withCredentials: true})
+  .then((res) => {
+    console.log('vote for joke ok: ', res)
+  }).catch((err) => console.log('vote for joke err: ', err))
+}

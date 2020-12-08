@@ -12,7 +12,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-import { deleteJoke, updateJoke } from '../actions/actions'
+import { deleteJoke, updateJoke, voteForJoke } from '../actions/actions'
 import { Joke } from '../types/types'
 
 import '../styles/styles.css'
@@ -20,7 +20,7 @@ import '../styles/styles.css'
 // joke card component
 function SingleJokeCard(props: Props) {
   // destructure props
-  const { joke, deleteJoke, updateJoke, username } = props
+  const { joke, deleteJoke, updateJoke, username, voteForJoke } = props
 
   console.log('username:', username)
 
@@ -80,6 +80,13 @@ function SingleJokeCard(props: Props) {
     console.log('updated joke', updatedJoke)
   }
 
+  const handleUpvoteJoke = () => {
+    voteForJoke(joke._id as string, '1')
+  }
+  const handleDownvoteJoke = () => {
+    voteForJoke(joke._id as string, '-1')
+  }
+
   // render the following
   return (
     <DivWrapper>
@@ -90,9 +97,24 @@ function SingleJokeCard(props: Props) {
             placement="top"
             overlay={<Tooltip id={`tooltip-upvote`}>Upvote this joke</Tooltip>}
           >
-            <i className="fas fa-thumbs-up"></i>
+            <Button onClick={handleUpvoteJoke}>
+              <i className="fas fa-thumbs-up"></i>
+            </Button>
           </OverlayTrigger>
-          &nbsp;47&nbsp;
+          &nbsp;
+          <OverlayTrigger
+            key={`${joke._id}_karma`}
+            placement="top"
+            overlay={
+              <Tooltip id={`tooltip-karma`}>
+                This is the vote's karma - that is, total upvotes minus total
+                downvotes
+              </Tooltip>
+            }
+          >
+            <span>{joke.karma}</span>
+          </OverlayTrigger>
+          &nbsp;
           <OverlayTrigger
             key={`${joke._id}_downvote`}
             placement="top"
@@ -100,7 +122,9 @@ function SingleJokeCard(props: Props) {
               <Tooltip id={`tooltip-downvote`}>Downvote this joke</Tooltip>
             }
           >
-            <i className="fas fa-thumbs-down"></i>
+            <Button onClick={handleDownvoteJoke}>
+              <i className="fas fa-thumbs-down"></i>
+            </Button>
           </OverlayTrigger>
           {/* DATE */}
           <DetailsDiv className="floatRight">
@@ -213,7 +237,7 @@ function SingleJokeCard(props: Props) {
 }
 
 // export component
-const connector = connect(null, { deleteJoke, updateJoke })
+const connector = connect(null, { deleteJoke, updateJoke, voteForJoke })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   joke: Joke
