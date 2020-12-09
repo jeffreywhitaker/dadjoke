@@ -120,7 +120,7 @@ export const FETCH_JOKES_FAILURE = 'FETCH_JOKES_FAILURE'
 export const getPublicJokes = (): Thunk => (dispatch) => {
   dispatch({ type: FETCH_JOKES_START })
   axios
-    .get(`${URI_STRING}/dadjokes/public`)
+    .get(`${URI_STRING}/dadjokes/public`, { withCredentials: true})
     .then((res) => {
       console.log('GET public jokes: ', res)
       dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data })
@@ -239,10 +239,17 @@ export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
 export const VOTE_FOR_JOKE_START = 'VOTE_FOR_JOKE_START'
 export const VOTE_FOR_JOKE_SUCCESS = 'VOTE_FOR_JOKE_SUCCESS'
 export const VOTE_FOR_JOKE_FAILURE = 'VOTE_FOR_JOKE_FAILURE'
-export const voteForJoke = (jokeId: string, vote: string): Thunk => (dispatch) => {
+// TODO: this now takes in old vote - should use that to update karma for joke locally
+export const voteForJoke = (jokeId: string, oldVote: string, vote: string): Thunk => (dispatch) => {
   dispatch({ type: VOTE_FOR_JOKE_START})
   axios.post(`${URI_STRING}/dadjokes/vote/${jokeId}`, { voteNum: vote }, { withCredentials: true})
   .then((res) => {
     console.log('vote for joke ok: ', res)
+    const payload = {
+      oldVote,
+      vote,
+      jokeId
+    }
+    dispatch({ type: VOTE_FOR_JOKE_SUCCESS, payload})
   }).catch((err) => console.log('vote for joke err: ', err))
 }

@@ -89,10 +89,22 @@ function SingleJokeCard(props: Props) {
   }
 
   const handleUpvoteJoke = () => {
-    voteForJoke(joke._id as string, '1')
+    // if already upvoted, rescind
+    if (joke.userVote === '1') {
+      voteForJoke(joke._id as string, '1', '0')
+    } else {
+      // upvote
+      voteForJoke(joke._id as string, '0', '1')
+    }
   }
   const handleDownvoteJoke = () => {
-    voteForJoke(joke._id as string, '-1')
+    // if already downvoted, rescind
+    if (joke.userVote === '-1') {
+      voteForJoke(joke._id as string, '-1', '0')
+    } else {
+      // downvote
+      voteForJoke(joke._id as string, '0', '-1')
+    }
   }
 
   function hasUserVotedOnJoke() {
@@ -106,45 +118,165 @@ function SingleJokeCard(props: Props) {
     } else return 'neither'
   }
 
+  const voteOptions = {
+    upvoteTooltip: '',
+    downvoteTooltip: '',
+  }
+  if (joke.userVote === '1') {
+    voteOptions.upvoteTooltip =
+      'You have upvoted this joke -- click again to rescind your vote'
+    voteOptions.downvoteTooltip = 'Downvote this joke'
+  } else if (joke.userVote === '-1') {
+    voteOptions.upvoteTooltip = 'Upvote this joke'
+    voteOptions.downvoteTooltip =
+      'You have downvoted this joke -- click again to rescind your vote'
+  } else {
+    voteOptions.upvoteTooltip = 'Upvote this joke'
+    voteOptions.downvoteTooltip = 'Downvote this joke'
+  }
+
   // render the following
   return (
     <DivWrapper>
       <Card>
         <Card.Header>
-          <OverlayTrigger
-            key={`${joke._id}_upvote`}
-            placement="top"
-            overlay={<Tooltip id={`tooltip-upvote`}>Upvote this joke</Tooltip>}
-          >
-            <Button onClick={handleUpvoteJoke}>
-              <i className="fas fa-thumbs-up"></i>
-            </Button>
-          </OverlayTrigger>
-          &nbsp;
-          <OverlayTrigger
-            key={`${joke._id}_karma`}
-            placement="top"
-            overlay={
-              <Tooltip id={`tooltip-karma`}>
-                This is the vote's karma - that is, total upvotes minus total
-                downvotes
-              </Tooltip>
-            }
-          >
-            <span>{joke.karma}</span>
-          </OverlayTrigger>
-          &nbsp;
-          <OverlayTrigger
-            key={`${joke._id}_downvote`}
-            placement="top"
-            overlay={
-              <Tooltip id={`tooltip-downvote`}>Downvote this joke</Tooltip>
-            }
-          >
-            <Button onClick={handleDownvoteJoke}>
-              <i className="fas fa-thumbs-down"></i>
-            </Button>
-          </OverlayTrigger>
+          {/* IF JOKE IS UPVOTED */}
+          {joke.userVote === '1' && (
+            <>
+              <OverlayTrigger
+                key={`${joke._id}_upvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-upvote`}>
+                    {voteOptions.upvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button variant="success" onClick={handleUpvoteJoke}>
+                  <i className="fas fa-thumbs-up"></i>
+                </Button>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_karma`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-karma`}>
+                    This is the vote's karma - that is, total upvotes minus
+                    total downvotes
+                  </Tooltip>
+                }
+              >
+                <span>{joke.karma}</span>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_downvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-downvote`}>
+                    {voteOptions.downvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button onClick={handleDownvoteJoke}>
+                  <i className="fas fa-thumbs-down"></i>
+                </Button>
+              </OverlayTrigger>
+            </>
+          )}
+          {/* IF JOKE IS NOT UPVOTED */}
+          {joke.userVote === '0' && (
+            <>
+              <OverlayTrigger
+                key={`${joke._id}_upvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-upvote`}>
+                    {voteOptions.upvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button onClick={handleUpvoteJoke}>
+                  <i className="fas fa-thumbs-up"></i>
+                </Button>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_karma`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-karma`}>
+                    This is the vote's karma - that is, total upvotes minus
+                    total downvotes
+                  </Tooltip>
+                }
+              >
+                <span>{joke.karma}</span>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_downvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-downvote`}>
+                    {voteOptions.downvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button onClick={handleDownvoteJoke}>
+                  <i className="fas fa-thumbs-down"></i>
+                </Button>
+              </OverlayTrigger>
+            </>
+          )}
+          {/* IF JOKE IS DOWNVOTED */}
+          {joke.userVote === '-1' && (
+            <>
+              <OverlayTrigger
+                key={`${joke._id}_upvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-upvote`}>
+                    {voteOptions.upvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button onClick={handleUpvoteJoke}>
+                  <i className="fas fa-thumbs-up"></i>
+                </Button>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_karma`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-karma`}>
+                    This is the vote's karma - that is, total upvotes minus
+                    total downvotes
+                  </Tooltip>
+                }
+              >
+                <span>{joke.karma}</span>
+              </OverlayTrigger>
+              &nbsp;
+              <OverlayTrigger
+                key={`${joke._id}_downvote`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`tooltip-downvote`}>
+                    {voteOptions.downvoteTooltip}
+                  </Tooltip>
+                }
+              >
+                <Button variant="success" onClick={handleDownvoteJoke}>
+                  <i className="fas fa-thumbs-down"></i>
+                </Button>
+              </OverlayTrigger>
+            </>
+          )}
+
+          {/* TO BE REMOVED LATER */}
           <span>joke is: {hasUserVotedOnJoke()} </span>
           {/* DATE */}
           <DetailsDiv className="floatRight">
@@ -247,6 +379,7 @@ function SingleJokeCard(props: Props) {
               Del
             </Button>
           )}
+          {/* SUBMITTED BY */}
           {window.location.pathname !== '/privatejokes' && (
             <span className="floatRight">submitted by: {joke.username}</span>
           )}

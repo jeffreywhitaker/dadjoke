@@ -11,6 +11,7 @@ export type Joke = {
   error?: string
   createdAt?: Date
   karma?: number
+  userVote?: string
 }
 
 export type Thunk<ReturnType = void> = ThunkAction<
