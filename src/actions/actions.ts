@@ -5,7 +5,6 @@ import { Thunk } from '../types/types'
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 const URI_STRING = 'http://localhost:5000'
 
-import { axiosLogin } from '../utils/axiosWithAuth'
 // types
 import { Joke, LoginCredentials, SignupCredentials } from '../types/types'
 
@@ -18,14 +17,7 @@ export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) =>
   axios
     .post(`${URI_STRING}/login`, credentials, { withCredentials: true} )
     .then((res) => {
-      // // set token, expiry, and username to local storage
-      // localStorage.setItem('token', res.data.access_token)
-      // localStorage.setItem(
-      //   'tokenExpiry',
-      //   new Date(new Date().getTime() + res.data.expires_in * 1000) as unknown as string,
-      // )
-      // localStorage.setItem('username', credentials.username)
-      console.log('loggedin')
+      console.log('loggedin', res)
       // create object to send
       const toSend = {
         username: credentials.username,
@@ -45,10 +37,9 @@ export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) =>
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
 export const userLogout = (): Thunk => (dispatch) => {
   console.log('logout user')
-  localStorage.removeItem('token')
-  localStorage.removeItem('tokenExpiry')
-  localStorage.removeItem('username')
-  dispatch({ type: LOGOUT_USER_SUCCESS })
+  axios.get(`${URI_STRING}/logout`, { withCredentials: true }).then(() => {
+    dispatch({ type: LOGOUT_USER_SUCCESS })
+  }).catch((err) => console.log('err logging out', err))
 }
 
 // use saved token
@@ -113,48 +104,6 @@ export const deleteUser = (): Thunk => (dispatch) => {
   })
 }
 
-// get public flagged jokes
-export const FETCH_JOKES_START = 'FETCH_JOKES_START'
-export const FETCH_JOKES_SUCCESS = 'FETCH_JOKES_SUCCESS'
-export const FETCH_JOKES_FAILURE = 'FETCH_JOKES_FAILURE'
-export const getPublicJokes = (): Thunk => (dispatch) => {
-  dispatch({ type: FETCH_JOKES_START })
-  axios
-    .get(`${URI_STRING}/dadjokes/public`, { withCredentials: true})
-    .then((res) => {
-      console.log('GET public jokes: ', res)
-      dispatch({ type: FETCH_JOKES_SUCCESS, payload: res.data })
-    })
-    .catch((err) => {
-      console.log(`unable to fetch public jokes: ${err}`)
-      dispatch({ type: FETCH_JOKES_FAILURE, payload: err })
-    })
-}
-
-// get private flagged jokes
-export const FETCH_PRIVATE_JOKES_START = 'FETCH_PRIVATE_JOKES_START'
-export const FETCH_PRIVATE_JOKES_SUCCESS = 'FETCH_JOKES_PRIVATE_SUCCESS'
-export const FETCH_PRIVATE_JOKES_FAILURE = 'FETCH_JOKES_PRIVATE_FAILURE'
-export const getPrivateJokes = (): Thunk => (dispatch) => {
-  dispatch({ type: FETCH_PRIVATE_JOKES_START })
-  axios
-    .get(`${URI_STRING}/dadjokes/private`, { withCredentials: true})
-    .then((res) => {
-      res.data.forEach((joke: Joke): void => {
-        joke.isprivate = true
-      })
-      console.log('GET private jokes: ', res)
-      dispatch({ type: FETCH_PRIVATE_JOKES_SUCCESS, payload: res.data })
-    })
-    .catch((err) => {
-      console.log(`unable to fetch private jokes: ${err.response}`)
-      dispatch({
-        type: FETCH_PRIVATE_JOKES_FAILURE,
-        payload: err.response.data.detail,
-      })
-    })
-}
-
 // add joke
 export const ADD_JOKE_START = 'ADD_JOKE_START'
 export const ADD_PUBLIC_JOKE_SUCCESS = 'ADD_PUBLIC_JOKE_SUCCESS'
@@ -162,7 +111,7 @@ export const ADD_PRIVATE_JOKE_SUCCESS = 'ADD_PRIVATE_JOKE_SUCCESS'
 export const ADD_JOKE_FAILURE = 'ADD_JOKE_FAILURE'
 export const addJoke = (jokeToAdd: Joke): Thunk => (dispatch) => {
   dispatch({ type: ADD_JOKE_START })
-  axiosLogin()
+  axios
     .post(`${URI_STRING}/dadjokes/add`, jokeToAdd, { withCredentials: true})
     .then((res) => {
       // if joke is private, dispatch response to reducer
@@ -179,40 +128,6 @@ export const addJoke = (jokeToAdd: Joke): Thunk => (dispatch) => {
     .catch((err) => {
       console.log(`unable to add new joke: ${err}`)
       dispatch({ type: ADD_JOKE_FAILURE, payload: err })
-    })
-}
-
-// update joke
-export const UPDATE_JOKE_START = 'UPDATE_JOKE_START'
-export const UPDATE_PUBLIC_JOKE_SUCCESS = 'UPDATE_PUBLIC_JOKE_SUCCESS'
-export const UPDATE_PRIVATE_JOKE_SUCCESS = 'UPDATE_PRIVATE_JOKE_SUCCESS'
-export const UPDATE_JOKE_FAILURE = 'UPDATE_JOKE_FAILURE'
-export const updateJoke = (jokeToUpdate: Joke, jokeId: string): Thunk => (dispatch) => {
-  dispatch({ type: UPDATE_JOKE_START })
-  console.log('begin updateJoke', jokeToUpdate, jokeId)
-  axios
-    .put(`${URI_STRING}/dadjokes/${jokeId}`, jokeToUpdate, { withCredentials: true})
-    .then((res) => {
-      console.log(res)
-      if (jokeToUpdate.isprivate) {
-        console.log('private joke is being updated', res.data)
-        dispatch({ type: UPDATE_PRIVATE_JOKE_SUCCESS, payload: res.data })
-      } else {
-        console.log('public joke is being updated', res.data)
-        dispatch({ type: UPDATE_PUBLIC_JOKE_SUCCESS, payload: res.data })
-      }
-    })
-    .catch((err) => {
-      console.log(err.response)
-      console.log(`unable to update joke: ${err.response.data.detail}`)
-      dispatch({
-        type: UPDATE_JOKE_FAILURE,
-        payload: {
-          msg: err.response.data.detail,
-          dadjokeid: jokeId,
-          isPrivate: jokeToUpdate.isprivate,
-        },
-      })
     })
 }
 
@@ -233,23 +148,4 @@ export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
       console.log(`unable to delete joke: ${err}`)
       dispatch({ type: DELETE_JOKE_FAILURE, payload: err })
     })
-}
-
-// vote for joke
-export const VOTE_FOR_JOKE_START = 'VOTE_FOR_JOKE_START'
-export const VOTE_FOR_JOKE_SUCCESS = 'VOTE_FOR_JOKE_SUCCESS'
-export const VOTE_FOR_JOKE_FAILURE = 'VOTE_FOR_JOKE_FAILURE'
-// TODO: this now takes in old vote - should use that to update karma for joke locally
-export const voteForJoke = (jokeId: string, oldVote: string, vote: string): Thunk => (dispatch) => {
-  dispatch({ type: VOTE_FOR_JOKE_START})
-  axios.post(`${URI_STRING}/dadjokes/vote/${jokeId}`, { voteNum: vote }, { withCredentials: true})
-  .then((res) => {
-    console.log('vote for joke ok: ', res)
-    const payload = {
-      oldVote,
-      vote,
-      jokeId
-    }
-    dispatch({ type: VOTE_FOR_JOKE_SUCCESS, payload})
-  }).catch((err) => console.log('vote for joke err: ', err))
 }

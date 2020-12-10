@@ -14,15 +14,16 @@ import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 // import functions
-import { addJoke, userLogout } from '../actions/actions'
+import jokesData from '../ajax/jokesData'
+import { userLogout } from '../actions/actions'
 
 // Header component
 export const Header: React.FC<Props> = (props: Props) => {
   // destructure props
-  const { addJoke, isLoggedIn, userLogout, username } = props
+  const { isLoggedIn, userLogout, username } = props
 
   // modal
-
+  // local state for adding new joke
   function determineIfPrivate(): boolean {
     if (window.location.pathname === '/publicjokes') {
       return false
@@ -33,14 +34,10 @@ export const Header: React.FC<Props> = (props: Props) => {
     dadjokeanswer: '',
     isprivate: determineIfPrivate(),
   }
-  // local state for adding new joke
+  const [showAddJokeModal, setShowAddJokeModal] = useState(false)
   const [newJoke, setNewJoke] = useState(blankJoke)
 
-  const [showAddJokeModal, setShowAddJokeModal] = useState(false)
-
   const handleClose = () => setShowAddJokeModal(false)
-  const handleShow = () => setShowAddJokeModal(true)
-
   const handleSetIsPrivate = (val: boolean) =>
     setNewJoke({ ...newJoke, isprivate: val })
 
@@ -50,7 +47,8 @@ export const Header: React.FC<Props> = (props: Props) => {
     setShowAddJokeModal(false)
     console.log('new joke:')
     console.log(newJoke)
-    addJoke(newJoke)
+    // addJoke(newJoke)
+    jokesData.addNewJoke(newJoke)
     setNewJoke(blankJoke)
     history.push('/publicjokes')
   }
@@ -66,6 +64,8 @@ export const Header: React.FC<Props> = (props: Props) => {
     console.log(newJoke)
   }
 
+  const handleShow = () => setShowAddJokeModal(true)
+
   // use history
   const history = useHistory()
 
@@ -75,8 +75,10 @@ export const Header: React.FC<Props> = (props: Props) => {
   const handleLogout = (e: { preventDefault: () => void }) => {
     console.log('handle logout called')
     e.preventDefault()
-    userLogout()
-    history.push('/publicjokes')
+    if (window.confirm('Are you sure you want to log out?')) {
+      userLogout()
+      history.push('/publicjokes')
+    }
   }
 
   // return Header
@@ -125,7 +127,6 @@ export const Header: React.FC<Props> = (props: Props) => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-
       <Modal show={showAddJokeModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Joke</Modal.Title>
@@ -185,7 +186,7 @@ const mapStateToProps = (state: {
 }
 
 // export component
-const connector = connect(mapStateToProps, { addJoke, userLogout })
+const connector = connect(mapStateToProps, { userLogout })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux
 export default connector(Header)

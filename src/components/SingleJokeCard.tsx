@@ -1,5 +1,5 @@
 // import dependencies
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import dayjs from 'dayjs'
 import styled from 'styled-components'
@@ -12,22 +12,24 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-import { deleteJoke, updateJoke, voteForJoke } from '../actions/actions'
+import { deleteJoke } from '../actions/actions'
+import jokesData from '../ajax/jokesData'
 import { Joke } from '../types/types'
 
+import JokeVoteDashboard from './JokeVoteDashboard'
+
 import '../styles/styles.css'
+import { AxiosPromise } from 'axios'
 
 // joke card component
 function SingleJokeCard(props: Props) {
   // destructure props
   const {
     joke,
-    jokesUpvoted,
-    jokesDownvoted,
     deleteJoke,
-    updateJoke,
     username,
-    voteForJoke,
+    updateJokeDetails,
+    updateJokeKarma,
   } = props
 
   console.log('username:', username)
@@ -53,7 +55,12 @@ function SingleJokeCard(props: Props) {
   }
 
   function handleUpdate(updatedJoke: Joke) {
-    updateJoke(updatedJoke, joke._id as string)
+    jokesData.updateJoke(updatedJoke, joke._id as string).then((res) => {
+      console.log('update joke res', res)
+      // get function from parent to update joke in array
+      toggleUpdate()
+      updateJokeDetails(joke._id as string, res)
+    })
   }
 
   function toggleUpdate() {
@@ -88,36 +95,6 @@ function SingleJokeCard(props: Props) {
     console.log('updated joke', updatedJoke)
   }
 
-  const handleUpvoteJoke = () => {
-    // if already upvoted, rescind
-    if (joke.userVote === '1') {
-      voteForJoke(joke._id as string, '1', '0')
-    } else {
-      // upvote
-      voteForJoke(joke._id as string, '0', '1')
-    }
-  }
-  const handleDownvoteJoke = () => {
-    // if already downvoted, rescind
-    if (joke.userVote === '-1') {
-      voteForJoke(joke._id as string, '-1', '0')
-    } else {
-      // downvote
-      voteForJoke(joke._id as string, '0', '-1')
-    }
-  }
-
-  function hasUserVotedOnJoke() {
-    if (jokesUpvoted && jokesUpvoted.indexOf(joke._id as string) !== -1) {
-      return 'upvoted'
-    } else if (
-      jokesDownvoted &&
-      jokesDownvoted.indexOf(joke._id as string) !== -1
-    ) {
-      return 'downvoted'
-    } else return 'neither'
-  }
-
   const voteOptions = {
     upvoteTooltip: '',
     downvoteTooltip: '',
@@ -140,144 +117,11 @@ function SingleJokeCard(props: Props) {
     <DivWrapper>
       <Card>
         <Card.Header>
-          {/* IF JOKE IS UPVOTED */}
-          {joke.userVote === '1' && (
-            <>
-              <OverlayTrigger
-                key={`${joke._id}_upvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-upvote`}>
-                    {voteOptions.upvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button variant="success" onClick={handleUpvoteJoke}>
-                  <i className="fas fa-thumbs-up"></i>
-                </Button>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_karma`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-karma`}>
-                    This is the vote's karma - that is, total upvotes minus
-                    total downvotes
-                  </Tooltip>
-                }
-              >
-                <span>{joke.karma}</span>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_downvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-downvote`}>
-                    {voteOptions.downvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button onClick={handleDownvoteJoke}>
-                  <i className="fas fa-thumbs-down"></i>
-                </Button>
-              </OverlayTrigger>
-            </>
-          )}
-          {/* IF JOKE IS NOT UPVOTED */}
-          {joke.userVote === '0' && (
-            <>
-              <OverlayTrigger
-                key={`${joke._id}_upvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-upvote`}>
-                    {voteOptions.upvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button onClick={handleUpvoteJoke}>
-                  <i className="fas fa-thumbs-up"></i>
-                </Button>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_karma`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-karma`}>
-                    This is the vote's karma - that is, total upvotes minus
-                    total downvotes
-                  </Tooltip>
-                }
-              >
-                <span>{joke.karma}</span>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_downvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-downvote`}>
-                    {voteOptions.downvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button onClick={handleDownvoteJoke}>
-                  <i className="fas fa-thumbs-down"></i>
-                </Button>
-              </OverlayTrigger>
-            </>
-          )}
-          {/* IF JOKE IS DOWNVOTED */}
-          {joke.userVote === '-1' && (
-            <>
-              <OverlayTrigger
-                key={`${joke._id}_upvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-upvote`}>
-                    {voteOptions.upvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button onClick={handleUpvoteJoke}>
-                  <i className="fas fa-thumbs-up"></i>
-                </Button>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_karma`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-karma`}>
-                    This is the vote's karma - that is, total upvotes minus
-                    total downvotes
-                  </Tooltip>
-                }
-              >
-                <span>{joke.karma}</span>
-              </OverlayTrigger>
-              &nbsp;
-              <OverlayTrigger
-                key={`${joke._id}_downvote`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`tooltip-downvote`}>
-                    {voteOptions.downvoteTooltip}
-                  </Tooltip>
-                }
-              >
-                <Button variant="success" onClick={handleDownvoteJoke}>
-                  <i className="fas fa-thumbs-down"></i>
-                </Button>
-              </OverlayTrigger>
-            </>
-          )}
-
-          {/* TO BE REMOVED LATER */}
-          <span>joke is: {hasUserVotedOnJoke()} </span>
+          <JokeVoteDashboard
+            voteOptions={voteOptions}
+            joke={joke}
+            updateJokeKarma={updateJokeKarma}
+          />
           {/* DATE */}
           <DetailsDiv className="floatRight">
             {dayjs(joke.createdAt).format("MMM DD, 'YY")} &nbsp;
@@ -390,13 +234,13 @@ function SingleJokeCard(props: Props) {
 }
 
 // export component
-const connector = connect(null, { deleteJoke, updateJoke, voteForJoke })
+const connector = connect(null, { deleteJoke })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   joke: Joke
   username?: string
-  jokesUpvoted?: string[]
-  jokesDownvoted?: string[]
+  updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
+  updateJokeDetails: (jokeId: string, res: AxiosPromise) => void
 }
 
 export default connector(SingleJokeCard)

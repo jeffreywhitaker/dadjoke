@@ -1,13 +1,12 @@
 // import dependencies
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import components
 import Header from './components/Header'
-import PublicJokes from './components/PublicJokes'
-import PrivateJokes from './components/PrivateJokes'
+import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
 import Signup from './components/Signup'
 
@@ -19,7 +18,8 @@ type Props = {
 }
 
 // App component
-export const App: React.FC<Props> = (props) => {
+export const App: React.FC<Props> = (props: Props) => {
+  // export const App = (props) => {
   // destructure props
   const { checkTokenValidity } = props
 
@@ -34,8 +34,8 @@ export const App: React.FC<Props> = (props) => {
       <Route component={Header} />
       <AppWrapper className="App">
         <Redirect exact path="/" to="/publicjokes" />
-        <Route path="/publicjokes" component={PublicJokes} />
-        <Route path="/privatejokes" component={PrivateJokes} />
+        <Route path="/publicjokes" component={JokesWrapper} />
+        <Route path="/privatejokes" component={JokesWrapper} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
       </AppWrapper>
