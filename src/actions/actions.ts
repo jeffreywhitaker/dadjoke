@@ -45,7 +45,7 @@ export const userLogout = (): Thunk => (dispatch) => {
 // use saved token
 export const USE_SAVED_TOKEN_SUCCESS = 'USE_SAVED_TOKEN_SUCCESS'
 export const USE_SAVED_TOKEN_FAILURE = 'USE_SAVED_TOKEN_FAILURE'
-export const checkTokenValidity = (): Thunk => (dispatch) => {
+export const ifSessionExistsLogIn = (): Thunk => (dispatch) => {
   console.log('inside checkToken')
   axios.get(`${URI_STRING}/cookie`, { withCredentials: true }).then((response) => {
     console.log('use cookie response:', response)

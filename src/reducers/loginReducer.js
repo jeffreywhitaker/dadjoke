@@ -23,6 +23,7 @@ const initialState = {
 }
 
 // export login reducer
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     //login user actions

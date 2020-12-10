@@ -9,7 +9,7 @@ import cloneDeep from 'clone-deep'
 // import actions
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
-import Loading from './Loading'
+// import Loading from './Loading'
 
 // joke display page component
 function JokesWrapper({ isLoggedIn, username }) {

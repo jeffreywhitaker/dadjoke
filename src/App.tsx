@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,23 +10,22 @@ import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
 import Signup from './components/Signup'
 
-import { checkTokenValidity } from './actions/actions'
+import { ifSessionExistsLogIn } from './actions/actions'
 
 // typing
 type Props = {
-  checkTokenValidity: () => void
+  ifSessionExistsLogIn: () => void
 }
 
 // App component
 export const App: React.FC<Props> = (props: Props) => {
-  // export const App = (props) => {
   // destructure props
-  const { checkTokenValidity } = props
+  const { ifSessionExistsLogIn } = props
 
   // use effect to check for token
   useEffect(() => {
-    checkTokenValidity()
-  }, [checkTokenValidity()])
+    ifSessionExistsLogIn()
+  }, [ifSessionExistsLogIn()])
 
   // return components
   return (
@@ -44,7 +43,7 @@ export const App: React.FC<Props> = (props: Props) => {
 }
 
 // export component
-export default connect(null, { checkTokenValidity })(App)
+export default connect(null, { ifSessionExistsLogIn })(App)
 
 // styled components
 const AppWrapper = styled.div`
