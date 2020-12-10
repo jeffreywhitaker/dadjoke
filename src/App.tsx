@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import Header from './components/Header'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
+import Profile from './components/Profile'
 import Signup from './components/Signup'
 
 import { ifSessionExistsLogIn } from './actions/actions'
@@ -35,6 +36,7 @@ export const App: React.FC<Props> = (props: Props) => {
         <Redirect exact path="/" to="/publicjokes" />
         <Route path="/publicjokes" component={JokesWrapper} />
         <Route path="/privatejokes" component={JokesWrapper} />
+        <Route path="/profile" component={Profile} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
       </AppWrapper>

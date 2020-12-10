@@ -48,9 +48,10 @@ export const Header: React.FC<Props> = (props: Props) => {
     console.log('new joke:')
     console.log(newJoke)
     // addJoke(newJoke)
-    jokesData.addNewJoke(newJoke)
-    setNewJoke(blankJoke)
-    history.push('/publicjokes')
+    jokesData.addNewJoke(newJoke).then(() => {
+      setNewJoke(blankJoke)
+      window.location.reload()
+    })
   }
 
   // handle change values, save to local state

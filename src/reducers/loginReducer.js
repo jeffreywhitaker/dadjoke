@@ -66,7 +66,7 @@ export const loginReducer = (state = initialState, action) => {
 
     // use saved token
     case USE_SAVED_TOKEN_SUCCESS:
-      console.log('payload', action.payload)
+      console.log('payload in use saved token success', action.payload)
       return {
         ...state,
         isFetching: false,

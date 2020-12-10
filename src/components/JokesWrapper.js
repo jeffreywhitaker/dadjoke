@@ -9,13 +9,14 @@ import cloneDeep from 'clone-deep'
 // import actions
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
-// import Loading from './Loading'
+import Loading from './Loading'
 
 // joke display page component
 function JokesWrapper({ isLoggedIn, username }) {
   const location = useLocation()
   console.log('location is: ', location)
   // set up state
+  const [isLoading, setIsLoading] = useState(true)
   const [jokes, setJokes] = useState([])
   const [display, setDisplay] = useState({
     heading: '',
@@ -28,12 +29,14 @@ function JokesWrapper({ isLoggedIn, username }) {
       jokesData.getPublicJokes().then((res) => {
         console.log('jokes response:', res)
         setJokes(res.data)
+        setIsLoading(false)
       })
-    } else {
+    } else if (isLoggedIn) {
       setDisplay({ ...display, heading: `${username}'s Jokes` })
       jokesData.getPrivateJokes().then((res) => {
         console.log('jokes response:', res)
         setJokes(res.data)
+        setIsLoading(false)
       })
     }
   }, [])
@@ -66,7 +69,7 @@ function JokesWrapper({ isLoggedIn, username }) {
   }
 
   // loading check
-  // if (isLoading) return <Loading />
+  if (isLoading) return <Loading />
 
   // empty check
 
@@ -99,6 +102,7 @@ const mapStateToProps = (state) => {
     username: state.loginReducer.username,
     jokesUpvoted: state.loginReducer.jokesUpvoted,
     jokesDownvoted: state.loginReducer.jokesDownvoted,
+    isLoggedIn: state.loginReducer.isLoggedIn,
   }
 }
 
