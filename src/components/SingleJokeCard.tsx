@@ -1,6 +1,7 @@
 // import dependencies
 import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 
@@ -225,7 +226,10 @@ function SingleJokeCard(props: Props) {
           )}
           {/* SUBMITTED BY */}
           {window.location.pathname !== '/privatejokes' && (
-            <span className="floatRight">submitted by: {joke.username}</span>
+            <span className="floatRight">
+              submitted by:{' '}
+              <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
+            </span>
           )}
         </Card.Footer>
       </Card>

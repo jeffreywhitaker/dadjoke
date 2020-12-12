@@ -4,7 +4,11 @@ import axios, { AxiosPromise } from 'axios'
 const URI_STRING = 'http://localhost:5000'
 
 export default {
-  getStats(): Promise<AxiosPromise> {
-    return axios.get(`${URI_STRING}/stats`, { withCredentials: true})
+  getOwnStats(): Promise<AxiosPromise> {
+    return axios.get(`${URI_STRING}/users/profile`, { withCredentials: true})
   },
+
+  getOtherUserStats(username: string): Promise<AxiosPromise> {
+    return axios.get(`${URI_STRING}/users/profile/${username}`, { withCredentials: true})
+  }
 }
