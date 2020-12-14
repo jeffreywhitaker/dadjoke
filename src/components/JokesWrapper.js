@@ -22,24 +22,30 @@ function JokesWrapper({ isLoggedIn, username }) {
     heading: '',
   })
 
+  const [criteria, setCriteria] = useState({
+    sortBy: 'createdAt',
+    resultsPerPage: '5',
+  })
+
   // get jokes on page load
   useEffect(() => {
+    console.log('calling useEffect with criteria', criteria)
     if (location.pathname === '/publicjokes') {
       setDisplay({ ...display, heading: 'Public Jokes' })
-      jokesData.getPublicJokes().then((res) => {
+      jokesData.getPublicJokes(criteria).then((res) => {
         console.log('jokes response:', res)
         setJokes(res.data)
         setIsLoading(false)
       })
     } else if (isLoggedIn) {
       setDisplay({ ...display, heading: `${username}'s Jokes` })
-      jokesData.getPrivateJokes().then((res) => {
+      jokesData.getPrivateJokes(criteria).then((res) => {
         console.log('jokes response:', res)
         setJokes(res.data)
         setIsLoading(false)
       })
     }
-  }, [])
+  }, [criteria])
 
   const updateJokeKarma = (jokeID, newKarma, newVote) => {
     console.log('updateJokeKarma: ', jokeID, newKarma)
@@ -51,6 +57,21 @@ function JokesWrapper({ isLoggedIn, username }) {
       }
     }),
       setJokes(updatedJokes)
+  }
+
+  const handleSortByChange = (e) => {
+    console.log('sort by changed to: ', e.currentTarget.value)
+    setCriteria({
+      ...criteria,
+      sortBy: e.currentTarget.value,
+    })
+  }
+
+  const handleResultsPerPageChange = (e) => {
+    setCriteria({
+      ...criteria,
+      resultsPerPage: e.currentTarget.value,
+    })
   }
 
   const updateJokeDetails = (jokeID, res) => {
@@ -83,14 +104,24 @@ function JokesWrapper({ isLoggedIn, username }) {
       <div>
         <DisplayP>{display.heading}</DisplayP>
         Sort by:{' '}
-        <select name="sortBy" id="sortBy">
-          <option value="newest">Newest to Oldest</option>
-          <option value="oldest">Oldest to Newest</option>
-          <option value="highest">Karma, Highest to Lowest</option>
-          <option value="lowest">Karma, Lowest to Highest</option>
+        <select
+          name="sortBy"
+          id="sortBy"
+          value={criteria.sortBy}
+          onChange={handleSortByChange}
+        >
+          <option value="createdAt">Newest to Oldest</option>
+          <option value="-createdAt">Oldest to Newest</option>
+          <option value="-karma">Karma, Highest to Lowest</option>
+          <option value="karma">Karma, Lowest to Highest</option>
         </select>
         Results:{' '}
-        <select name="resultsPerPage" id="resultsPerPage">
+        <select
+          name="resultsPerPage"
+          id="resultsPerPage"
+          value={criteria.resultsPerPage}
+          onChange={handleResultsPerPageChange}
+        >
           <option value="2">2</option>
           <option value="5">5</option>
           <option value="10">10</option>

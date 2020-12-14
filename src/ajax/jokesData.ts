@@ -13,12 +13,14 @@ export default {
     return axios.delete(`${URI_STRING}/dadjokes/${jokeId}`, { withCredentials: true})
   },
 
-  getPrivateJokes(): Promise<AxiosPromise> {
-    return axios.get(`${URI_STRING}/dadjokes/private`, { withCredentials: true})
+  getPrivateJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
+    console.log('getPrivateJokes with criteria: ', criteria)
+    return axios.post(`${URI_STRING}/dadjokes/private`, criteria, { withCredentials: true})
   },
 
-  getPublicJokes(): Promise<AxiosPromise> {
-    return axios.get(`${URI_STRING}/dadjokes/public`, { withCredentials: true})
+  getPublicJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
+    console.log('getPublicJokes with criteria: ', criteria)
+    return axios.post(`${URI_STRING}/dadjokes/public`, criteria, { withCredentials: true})
   },
 
   updateJoke(jokeToUpdate: Joke, jokeId: string): Promise<AxiosPromise> {
