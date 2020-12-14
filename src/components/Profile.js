@@ -7,14 +7,15 @@ import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
 
-const Profile = () => {
+const Profile = (props) => {
   const [user, setUser] = useState(null)
   const location = useLocation()
 
   // console.log('the username is: ', username)
 
   useEffect(() => {
-    if (location.pathname !== '/profile') {
+    if (location.pathname !== '/myprofile') {
+      const username = props.match.params.username
       userData.getOtherUserStats(username).then((res) => {
         console.log('location', location)
         console.log('other stats:', res)

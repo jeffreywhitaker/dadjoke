@@ -80,7 +80,24 @@ function JokesWrapper({ isLoggedIn, username }) {
   // render the following if checks pass
   return (
     <JokeWrapper>
-      <DisplayP>{display.heading}</DisplayP>
+      <div>
+        <DisplayP>{display.heading}</DisplayP>
+        Sort by:{' '}
+        <select name="sortBy" id="sortBy">
+          <option value="newest">Newest to Oldest</option>
+          <option value="oldest">Oldest to Newest</option>
+          <option value="highest">Karma, Highest to Lowest</option>
+          <option value="lowest">Karma, Lowest to Highest</option>
+        </select>
+        Results:{' '}
+        <select name="resultsPerPage" id="resultsPerPage">
+          <option value="2">2</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+
       {jokes.map((joke) => {
         return (
           <SingleJokeCard
