@@ -1,41 +1,24 @@
 // import dependencies
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { Form, Field, withFormik } from 'formik'
+// bootstrap
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 // import actions
 import { userSignup } from '../actions/actions'
 
-// login page component
+// signup page component
 const Signup = (props) => {
-  const {
-    errors,
-    touched,
-    values,
-    userSignup,
-    isLoggedIn,
-    handleSubmit,
-    signupError,
-  } = props
+  const { userSignup, isLoggedIn, signupError } = props
   // use history
   const history = useHistory()
-
-  // local state login credentials
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
-    primaryemail: '',
-  })
-
-  // call login function
-  const callSignup = (e) => {
-    e.preventDefault()
-    userSignup(credentials)
-  }
 
   // if logged in, redirect to game list
   useEffect(() => {
@@ -44,92 +27,112 @@ const Signup = (props) => {
     }
   }, [history, isLoggedIn])
 
-  // handle form values, save to local state
-  const handleValueChange = (e) => {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    })
-  }
-
   // render the following
   return (
-    <SignupDiv>
-      <Form className="formContainer" onSubmit={handleSubmit}>
-        <p>Username:</p>
-        <Field type="text" name="username" />
-        {touched.username && errors.username && (
-          <ErrorP className="error">{errors.username}</ErrorP>
-        )}
-        <p>Password:</p>
-        <Field type="password" name="password" />
-        {touched.password && errors.password && (
-          <ErrorP className="error">{errors.password}</ErrorP>
-        )}
-        <p>Email:</p>
-        <Field type="email" name="primaryemail" />
-        {touched.email && errors.email && (
-          <ErrorP className="error">{errors.email}</ErrorP>
-        )}
-        {signupError && <ErrorP>{signupError}</ErrorP>}
-        <button className="button" type="submit">
-          Submit
-        </button>
-      </Form>
-      {/* <form onSubmit={callSignup}>
-        <p>Username:</p>
-        <input
-          type="text"
-          name="username"
-          value={credentials.username}
-          onChange={handleValueChange}
-        />
-        <p>Password:</p>
-        <input
-          type="password"
-          name="password"
-          value={credentials.password}
-          onChange={handleValueChange}
-        />
-        <p>Email:</p>
-        <input
-          type="email"
-          name="primaryemail"
-          value={credentials.primaryemail}
-          onChange={handleValueChange}
-        />
-        <br />
-        <br />
-        <button>Sign Up</button>
-      </form> */}
-      <h2>Already registered?</h2>
-      <Link to="/login">Log In!</Link>
-    </SignupDiv>
+    <Formik
+      initialValues={{
+        username: '',
+        password: '',
+        primaryemail: '',
+      }}
+      validationSchema={Yup.object().shape({
+        username: Yup.string()
+          .required('Username is a required field')
+          .min(2, 'Username must be at least 2 characters')
+          .max(10, 'Username must be 10 characters or less'),
+        password: Yup.string()
+          .required('Password is a required field')
+          .min(4, 'Password must be at least 4 characters'),
+        primaryemail: Yup.string()
+          .required('Email is a required field')
+          .email('Must be a valid email'),
+      })}
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        setSubmitting(true)
+        userSignup(values)
+        setSubmitting(false)
+        resetForm()
+      }}
+    >
+      {({
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        touched,
+        errors,
+        isSubmitting,
+      }) => (
+        <SignupDiv>
+          <Form noValidate onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                value={values.username}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={touched.username && errors.username}
+              />
+              {errors.username ? <ErrorP>{errors.username}</ErrorP> : ''}
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={touched.password && errors.password}
+              />
+              {errors.password ? <ErrorP>{errors.password}</ErrorP> : ''}
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="primaryemail"
+                value={values.primaryemail}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={touched.primaryemail && errors.primaryemail}
+              />
+              {errors.primaryemail ? (
+                <ErrorP>{errors.primaryemail}</ErrorP>
+              ) : (
+                ''
+              )}
+            </Form.Group>
+
+            <Button
+              type="submit"
+              variant={
+                errors.username || errors.password || errors.primaryemail
+                  ? 'secondary'
+                  : 'primary'
+              }
+              disabled={
+                errors.username ||
+                errors.password ||
+                errors.primaryemail ||
+                isSubmitting
+              }
+            >
+              Submit
+            </Button>
+          </Form>
+          <h4>Already registered?</h4>
+          <Link to="/login">Log In!</Link>
+          {signupError ? <ErrorP>{signupError}</ErrorP> : ''}
+        </SignupDiv>
+      )}
+    </Formik>
   )
 }
-
-// Formik component
-const FormikSignup = withFormik({
-  mapPropsToValues({ username, password, primaryemail }) {
-    return {
-      username: username || '',
-      password: password || '',
-      primaryemail: primaryemail || '',
-    }
-  },
-
-  validationSchema: Yup.object().shape({
-    username: Yup.string().required('Username is a required field'),
-    password: Yup.string().required('Password is a required field'),
-    primaryemail: Yup.string().required('Email is a required field'),
-  }),
-
-  handleSubmit: (values, { props, setSubmitting }) => {
-    console.log('HANDLE SUBMIT ADSJFKSF')
-    props.userSignup(values)
-    setSubmitting(false)
-  },
-})(Signup)
 
 // connect component to redux store
 const mapStateToProps = (state) => {
@@ -140,7 +143,7 @@ const mapStateToProps = (state) => {
 }
 
 // export component
-export default connect(mapStateToProps, { userSignup })(FormikSignup)
+export default connect(mapStateToProps, { userSignup })(Signup)
 
 // styled components
 const SignupDiv = styled.div`
@@ -148,8 +151,7 @@ const SignupDiv = styled.div`
   margin: 20px auto;
 `
 
-const ErrorP = styled.p`
+const ErrorP = styled.div`
   color: red;
-  font-size: 12px;
-  background-color: lightgray;
+  font-size: 13px;
 `
