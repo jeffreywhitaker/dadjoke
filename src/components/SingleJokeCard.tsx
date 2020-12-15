@@ -31,6 +31,7 @@ function SingleJokeCard(props: Props) {
     username,
     updateJokeDetails,
     updateJokeKarma,
+    isLoggedIn,
   } = props
 
   console.log('username:', username)
@@ -113,6 +114,11 @@ function SingleJokeCard(props: Props) {
     voteOptions.downvoteTooltip = 'Downvote this joke'
   }
 
+  if (!isLoggedIn) {
+    voteOptions.upvoteTooltip = 'You must be logged in to upvote a joke'
+    voteOptions.downvoteTooltip = 'You must be logged in to downvote a joke'
+  }
+
   // render the following
   return (
     <DivWrapper>
@@ -122,6 +128,7 @@ function SingleJokeCard(props: Props) {
             voteOptions={voteOptions}
             joke={joke}
             updateJokeKarma={updateJokeKarma}
+            isLoggedIn={isLoggedIn}
           />
           {/* DATE */}
           <DetailsDiv className="floatRight">
@@ -247,8 +254,14 @@ function SingleJokeCard(props: Props) {
   )
 }
 
+const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean } }) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
 // export component
-const connector = connect(null, { deleteJoke })
+const connector = connect(mapStateToProps, { deleteJoke })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   joke: Joke

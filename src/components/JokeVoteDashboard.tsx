@@ -12,6 +12,7 @@ import { Joke } from '../types/types'
 interface Props {
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
   joke: Joke
+  isLoggedIn: boolean
   voteOptions: {
     upvoteTooltip: string
     downvoteTooltip: string
@@ -19,20 +20,25 @@ interface Props {
 }
 
 const JokeVoteDashboard: React.FC<Props> = (props) => {
-  const { joke, voteOptions, updateJokeKarma } = props
+  const { isLoggedIn, joke, voteOptions, updateJokeKarma } = props
 
   const handleJokeVote = (newVote: number) => {
     console.log('handleJokeVote newVote', newVote)
     const oldVote = parseInt(joke.userVote as string)
-    jokesData.voteForJoke(joke._id as string, newVote.toString()).then(() => {
-      console.log('voteForJoke called', joke.karma)
-      if (joke.karma || joke.karma === 0) {
-        const newKarma = joke.karma - oldVote + newVote
-        console.log('new karma is')
-        console.log(newKarma)
-        updateJokeKarma(joke._id as string, newKarma, newVote)
-      }
-    })
+    jokesData
+      .voteForJoke(joke._id as string, newVote.toString())
+      .then(() => {
+        console.log('voteForJoke called', joke.karma)
+        if (joke.karma || joke.karma === 0) {
+          const newKarma = joke.karma - oldVote + newVote
+          console.log('new karma is')
+          console.log(newKarma)
+          updateJokeKarma(joke._id as string, newKarma, newVote)
+        }
+      })
+      .catch((err) => {
+        console.log('error voting on joke', err)
+      })
   }
 
   return (
@@ -45,11 +51,21 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
         }
       >
         {joke.userVote === '1' ? (
-          <Button size="sm" variant="success" onClick={() => handleJokeVote(0)}>
+          <Button
+            size="sm"
+            variant="success"
+            disabled={!isLoggedIn}
+            onClick={() => handleJokeVote(0)}
+          >
             <i className="fas fa-thumbs-up"></i>
           </Button>
         ) : (
-          <Button size="sm" variant="light" onClick={() => handleJokeVote(1)}>
+          <Button
+            size="sm"
+            variant="light"
+            disabled={!isLoggedIn}
+            onClick={() => handleJokeVote(1)}
+          >
             <i className="fas fa-thumbs-up"></i>
           </Button>
         )}
@@ -78,11 +94,21 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
         }
       >
         {joke.userVote === '-1' ? (
-          <Button size="sm" variant="danger" onClick={() => handleJokeVote(0)}>
+          <Button
+            size="sm"
+            variant="danger"
+            disabled={!isLoggedIn}
+            onClick={() => handleJokeVote(0)}
+          >
             <i className="fas fa-thumbs-down"></i>
           </Button>
         ) : (
-          <Button size="sm" variant="light" onClick={() => handleJokeVote(-1)}>
+          <Button
+            size="sm"
+            variant="light"
+            disabled={!isLoggedIn}
+            onClick={() => handleJokeVote(-1)}
+          >
             <i className="fas fa-thumbs-down"></i>
           </Button>
         )}
