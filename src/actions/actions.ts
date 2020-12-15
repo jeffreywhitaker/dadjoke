@@ -15,7 +15,7 @@ export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE'
 export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) => {
   dispatch({ type: LOGIN_USER_START })
   axios
-    .post(`${URI_STRING}/login`, credentials, { withCredentials: true} )
+    .post(`${URI_STRING}/api/users/login`, credentials, { withCredentials: true} )
     .then((res) => {
       console.log('loggedin', res)
       // create object to send
@@ -37,7 +37,7 @@ export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) =>
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS'
 export const userLogout = (): Thunk => (dispatch) => {
   console.log('logout user')
-  axios.get(`${URI_STRING}/logout`, { withCredentials: true }).then(() => {
+  axios.get(`${URI_STRING}/api/users/logout`, { withCredentials: true }).then(() => {
     dispatch({ type: LOGOUT_USER_SUCCESS })
   }).catch((err) => console.log('err logging out', err))
 }
@@ -47,7 +47,7 @@ export const USE_SAVED_TOKEN_SUCCESS = 'USE_SAVED_TOKEN_SUCCESS'
 export const USE_SAVED_TOKEN_FAILURE = 'USE_SAVED_TOKEN_FAILURE'
 export const ifSessionExistsLogIn = (): Thunk => (dispatch) => {
   console.log('inside checkToken')
-  axios.get(`${URI_STRING}/cookie`, { withCredentials: true }).then((response) => {
+  axios.get(`${URI_STRING}/api/users/cookie`, { withCredentials: true }).then((response) => {
     console.log('use cookie response:', response)
     dispatch({ type: USE_SAVED_TOKEN_SUCCESS, payload: response.data })
   }).catch((error) => {
@@ -63,7 +63,7 @@ export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE'
 export const userSignup = (credentials: SignupCredentials): Thunk => (dispatch) => {
   dispatch({ type: SIGNUP_USER_START })
   axios
-    .post(`${URI_STRING}/createnewuser`, credentials, { withCredentials: true})
+    .post(`${URI_STRING}/api/users/createnewuser`, credentials, { withCredentials: true})
     .then((res) => {
       // set token, expiry, and username
       localStorage.setItem('token', res.data.access_token)
@@ -94,7 +94,7 @@ export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE'
 export const deleteUser = (): Thunk => (dispatch) => {
   dispatch({ type: DELETE_USER_START})
-  axios.post(`${URI_STRING}/deleteuser`, null, { withCredentials: true}).then((res) => {
+  axios.post(`${URI_STRING}/api/users/deleteself`, null, { withCredentials: true}).then((res) => {
     console.log('Del user:', res)
     // TODO: handle the cookie/local storage
     dispatch({ type: DELETE_USER_SUCCESS })
@@ -112,7 +112,7 @@ export const ADD_JOKE_FAILURE = 'ADD_JOKE_FAILURE'
 export const addJoke = (jokeToAdd: Joke): Thunk => (dispatch) => {
   dispatch({ type: ADD_JOKE_START })
   axios
-    .post(`${URI_STRING}/dadjokes/add`, jokeToAdd, { withCredentials: true})
+    .post(`${URI_STRING}/api/jokes/add`, jokeToAdd, { withCredentials: true})
     .then((res) => {
       // if joke is private, dispatch response to reducer
       if (jokeToAdd.isprivate) {
@@ -138,7 +138,7 @@ export const DELETE_JOKE_FAILURE = 'DELETE_JOKE_FAILURE'
 export const deleteJoke = (jokeId: string): Thunk => (dispatch) => {
   dispatch({ type: DELETE_JOKE_START })
   axios
-    .delete(`${URI_STRING}/dadjokes/${jokeId}`, { withCredentials: true})
+    .delete(`${URI_STRING}/api/jokes/${jokeId}`, { withCredentials: true})
     .then((res) => {
       console.log(res)
       console.log('deleteJoke: id, ', jokeId)

@@ -11,15 +11,16 @@ import * as Yup from 'yup'
 import { userSignup } from '../actions/actions'
 
 // login page component
-const Signup = ({
-  errors,
-  touched,
-  values,
-  userSignup,
-  isLoggedIn,
-  handleSubmit,
-  signupError,
-}) => {
+const Signup = (props) => {
+  const {
+    errors,
+    touched,
+    values,
+    userSignup,
+    isLoggedIn,
+    handleSubmit,
+    signupError,
+  } = props
   // use history
   const history = useHistory()
 

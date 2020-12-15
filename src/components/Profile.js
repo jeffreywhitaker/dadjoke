@@ -35,8 +35,8 @@ const Profile = (props) => {
   }
 
   return (
-    <div>
-      <DisplayP>{user.username}'s Profile</DisplayP>
+    <WrapperDiv>
+      <h1>{user.username}'s Profile</h1>
       <div>
         <p>
           User since: {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
@@ -46,18 +46,22 @@ const Profile = (props) => {
         <p>Total Upvotes: {user.upvoteCount}</p>
         <p>Total Downvotes: {user.downvoteCount}</p>
       </div>
-    </div>
+    </WrapperDiv>
   )
 }
 
 export default Profile
 
-const DisplayP = styled.p`
-  text-align: center;
-  font-size: 20px;
-  background: lightblue;
-  width: 50%;
-  margin: 0 auto;
-  border-radius: 15px;
-  padding: 10px 0;
+const WrapperDiv = styled.div`
+  padding: 10px;
+
+  > h1 {
+    text-align: center;
+    font-size: 20px;
+    background: lightblue;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 10px 0;
+  }
 `

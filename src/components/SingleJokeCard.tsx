@@ -195,7 +195,7 @@ function SingleJokeCard(props: Props) {
         </Card.Body>
         <Card.Footer>
           {/* UPDATE BUTTON */}
-          {!isBeingUpdated && (
+          {!isBeingUpdated && joke.username === username && (
             <Button variant="primary" onClick={() => toggleUpdate()}>
               Edit
             </Button>
@@ -228,7 +228,17 @@ function SingleJokeCard(props: Props) {
           {window.location.pathname !== '/privatejokes' && (
             <span className="floatRight">
               submitted by:{' '}
-              <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
+              <OverlayTrigger
+                key={`${joke.username}_link`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`${joke.username}_link`}>
+                    {`Visit ${joke.username}'s profile`}
+                  </Tooltip>
+                }
+              >
+                <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
+              </OverlayTrigger>
             </span>
           )}
         </Card.Footer>

@@ -1,18 +1,13 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import { Route, Redirect } from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Route, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 // bootstrap
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import Modal from 'react-bootstrap/Modal'
-import Navbar from 'react-bootstrap/navbar'
-import Nav from 'react-bootstrap/nav'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 // import components
 import Header from './components/Header'
@@ -21,17 +16,13 @@ import Login from './components/Login'
 import Profile from './components/Profile'
 import Signup from './components/Signup'
 
-import { ifSessionExistsLogIn } from './actions/actions'
-
-// typing
-type Props = {
-  ifSessionExistsLogIn: () => void
-}
+import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 
 // App component
-export const App: React.FC<Props> = (props: Props) => {
+function App(props: Props) {
+  const history = useHistory()
   // destructure props
-  const { ifSessionExistsLogIn } = props
+  const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
 
   // for intro modal
   const [showModal, setShowModal] = useState(false)
@@ -39,20 +30,14 @@ export const App: React.FC<Props> = (props: Props) => {
     setShowModal(false)
   }
 
-  const handleLogin = () => {
-    console.log('handleLogin')
-  }
-
-  function handleSignup() {
-    console.log('handleSignup')
-  }
-
   function handleDemo() {
-    console.log('handleLogin')
+    console.log('handleDemo')
+    userLogin({ username: 'testuser', password: 'password' })
+    setShowModal(false)
   }
 
   function handleDoNotShowAgain() {
-    console.log('handleLogin')
+    localStorage.setItem('doNotShowIntroModal', 'true')
   }
 
   // use effect to check for token
@@ -61,7 +46,7 @@ export const App: React.FC<Props> = (props: Props) => {
     if (localStorage.getItem('doNotShowIntroModal') !== 'true') {
       setShowModal(true)
     }
-  }, [ifSessionExistsLogIn()])
+  }, [ifSessionExistsLogIn])
 
   // return components
   return (
@@ -81,19 +66,45 @@ export const App: React.FC<Props> = (props: Props) => {
       {showModal && (
         <Modal show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Welcomet to JeffDadJokes!</Modal.Title>
+            <Modal.Title>Welcome to JeffDadJokes!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <InputGroup className="mb-3">
-              Welcome to the site! If you'd like to see a demo, please click the
-              demo button below. Otherwise, enjoy!
+              {!isLoggedIn ? (
+                <>
+                  <p>
+                    Here you can add, update, and browse dad jokes. You can
+                    upvote your favorites - and downvotes those you don't find
+                    as funny.
+                  </p>
+                  <p>
+                    Please click the 'demo' button below to check out all the
+                    features!
+                  </p>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        setShowModal(false)
+                        history.push('/login')
+                      }}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setShowModal(false)
+                        history.push('/signup')
+                      }}
+                    >
+                      Signup
+                    </Button>
+                    <Button onClick={handleDemo}>Demo</Button>
+                  </div>
+                </>
+              ) : (
+                <p>You are currently logged in - thanks for visiting!</p>
+              )}
             </InputGroup>
-
-            <div>
-              <Button onClick={handleLogin}>Login</Button>
-              <Button onClick={handleSignup}>Signup</Button>
-              <Button onClick={handleDemo}>Demo</Button>
-            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleDoNotShowAgain}>
@@ -106,8 +117,22 @@ export const App: React.FC<Props> = (props: Props) => {
   )
 }
 
+interface LoginReducer {
+  isLoggedIn: boolean
+}
+
+// connect component to redux store
+const mapStateToProps = (state: { loginReducer: LoginReducer }) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
 // export component
-export default connect(null, { ifSessionExistsLogIn })(App)
+const connector = connect(mapStateToProps, { ifSessionExistsLogIn, userLogin })
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux
+export default connector(App)
 
 // styled components
 const AppWrapper = styled.div`
@@ -116,5 +141,5 @@ const AppWrapper = styled.div`
   height: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  background: lightslategray;
+  /* background: lightslategray; */
 `

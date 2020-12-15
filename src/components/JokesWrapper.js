@@ -6,6 +6,9 @@ import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
 
+// bootstrap
+import Button from 'react-bootstrap/Button'
+
 // import actions
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
@@ -23,9 +26,11 @@ function JokesWrapper({ isLoggedIn, username }) {
   })
 
   const [criteria, setCriteria] = useState({
-    sortBy: 'createdAt',
+    sortBy: '-createdAt',
     resultsPerPage: '5',
+    page: 1,
   })
+  const [hasNextPage, setHasNextPage] = useState(false)
 
   // get jokes on page load
   useEffect(() => {
@@ -34,14 +39,16 @@ function JokesWrapper({ isLoggedIn, username }) {
       setDisplay({ ...display, heading: 'Public Jokes' })
       jokesData.getPublicJokes(criteria).then((res) => {
         console.log('jokes response:', res)
-        setJokes(res.data)
+        setJokes(res.data.jokes)
+        setHasNextPage(res.data.hasNextPage)
         setIsLoading(false)
       })
     } else if (isLoggedIn) {
       setDisplay({ ...display, heading: `${username}'s Jokes` })
       jokesData.getPrivateJokes(criteria).then((res) => {
         console.log('jokes response:', res)
-        setJokes(res.data)
+        setJokes(res.data.jokes)
+        setHasNextPage(res.data.hasNextPage)
         setIsLoading(false)
       })
     }
@@ -74,6 +81,20 @@ function JokesWrapper({ isLoggedIn, username }) {
     })
   }
 
+  const handlePageDown = () => {
+    setCriteria({
+      ...criteria,
+      page: criteria.page - 1,
+    })
+  }
+
+  const handlePageUp = () => {
+    setCriteria({
+      ...criteria,
+      page: criteria.page + 1,
+    })
+  }
+
   const updateJokeDetails = (jokeID, res) => {
     const updatedJokes = cloneDeep(jokes).filter((joke) => joke._id !== jokeID)
     updatedJokes.push(res.data)
@@ -103,30 +124,48 @@ function JokesWrapper({ isLoggedIn, username }) {
     <JokeWrapper>
       <div>
         <DisplayP>{display.heading}</DisplayP>
-        Sort by:{' '}
-        <select
-          name="sortBy"
-          id="sortBy"
-          value={criteria.sortBy}
-          onChange={handleSortByChange}
-        >
-          <option value="createdAt">Newest to Oldest</option>
-          <option value="-createdAt">Oldest to Newest</option>
-          <option value="-karma">Karma, Highest to Lowest</option>
-          <option value="karma">Karma, Lowest to Highest</option>
-        </select>
-        Results:{' '}
-        <select
-          name="resultsPerPage"
-          id="resultsPerPage"
-          value={criteria.resultsPerPage}
-          onChange={handleResultsPerPageChange}
-        >
-          <option value="2">2</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
+        <SortDiv>
+          <div className="sortOptions">
+            Sort by:{' '}
+            <select
+              name="sortBy"
+              id="sortBy"
+              value={criteria.sortBy}
+              onChange={handleSortByChange}
+            >
+              <option value="-createdAt">Newest to Oldest</option>
+              <option value="createdAt">Oldest to Newest</option>
+              <option value="-karma">Karma, Highest to Lowest</option>
+              <option value="karma">Karma, Lowest to Highest</option>
+            </select>
+            &nbsp;&nbsp; Results:{' '}
+            <select
+              name="resultsPerPage"
+              id="resultsPerPage"
+              value={criteria.resultsPerPage}
+              onChange={handleResultsPerPageChange}
+            >
+              <option value="2">2</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+
+          <div className="pagination">
+            {criteria.page > 1 && (
+              <Button size="sm" onClick={handlePageDown}>
+                {'<<'}
+              </Button>
+            )}
+            <span>Page: {criteria.page}</span>
+            {hasNextPage && (
+              <Button size="sm" onClick={handlePageUp}>
+                {'>>'}
+              </Button>
+            )}
+          </div>
+        </SortDiv>
       </div>
 
       {jokes.map((joke) => {
@@ -161,7 +200,7 @@ export default connect(mapStateToProps, {})(JokesWrapper)
 const JokeWrapper = styled.article`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 10px;
 `
 
 const DisplayP = styled.p`
@@ -172,4 +211,22 @@ const DisplayP = styled.p`
   margin: 0 auto;
   border-radius: 15px;
   padding: 10px 0;
+`
+
+const SortDiv = styled.div`
+  background: lightblue;
+  margin: 0 auto;
+  border-radius: 6px;
+  display: flex;
+  padding: 10px;
+  margin-top: 10px;
+  justify-content: space-between;
+
+  > .sortOptions {
+    padding-left: 20px;
+  }
+
+  > .pagination {
+    padding-right: 20px;
+  }
 `

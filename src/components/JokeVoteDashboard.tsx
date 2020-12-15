@@ -45,16 +45,16 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
         }
       >
         {joke.userVote === '1' ? (
-          <Button variant="success" onClick={() => handleJokeVote(0)}>
+          <Button size="sm" variant="success" onClick={() => handleJokeVote(0)}>
             <i className="fas fa-thumbs-up"></i>
           </Button>
         ) : (
-          <Button variant="light" onClick={() => handleJokeVote(1)}>
+          <Button size="sm" variant="light" onClick={() => handleJokeVote(1)}>
             <i className="fas fa-thumbs-up"></i>
           </Button>
         )}
       </OverlayTrigger>
-      &nbsp;
+      &nbsp;&nbsp;
       <OverlayTrigger
         key={`${joke._id}_karma`}
         placement="top"
@@ -67,7 +67,7 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
       >
         <span>{joke.karma}</span>
       </OverlayTrigger>
-      &nbsp;
+      &nbsp;&nbsp;
       <OverlayTrigger
         key={`${joke._id}_downvote`}
         placement="top"
@@ -78,11 +78,11 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
         }
       >
         {joke.userVote === '-1' ? (
-          <Button variant="danger" onClick={() => handleJokeVote(0)}>
+          <Button size="sm" variant="danger" onClick={() => handleJokeVote(0)}>
             <i className="fas fa-thumbs-down"></i>
           </Button>
         ) : (
-          <Button variant="light" onClick={() => handleJokeVote(-1)}>
+          <Button size="sm" variant="light" onClick={() => handleJokeVote(-1)}>
             <i className="fas fa-thumbs-down"></i>
           </Button>
         )}
