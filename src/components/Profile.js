@@ -23,44 +23,44 @@ const Profile = (props) => {
     })
   }, [username])
 
-  if (!user) {
-    return <Loading />
-  }
-
   return (
     <WrapperDiv>
-      <h1>{user.username}'s Profile</h1>
-      <div>
-        <p>
-          User since: {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
-        </p>
-        <p>Total Public Jokes: {user.publicJokesCount}</p>
-        <p>Total Private Jokes: {user.privateJokesCount}</p>
-        <p>Total Upvotes: {user.upvoteCount}</p>
-        <p>Total Downvotes: {user.downvoteCount}</p>
-        <h4>Following:</h4>
-        {user.followingUsers.map((username) => {
-          return (
-            <Link
-              to={`/profile/${username}`}
-              onClick={() => setUsername(username)}
-            >
-              -&nbsp;{username}
-            </Link>
-          )
-        })}
-        <h4>Followed by:</h4>
-        {user.followedByUsers.map((username) => {
-          return (
-            <Link
-              to={`/profile/${username}`}
-              onClick={() => setUsername(username)}
-            >
-              -&nbsp;{username}
-            </Link>
-          )
-        })}
-      </div>
+      <h1 className="title">{username}'s Profile</h1>
+      {!user ? (
+        <Loading />
+      ) : (
+        <div>
+          <p>
+            User since: {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
+          </p>
+          <p>Total Public Jokes: {user.publicJokesCount}</p>
+          <p>Total Private Jokes: {user.privateJokesCount}</p>
+          <p>Total Upvotes: {user.upvoteCount}</p>
+          <p>Total Downvotes: {user.downvoteCount}</p>
+          <h4>Following:</h4>
+          {user.followingUsers.map((username) => {
+            return (
+              <Link
+                to={`/profile/${username}`}
+                onClick={() => setUsername(username)}
+              >
+                -&nbsp;{username}
+              </Link>
+            )
+          })}
+          <h4>Followed by:</h4>
+          {user.followedByUsers.map((username) => {
+            return (
+              <Link
+                to={`/profile/${username}`}
+                onClick={() => setUsername(username)}
+              >
+                -&nbsp;{username}
+              </Link>
+            )
+          })}
+        </div>
+      )}
     </WrapperDiv>
   )
 }
@@ -70,7 +70,7 @@ export default Profile
 const WrapperDiv = styled.div`
   padding: 10px;
 
-  > h1 {
+  > .title {
     text-align: center;
     font-size: 20px;
     background: lightblue;

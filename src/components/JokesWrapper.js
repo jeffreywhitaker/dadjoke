@@ -124,7 +124,7 @@ function JokesWrapper({ isLoggedIn, username }) {
   // render the following if checks pass
   return (
     <JokeWrapper>
-      <DisplayP>{display.heading}</DisplayP>
+      <h1 className="title">{display.heading}</h1>
       {isLoading ? (
         <Loading />
       ) : (
@@ -217,16 +217,16 @@ const JokeWrapper = styled.article`
   display: flex;
   flex-direction: column;
   padding: 10px;
-`
 
-const DisplayP = styled.p`
-  text-align: center;
-  font-size: 20px;
-  background: lightblue;
-  width: 50%;
-  margin: 0 auto;
-  border-radius: 15px;
-  padding: 10px 0;
+  > .title {
+    text-align: center;
+    font-size: 20px;
+    background: lightblue;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 10px 0;
+  }
 `
 
 const SortDiv = styled.div`

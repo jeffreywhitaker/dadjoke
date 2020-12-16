@@ -134,7 +134,18 @@ function SingleJokeCard(props: Props) {
           />
           {/* DATE */}
           <DetailsDiv className="floatRight">
-            {dayjs(joke.createdAt).format("MMM DD, 'YY")} &nbsp;
+            <OverlayTrigger
+              key={`${joke._id}_submit`}
+              placement="top"
+              overlay={
+                <Tooltip id={`${joke._id}_submit`}>
+                  Joke Submission date
+                </Tooltip>
+              }
+            >
+              <span>{dayjs(joke.createdAt).format("MMM DD, 'YY")}</span>
+            </OverlayTrigger>
+            &nbsp;
             {/* GLOBE OR LOCK ICON */}
             {joke.isprivate && (
               <OverlayTrigger
