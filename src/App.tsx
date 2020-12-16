@@ -90,6 +90,7 @@ function App(props: Props) {
                     >
                       Login
                     </Button>
+                    &nbsp;
                     <Button
                       onClick={() => {
                         setShowModal(false)
@@ -98,6 +99,7 @@ function App(props: Props) {
                     >
                       Signup
                     </Button>
+                    &nbsp;
                     <Button onClick={handleDemo}>Demo</Button>
                   </div>
                 </>

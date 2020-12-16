@@ -45,6 +45,14 @@ const Profile = (props) => {
         <p>Total Private Jokes: {user.privateJokesCount}</p>
         <p>Total Upvotes: {user.upvoteCount}</p>
         <p>Total Downvotes: {user.downvoteCount}</p>
+        <p>Following:</p>
+        {user.followingUsers.map((username) => {
+          return <p>-{username}</p>
+        })}
+        <p>Followed by:</p>
+        {user.followedByUsers.map((username) => {
+          return <p>-{username}</p>
+        })}
       </div>
     </WrapperDiv>
   )

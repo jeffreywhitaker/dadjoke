@@ -66,6 +66,17 @@ function JokesWrapper({ isLoggedIn, username }) {
       setJokes(updatedJokes)
   }
 
+  const updateFollowJokeCreator = (jokeCreator, isFollowing) => {
+    console.log('updateFollowJokeCreator', jokeCreator, isFollowing)
+    const updatedJokes = cloneDeep(jokes)
+    updatedJokes.forEach((joke) => {
+      if (joke.username === jokeCreator) {
+        joke.userFollowingCreator = isFollowing
+      }
+    })
+    setJokes(updatedJokes)
+  }
+
   const handleSortByChange = (e) => {
     console.log('sort by changed to: ', e.currentTarget.value)
     setCriteria({
@@ -153,17 +164,23 @@ function JokesWrapper({ isLoggedIn, username }) {
           </div>
 
           <div className="pagination">
-            {criteria.page > 1 && (
-              <Button size="sm" onClick={handlePageDown}>
-                {'<<'}
-              </Button>
-            )}
-            <span>Page: {criteria.page}</span>
-            {hasNextPage && (
-              <Button size="sm" onClick={handlePageUp}>
-                {'>>'}
-              </Button>
-            )}
+            <Button
+              size="sm"
+              onClick={handlePageDown}
+              variant={criteria.page <= 1 ? 'secondary' : 'primary'}
+              disabled={criteria.page <= 1}
+            >
+              {'<<'}
+            </Button>
+            <span className="page">Page: {criteria.page}</span>
+            <Button
+              size="sm"
+              variant={!hasNextPage ? 'secondary' : 'primary'}
+              disabled={!hasNextPage}
+              onClick={handlePageUp}
+            >
+              {'>>'}
+            </Button>
           </div>
         </SortDiv>
       </div>
@@ -176,6 +193,7 @@ function JokesWrapper({ isLoggedIn, username }) {
             key={joke.dadjokequestion}
             updateJokeKarma={updateJokeKarma}
             updateJokeDetails={updateJokeDetails}
+            updateFollowJokeCreator={updateFollowJokeCreator}
           />
         )
       })}
@@ -227,6 +245,10 @@ const SortDiv = styled.div`
   }
 
   > .pagination {
+    display: flex;
     padding-right: 20px;
+    > .page {
+      margin: 0 5px;
+    }
   }
 `

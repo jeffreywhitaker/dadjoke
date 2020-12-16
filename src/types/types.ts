@@ -12,6 +12,7 @@ export type Joke = {
   createdAt?: Date
   karma?: number
   userVote?: string
+  userFollowingCreator?: boolean
 }
 
 export type Thunk<ReturnType = void> = ThunkAction<

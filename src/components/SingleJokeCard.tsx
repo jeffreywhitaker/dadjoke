@@ -15,6 +15,7 @@ import Tooltip from 'react-bootstrap/Tooltip'
 
 import { deleteJoke } from '../actions/actions'
 import jokesData from '../ajax/jokesData'
+import followData from '../ajax/followData'
 import { Joke } from '../types/types'
 
 import JokeVoteDashboard from './JokeVoteDashboard'
@@ -29,6 +30,7 @@ function SingleJokeCard(props: Props) {
     joke,
     deleteJoke,
     username,
+    updateFollowJokeCreator,
     updateJokeDetails,
     updateJokeKarma,
     isLoggedIn,
@@ -246,6 +248,69 @@ function SingleJokeCard(props: Props) {
               >
                 <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
               </OverlayTrigger>
+              &nbsp;&nbsp;
+              {joke.userFollowingCreator ? (
+                <OverlayTrigger
+                  key={`${joke.username}_follow`}
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`${joke.username}_follow`}>
+                      {`You are following ${joke.username} - click to unfollow`}
+                    </Tooltip>
+                  }
+                >
+                  <Button
+                    size="sm"
+                    variant="success"
+                    onClick={() =>
+                      followData
+                        .unfollowUser((joke.username as unknown) as string)
+                        .then(() => {
+                          updateFollowJokeCreator(
+                            (joke.username as unknown) as string,
+                            false,
+                          )
+                        })
+                    }
+                  >
+                    <i className="fas fa-user-friends"></i>
+                  </Button>
+                </OverlayTrigger>
+              ) : (
+                <OverlayTrigger
+                  key={`${joke.username}_follow`}
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`${joke.username}_follow`}>
+                      {!username ? (
+                        <span>{`You must be logged in to follow someone`}</span>
+                      ) : joke.username === username ? (
+                        <span>{`You can't follow yourself`}</span>
+                      ) : (
+                        <span>{`Click to follow ${joke.username}`}</span>
+                      )}
+                    </Tooltip>
+                  }
+                >
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    disabled={!username || joke.username === username}
+                    onClick={() =>
+                      followData
+                        .followUser((joke.username as unknown) as string)
+                        .then(() => {
+                          updateFollowJokeCreator(
+                            (joke.username as unknown) as string,
+                            true,
+                          )
+                        })
+                    }
+                  >
+                    <i className="fas fa-user-friends"></i>
+                  </Button>
+                </OverlayTrigger>
+              )}
             </span>
           )}
         </Card.Footer>
@@ -268,6 +333,7 @@ type Props = PropsFromRedux & {
   username?: string
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
   updateJokeDetails: (jokeId: string, res: AxiosPromise) => void
+  updateFollowJokeCreator: (username: string, isFollowing: boolean) => void
 }
 
 export default connector(SingleJokeCard)
@@ -277,41 +343,6 @@ const DetailsDiv = styled.div`
   display: flex;
   align-items: center;
 `
-
-// const SingleJokeCardDiv = styled.div`
-//   width: 80%;
-//   margin: 10px auto;
-//   background: lightblue;
-//   border-radius: 15px;
-//   padding: 5px 15px;
-// `
-
-// const StyledButton = styled.button`
-//   background: lightpink;
-//   text-decoration: none;
-//   color: black;
-//   padding: 5px 10px;
-//   outline: none;
-//   border: 0;
-//   margin: 5px 10px;
-//   border-radius: 5px;
-
-//   :hover {
-//     cursor: pointer;
-//     filter: brightness(90%);
-//   }
-// `
-
-// const AuthorP = styled.p`
-//   font-size: 12px;
-// `
-
-// const ErrorP = styled.p`
-//   color: red;
-//   font-size: 12px;
-//   text-align: right;
-//   display: inline-block;
-// `
 
 const DivWrapper = styled.div`
   margin: 10px;
