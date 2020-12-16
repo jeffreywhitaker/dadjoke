@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
@@ -8,27 +9,19 @@ import Loading from '../components/Loading'
 import userData from '../ajax/userData'
 
 const Profile = (props) => {
+  const [username, setUsername] = useState(props.match.params.username)
   const [user, setUser] = useState(null)
   const location = useLocation()
 
   // console.log('the username is: ', username)
 
   useEffect(() => {
-    if (location.pathname !== '/myprofile') {
-      const username = props.match.params.username
-      userData.getOtherUserStats(username).then((res) => {
-        console.log('location', location)
-        console.log('other stats:', res)
-        setUser(res.data)
-      })
-    } else {
-      userData.getOwnStats().then((res) => {
-        console.log('location', location)
-        console.log('own stats: ', res)
-        setUser(res.data)
-      })
-    }
-  }, [])
+    userData.getProfileStats(username).then((res) => {
+      console.log('location', location)
+      console.log('getProfileStats res: ', res)
+      setUser(res.data)
+    })
+  }, [username])
 
   if (!user) {
     return <Loading />
@@ -45,13 +38,27 @@ const Profile = (props) => {
         <p>Total Private Jokes: {user.privateJokesCount}</p>
         <p>Total Upvotes: {user.upvoteCount}</p>
         <p>Total Downvotes: {user.downvoteCount}</p>
-        <p>Following:</p>
+        <h4>Following:</h4>
         {user.followingUsers.map((username) => {
-          return <p>-{username}</p>
+          return (
+            <Link
+              to={`/profile/${username}`}
+              onClick={() => setUsername(username)}
+            >
+              -&nbsp;{username}
+            </Link>
+          )
         })}
-        <p>Followed by:</p>
+        <h4>Followed by:</h4>
         {user.followedByUsers.map((username) => {
-          return <p>-{username}</p>
+          return (
+            <Link
+              to={`/profile/${username}`}
+              onClick={() => setUsername(username)}
+            >
+              -&nbsp;{username}
+            </Link>
+          )
         })}
       </div>
     </WrapperDiv>

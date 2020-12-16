@@ -121,82 +121,80 @@ function JokesWrapper({ isLoggedIn, username }) {
     )
   }
 
-  // loading check
-  if (isLoading) return <Loading />
-
-  // empty check
-
-  if (!jokes) {
-    return <p>No jokes are in the database - add them now!</p>
-  }
-
   // render the following if checks pass
   return (
     <JokeWrapper>
-      <div>
-        <DisplayP>{display.heading}</DisplayP>
-        <SortDiv>
-          <div className="sortOptions">
-            Sort by:{' '}
-            <select
-              name="sortBy"
-              id="sortBy"
-              value={criteria.sortBy}
-              onChange={handleSortByChange}
-            >
-              <option value="-createdAt">Newest to Oldest</option>
-              <option value="createdAt">Oldest to Newest</option>
-              <option value="-karma">Karma, Highest to Lowest</option>
-              <option value="karma">Karma, Lowest to Highest</option>
-            </select>
-            &nbsp;&nbsp; Results:{' '}
-            <select
-              name="resultsPerPage"
-              id="resultsPerPage"
-              value={criteria.resultsPerPage}
-              onChange={handleResultsPerPageChange}
-            >
-              <option value="2">2</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
+      <DisplayP>{display.heading}</DisplayP>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <SortDiv>
+            <div className="sortOptions">
+              Sort by:{' '}
+              <select
+                name="sortBy"
+                id="sortBy"
+                value={criteria.sortBy}
+                onChange={handleSortByChange}
+              >
+                <option value="-createdAt">Newest to Oldest</option>
+                <option value="createdAt">Oldest to Newest</option>
+                <option value="-karma">Karma, Highest to Lowest</option>
+                <option value="karma">Karma, Lowest to Highest</option>
+              </select>
+              &nbsp;&nbsp; Results:{' '}
+              <select
+                name="resultsPerPage"
+                id="resultsPerPage"
+                value={criteria.resultsPerPage}
+                onChange={handleResultsPerPageChange}
+              >
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+            </div>
 
-          <div className="pagination">
-            <Button
-              size="sm"
-              onClick={handlePageDown}
-              variant={criteria.page <= 1 ? 'secondary' : 'primary'}
-              disabled={criteria.page <= 1}
-            >
-              {'<<'}
-            </Button>
-            <span className="page">Page: {criteria.page}</span>
-            <Button
-              size="sm"
-              variant={!hasNextPage ? 'secondary' : 'primary'}
-              disabled={!hasNextPage}
-              onClick={handlePageUp}
-            >
-              {'>>'}
-            </Button>
-          </div>
-        </SortDiv>
-      </div>
-
-      {jokes.map((joke) => {
-        return (
-          <SingleJokeCard
-            joke={joke}
-            username={username}
-            key={joke.dadjokequestion}
-            updateJokeKarma={updateJokeKarma}
-            updateJokeDetails={updateJokeDetails}
-            updateFollowJokeCreator={updateFollowJokeCreator}
-          />
-        )
-      })}
+            <div className="pagination">
+              <Button
+                size="sm"
+                onClick={handlePageDown}
+                variant={criteria.page <= 1 ? 'secondary' : 'primary'}
+                disabled={criteria.page <= 1}
+              >
+                {'<<'}
+              </Button>
+              <span className="page">Page: {criteria.page}</span>
+              <Button
+                size="sm"
+                variant={!hasNextPage ? 'secondary' : 'primary'}
+                disabled={!hasNextPage}
+                onClick={handlePageUp}
+              >
+                {'>>'}
+              </Button>
+            </div>
+          </SortDiv>
+          {jokes.length < 1 ? (
+            <p>No jokes are in the database - add them now!</p>
+          ) : (
+            jokes.map((joke) => {
+              return (
+                <SingleJokeCard
+                  joke={joke}
+                  username={username}
+                  key={joke.dadjokequestion}
+                  updateJokeKarma={updateJokeKarma}
+                  updateJokeDetails={updateJokeDetails}
+                  updateFollowJokeCreator={updateFollowJokeCreator}
+                />
+              )
+            })
+          )}
+        </div>
+      )}
     </JokeWrapper>
   )
 }

@@ -38,6 +38,7 @@ function App(props: Props) {
 
   function handleDoNotShowAgain() {
     localStorage.setItem('doNotShowIntroModal', 'true')
+    setShowModal(false)
   }
 
   // use effect to check for token
@@ -59,14 +60,13 @@ function App(props: Props) {
         <Route exact path="/profile" component={Profile} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/myprofile" component={Profile} />
         <Route path="/profile/:username" component={Profile} />
       </AppWrapper>
 
       {showModal && (
         <Modal show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Welcome to JeffDadJokes!</Modal.Title>
+            <Modal.Title>Welcome to JeffsDadJokes!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <InputGroup className="mb-3">
@@ -78,8 +78,12 @@ function App(props: Props) {
                     as funny.
                   </p>
                   <p>
-                    Please click the 'demo' button below to check out all the
-                    features!
+                    You can even follow other users and view your joke stats on
+                    your profile!
+                  </p>
+                  <p>
+                    Please feel free to click the 'demo' button below to log in
+                    to a test account and check out all the features!
                   </p>
                   <div>
                     <Button
@@ -100,7 +104,9 @@ function App(props: Props) {
                       Signup
                     </Button>
                     &nbsp;
-                    <Button onClick={handleDemo}>Demo</Button>
+                    <Button variant="success" onClick={handleDemo}>
+                      Demo
+                    </Button>
                   </div>
                 </>
               ) : (
@@ -109,8 +115,8 @@ function App(props: Props) {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleDoNotShowAgain}>
-              Do Not Show Again
+            <Button variant="danger" onClick={handleDoNotShowAgain}>
+              Close and Do Not Show Again
             </Button>
           </Modal.Footer>
         </Modal>
