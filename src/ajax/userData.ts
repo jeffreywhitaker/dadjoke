@@ -4,7 +4,7 @@ import axios, { AxiosPromise } from 'axios'
 let URI_STRING = ''
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 if (process.env.NODE_ENV === 'production') {
-  URI_STRING = 'https://jeffsdadjokes-node-be.herokuapp.com/'
+  URI_STRING = 'https://jeffsdadjokes-node-be.herokuapp.com'
 } else {
   URI_STRING = 'http://localhost:5000'
 }
