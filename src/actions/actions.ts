@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Thunk } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
-const URI_STRING = 'http://localhost:5000'
+const URI_STRING = process.env.PROD_URL || 'http://localhost:5000'
 
 // types
 import { Joke, LoginCredentials, SignupCredentials } from '../types/types'
