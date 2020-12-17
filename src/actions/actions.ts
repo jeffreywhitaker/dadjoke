@@ -2,8 +2,14 @@
 import axios from 'axios'
 import { Thunk } from '../types/types'
 
+let URI_STRING = ''
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
-const URI_STRING = process.env.PROD_URL || 'http://localhost:5000'
+if (process.env.NODE_ENV === 'production') {
+  URI_STRING = 'https://jeffsdadjokes-node-be.herokuapp.com/'
+} else {
+  URI_STRING = 'http://localhost:5000'
+}
+
 
 // types
 import { Joke, LoginCredentials, SignupCredentials } from '../types/types'
