@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
+import Chart from 'chart.js'
+
 import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
@@ -23,6 +25,55 @@ const Profile = (props) => {
     })
   }, [username])
 
+  useEffect(() => {
+    if (user) {
+      const ctx = document.getElementById('myChart')
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [
+            'Public',
+            'Private',
+            'Upvotes',
+            'Downvotes',
+            'Following',
+            'Followed By',
+          ],
+          datasets: [
+            {
+              label: 'Count',
+              data: [
+                user.publicJokesCount,
+                user.privateJokesCount,
+                user.upvoteCount,
+                user.downvoteCount,
+                user.followingUsers.length,
+                user.followedByUsers.length,
+              ],
+              backgroundColor: [
+                'Red',
+                'Blue',
+                'Yellow',
+                'Green',
+                'Purple',
+                'Orange',
+              ],
+              borderColor: [
+                'Red',
+                'Blue',
+                'Yellow',
+                'Green',
+                'Purple',
+                'Orange',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+      })
+    }
+  }, [user])
+
   return (
     <WrapperDiv>
       <h1 className="title">{username}'s Profile</h1>
@@ -33,14 +84,12 @@ const Profile = (props) => {
           <div className="leftColumn">
             <h2 className="subTitle">Statistics</h2>
             <hr />
+
+            <canvas id="myChart" width="400" height="400" />
             <p>
               User since:{' '}
               {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
             </p>
-            <p>Total Public Jokes: {user.publicJokesCount}</p>
-            <p>Total Private Jokes: {user.privateJokesCount}</p>
-            <p>Total Upvotes: {user.upvoteCount}</p>
-            <p>Total Downvotes: {user.downvoteCount}</p>
           </div>
           <div className="rightColumn">
             <h2 className="subTitle">Following</h2>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { NavLink, useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 
 // bootstrap
 import Button from 'react-bootstrap/Button'
@@ -84,8 +85,8 @@ export const Header: React.FC<Props> = (props: Props) => {
 
   // return Header
   return (
-    <>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <HeaderWrapper>
+      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
         <Navbar.Brand as={NavLink} to="/publicjokes">
           JeffsDadJokes
         </Navbar.Brand>
@@ -107,11 +108,19 @@ export const Header: React.FC<Props> = (props: Props) => {
           <Nav>
             {isLoggedIn ? (
               <>
-                <Button variant="primary" onClick={handleShow}>
+                <Button
+                  variant="primary"
+                  className="button"
+                  onClick={handleShow}
+                >
                   Add Joke
                 </Button>
                 &nbsp;
-                <Button variant="danger" onClick={handleLogout}>
+                <Button
+                  variant="danger"
+                  className="button"
+                  onClick={handleLogout}
+                >
                   Log Out
                 </Button>
               </>
@@ -181,7 +190,7 @@ export const Header: React.FC<Props> = (props: Props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </HeaderWrapper>
   )
 }
 
@@ -200,3 +209,9 @@ const connector = connect(mapStateToProps, { userLogout })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux
 export default connector(Header)
+
+const HeaderWrapper = styled.section`
+  .button {
+    max-width: 150px;
+  }
+`
