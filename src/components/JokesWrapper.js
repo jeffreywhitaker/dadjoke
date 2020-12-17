@@ -246,6 +246,8 @@ const SortDiv = styled.div`
   > .pagination {
     display: flex;
     padding-right: 20px;
+    align-items: center;
+
     > .page {
       margin: 0 5px;
     }
