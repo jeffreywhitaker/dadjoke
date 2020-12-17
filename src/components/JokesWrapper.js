@@ -88,6 +88,7 @@ function JokesWrapper({ isLoggedIn, username }) {
   const handleResultsPerPageChange = (e) => {
     setCriteria({
       ...criteria,
+      page: 1,
       resultsPerPage: e.currentTarget.value,
     })
   }

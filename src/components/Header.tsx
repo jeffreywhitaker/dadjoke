@@ -11,7 +11,7 @@ import Modal from 'react-bootstrap/Modal'
 import Navbar from 'react-bootstrap/navbar'
 import Nav from 'react-bootstrap/nav'
 import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 // import functions
 import jokesData from '../ajax/jokesData'
@@ -156,15 +156,24 @@ export const Header: React.FC<Props> = (props: Props) => {
             />
           </InputGroup>
 
-          <ToggleButtonGroup
-            type="radio"
-            name="options"
-            defaultValue={'public'}
-            onChange={handleSetIsPrivate}
-          >
-            <ToggleButton value={false}>Public</ToggleButton>
-            <ToggleButton value={true}>Private</ToggleButton>
-          </ToggleButtonGroup>
+          <ButtonGroup toggle>
+            <ToggleButton
+              type="radio"
+              checked={!newJoke.isprivate}
+              value={false}
+              onChange={() => handleSetIsPrivate(false)}
+            >
+              Public
+            </ToggleButton>
+            <ToggleButton
+              type="radio"
+              checked={newJoke.isprivate}
+              value={true}
+              onChange={() => handleSetIsPrivate(false)}
+            >
+              Private
+            </ToggleButton>
+          </ButtonGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={callAddJoke}>
