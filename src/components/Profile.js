@@ -6,6 +6,11 @@ import dayjs from 'dayjs'
 
 import Chart from 'chart.js'
 
+// bootstrap
+import Accordion from 'react-bootstrap/Accordion'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+
 import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
@@ -94,39 +99,62 @@ const Profile = (props) => {
           <div className="rightColumn">
             <h2 className="subTitle">Following</h2>
             <hr />
-            <h4>{username} is currently following:</h4>
-            {user.followingUsers.length < 1 && <span>[N/A]</span>}
-            {user.followingUsers.map((username) => {
-              return (
-                <Link
-                  to={`/profile/${username}`}
-                  onClick={() => {
-                    setUser(null)
-                    setUsername(username)
-                  }}
-                  key={`${username}_following`}
-                >
-                  -&nbsp;{username}
-                </Link>
-              )
-            })}
-            <hr />
-            <h4>{username} is being followed by:</h4>
-            {user.followedByUsers.length < 1 && <span>[N/A]</span>}
-            {user.followedByUsers.map((username) => {
-              return (
-                <Link
-                  to={`/profile/${username}`}
-                  onClick={() => {
-                    setUser(null)
-                    setUsername(username)
-                  }}
-                  key={`${username}_follower`}
-                >
-                  -&nbsp;{username}
-                </Link>
-              )
-            })}
+            <Accordion defaultActiveKey="0">
+              <Card>
+                <Accordion.Toggle as={Card.Header} variant="link" eventKey="0">
+                  {'['}
+                  {user.followingUsers.length}
+                  {']'} Following these users:
+                </Accordion.Toggle>
+
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>
+                    {user.followingUsers.length < 1 && <span>[N/A]</span>}
+                    {user.followingUsers.map((username) => {
+                      return (
+                        <Link
+                          to={`/profile/${username}`}
+                          onClick={() => {
+                            setUser(null)
+                            setUsername(username)
+                          }}
+                          key={`${username}_following`}
+                        >
+                          -&nbsp;{username}
+                        </Link>
+                      )
+                    })}
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Card>
+              <Card>
+                <Accordion.Toggle as={Card.Header} variant="link" eventKey="1">
+                  {'['}
+                  {user.followedByUsers.length}
+                  {']'} Followed by these users:
+                </Accordion.Toggle>
+
+                <Accordion.Collapse eventKey="1">
+                  <Card.Body>
+                    {user.followedByUsers.length < 1 && <span>[N/A]</span>}
+                    {user.followedByUsers.map((username) => {
+                      return (
+                        <Link
+                          to={`/profile/${username}`}
+                          onClick={() => {
+                            setUser(null)
+                            setUsername(username)
+                          }}
+                          key={`${username}_follower`}
+                        >
+                          -&nbsp;{username}
+                        </Link>
+                      )
+                    })}
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
           </div>
         </div>
       )}
