@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
@@ -8,7 +7,6 @@ import Chart from 'chart.js'
 
 // bootstrap
 import Accordion from 'react-bootstrap/Accordion'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 
 import Loading from '../components/Loading'
@@ -18,14 +16,11 @@ import userData from '../ajax/userData'
 const Profile = (props) => {
   const [username, setUsername] = useState(props.match.params.username)
   const [user, setUser] = useState(null)
-  const location = useLocation()
 
   // console.log('the username is: ', username)
 
   useEffect(() => {
     userData.getProfileStats(username).then((res) => {
-      console.log('location', location)
-      console.log('getProfileStats res: ', res)
       setUser(res.data)
     })
   }, [username])
@@ -112,16 +107,19 @@ const Profile = (props) => {
                     {user.followingUsers.length < 1 && <span>[N/A]</span>}
                     {user.followingUsers.map((username) => {
                       return (
-                        <Link
-                          to={`/profile/${username}`}
-                          onClick={() => {
-                            setUser(null)
-                            setUsername(username)
-                          }}
-                          key={`${username}_following`}
-                        >
-                          -&nbsp;{username}
-                        </Link>
+                        <>
+                          <Link
+                            to={`/profile/${username}`}
+                            onClick={() => {
+                              setUser(null)
+                              setUsername(username)
+                            }}
+                            key={`${username}_following`}
+                          >
+                            -&nbsp;{username}
+                          </Link>
+                          <br />
+                        </>
                       )
                     })}
                   </Card.Body>
@@ -139,16 +137,19 @@ const Profile = (props) => {
                     {user.followedByUsers.length < 1 && <span>[N/A]</span>}
                     {user.followedByUsers.map((username) => {
                       return (
-                        <Link
-                          to={`/profile/${username}`}
-                          onClick={() => {
-                            setUser(null)
-                            setUsername(username)
-                          }}
-                          key={`${username}_follower`}
-                        >
-                          -&nbsp;{username}
-                        </Link>
+                        <>
+                          <Link
+                            to={`/profile/${username}`}
+                            onClick={() => {
+                              setUser(null)
+                              setUsername(username)
+                            }}
+                            key={`${username}_follower`}
+                          >
+                            -&nbsp;{username}
+                          </Link>
+                          <br />
+                        </>
                       )
                     })}
                   </Card.Body>

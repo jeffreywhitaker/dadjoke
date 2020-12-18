@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { NavLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -54,6 +54,10 @@ export const Header: React.FC<Props> = (props: Props) => {
       window.location.reload()
     })
   }
+
+  useEffect(() => {
+    console.log('isprivate', newJoke.isprivate)
+  }, [newJoke])
 
   // handle change values, save to local state
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,9 +172,10 @@ export const Header: React.FC<Props> = (props: Props) => {
           <ButtonGroup toggle>
             <ToggleButton
               type="radio"
+              name="radio"
               checked={!newJoke.isprivate}
               value={false}
-              onChange={() => handleSetIsPrivate(false)}
+              onClick={() => handleSetIsPrivate(false)}
             >
               Public
             </ToggleButton>
@@ -178,7 +183,7 @@ export const Header: React.FC<Props> = (props: Props) => {
               type="radio"
               checked={newJoke.isprivate}
               value={true}
-              onChange={() => handleSetIsPrivate(false)}
+              onClick={() => handleSetIsPrivate(true)}
             >
               Private
             </ToggleButton>

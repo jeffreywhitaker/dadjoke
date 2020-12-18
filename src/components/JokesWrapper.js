@@ -179,7 +179,10 @@ function JokesWrapper({ isLoggedIn, username }) {
             </div>
           </SortDiv>
           {jokes.length < 1 ? (
-            <p>No jokes are in the database - add them now!</p>
+            <div className="emptyWrapper">
+              <img src="/img/maninrain.png" className="image" />
+              <h2>No jokes are in the database - add them now!</h2>
+            </div>
           ) : (
             jokes.map((joke) => {
               return (
@@ -227,6 +230,16 @@ const JokeWrapper = styled.article`
     margin: 0 auto;
     border-radius: 15px;
     padding: 10px 0;
+  }
+
+  .emptyWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .image {
+      max-width: 400px;
+    }
   }
 `
 
