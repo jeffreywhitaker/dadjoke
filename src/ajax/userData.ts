@@ -13,5 +13,8 @@ export default {
 
   getProfileStats(username: string): Promise<AxiosPromise> {
     return axios.get(`${URI_STRING}/api/users/profile/${username}`, { withCredentials: true})
+  },
+  updateUserDescription(newDescription: string): Promise<AxiosPromise> {
+    return axios.put(`${URI_STRING}/api/users/profile/description`, { newDescription }, { withCredentials: true})
   }
 }
