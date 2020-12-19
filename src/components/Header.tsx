@@ -13,8 +13,11 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 // import functions
+import { Joke } from '../types/types'
 import jokesData from '../ajax/jokesData'
 import { userLogout } from '../actions/actions'
 
@@ -30,9 +33,10 @@ export const Header: React.FC<Props> = (props: Props) => {
       return false
     } else return true
   }
-  const blankJoke = {
+  const blankJoke: Joke = {
     dadjokequestion: '',
     dadjokeanswer: '',
+    keywords: [],
     isprivate: determineIfPrivate(),
   }
   const [showAddJokeModal, setShowAddJokeModal] = useState(false)
@@ -70,12 +74,28 @@ export const Header: React.FC<Props> = (props: Props) => {
     console.log(newJoke)
   }
 
+  // handle changing the keywords
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const stringOfKeywords = e.currentTarget.value
+    setNewJoke({
+      ...newJoke,
+      keywords: stringOfKeywords
+        .trim()
+        .replace(/\s/g, '')
+        .split(','),
+    })
+  }
+
   const handleShow = () => setShowAddJokeModal(true)
 
   // use history
   const history = useHistory()
 
   console.log('is logged in', isLoggedIn)
+
+  useEffect(() => {
+    console.log('new joke changed: ', newJoke)
+  }, [newJoke])
 
   // helper functions
   const handleLogout = (e: { preventDefault: () => void }) => {
@@ -166,6 +186,29 @@ export const Header: React.FC<Props> = (props: Props) => {
               name="dadjokeanswer"
               value={newJoke.dadjokeanswer}
               onChange={handleValueChange}
+            />
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text>
+                <span>Keywords</span> &nbsp;
+                <OverlayTrigger
+                  key={`keywords`}
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`keywords`}>
+                      Keywords should be a comma-seperated list of words
+                    </Tooltip>
+                  }
+                >
+                  <i className="fas fa-info-circle"></i>
+                </OverlayTrigger>
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              aria-label="Add DadJoke Answer"
+              name="dadjokeanswer"
+              onChange={handleKeywordsChange}
             />
           </InputGroup>
 

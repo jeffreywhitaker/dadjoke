@@ -168,12 +168,13 @@ const Profile = (props) => {
                   </>
                 ) : (
                   <>
-                    <InputGroup className="mb-3">
+                    <InputGroup className="mb-3" size="sm">
                       <InputGroup.Prepend>
                         <InputGroup.Text>Description</InputGroup.Text>
                       </InputGroup.Prepend>
                       <FormControl
                         aria-label="User Description Update"
+                        as="textarea"
                         name="description"
                         value={newDescription}
                         onChange={(e) => {
@@ -332,6 +333,19 @@ const WrapperDiv = styled.div`
     .columnWrapper {
       display: flex;
       justify-content: space-between;
+
+      @media only screen and (max-width: 1000px) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .leftColumn {
+        width: 420px;
+      }
+
+      .rightColumn {
+        width: 420px;
+      }
     }
 
     .descButtonWrapper {

@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -98,6 +98,22 @@ function SingleJokeCard(props: Props) {
     })
     console.log('updated joke', updatedJoke)
   }
+
+  // handle changing the keywords
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const stringOfKeywords = e.currentTarget.value
+    setUpdatedJoke({
+      ...updatedJoke,
+      keywords: stringOfKeywords
+        .trim()
+        .replace(/\s/g, '')
+        .split(','),
+    })
+  }
+
+  useEffect(() => {
+    console.log('updated joke changed: ', updatedJoke)
+  }, [updatedJoke])
 
   const voteOptions = {
     upvoteTooltip: '',
@@ -210,6 +226,27 @@ function SingleJokeCard(props: Props) {
               </InputGroup>
             )}
           </Card.Text>
+          {/* KEYWORDS DISPLAY */}
+          <Card.Text>
+            {/* {!isBeingUpdated && (
+              <span>
+                Keywords: {joke.keywords ? joke.keywords.join(', ') : '[None'}
+              </span>
+            )} */}
+            {isBeingUpdated && (
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Keywords</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  aria-label="DadJoke Answer Update"
+                  name="dadjokeanswer"
+                  defaultValue={joke.keywords ? joke.keywords.join(', ') : ''}
+                  onChange={handleKeywordsChange}
+                />
+              </InputGroup>
+            )}
+          </Card.Text>
           {/* ERROR DISPLAY */}
           {joke.error && <Alert variant="danger">{joke.error}</Alert>}
         </Card.Body>
@@ -244,10 +281,27 @@ function SingleJokeCard(props: Props) {
               Del
             </Button>
           )}
-          {/* SUBMITTED BY */}
+          {/* FLOAT RIGHT IN FOOTER */}
           {window.location.pathname !== '/privatejokes' && (
             <span className="floatRight">
-              submitted by:{' '}
+              {/* KEYWORDS */}
+              <OverlayTrigger
+                key={`${joke.dadjokequestion}_keywords`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`${joke.dadjokequestion}_keywords`}>
+                    {`Keywords: ${
+                      joke.keywords && joke.keywords.length >= 1
+                        ? joke.keywords.join(', ')
+                        : '[None]'
+                    }`}
+                  </Tooltip>
+                }
+              >
+                <i className="fas fa-key"></i>
+              </OverlayTrigger>
+              {/* SUBMITTED BY */}
+              &nbsp; submitted by:{' '}
               <OverlayTrigger
                 key={`${joke.username}_link`}
                 placement="top"
@@ -260,6 +314,7 @@ function SingleJokeCard(props: Props) {
                 <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
               </OverlayTrigger>
               &nbsp;&nbsp;
+              {/* FOLLOW USER BUTTON */}
               {joke.userFollowingCreator ? (
                 <OverlayTrigger
                   key={`${joke.username}_follow`}

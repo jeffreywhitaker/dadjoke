@@ -21,6 +21,7 @@ function JokesWrapper({ isLoggedIn, username }) {
   // set up state
   const [isLoading, setIsLoading] = useState(true)
   const [jokes, setJokes] = useState([])
+  const [searchString, setSearchString] = useState('')
   const [display, setDisplay] = useState({
     heading: '',
   })
@@ -28,6 +29,7 @@ function JokesWrapper({ isLoggedIn, username }) {
   const [criteria, setCriteria] = useState({
     sortBy: '-createdAt',
     resultsPerPage: '5',
+    searchString: '',
     page: 1,
   })
   const [hasNextPage, setHasNextPage] = useState(false)
@@ -53,6 +55,11 @@ function JokesWrapper({ isLoggedIn, username }) {
       })
     }
   }, [criteria])
+
+  // set keyword search by search string, but with debounce
+  const setKeywordSearch = () => {
+    setCriteria({ ...criteria, searchString: searchString })
+  }
 
   const updateJokeKarma = (jokeID, newKarma, newVote) => {
     console.log('updateJokeKarma: ', jokeID, newKarma)
@@ -108,9 +115,21 @@ function JokesWrapper({ isLoggedIn, username }) {
   }
 
   const updateJokeDetails = (jokeID, res) => {
-    const updatedJokes = cloneDeep(jokes).filter((joke) => joke._id !== jokeID)
-    updatedJokes.push(res.data)
+    // replace values of updated joke with response
+    let index
+    for (let i = 0; i < jokes.length; i++) {
+      if (jokes[i]._id == jokeID) {
+        index = i
+        break
+      }
+    }
+    const updatedJokes = cloneDeep(jokes)
+    updatedJokes[index] = res.data
     setJokes(updatedJokes)
+    //old
+    // const updatedJokes = cloneDeep(jokes).filter((joke) => joke._id !== jokeID)
+    // updatedJokes.push(res.data)
+    // setJokes(updatedJokes)
   }
 
   // login check
@@ -156,6 +175,14 @@ function JokesWrapper({ isLoggedIn, username }) {
                 <option value="10">10</option>
                 <option value="20">20</option>
               </select>
+              &nbsp;&nbsp; Keyword:{' '}
+              <input
+                name="search"
+                value={searchString}
+                onChange={(e) => setSearchString(e.currentTarget.value)}
+              />
+              &nbsp;&nbsp;
+              <button onClick={setKeywordSearch}>Set Keyword</button>
             </div>
 
             <div className="pagination">
