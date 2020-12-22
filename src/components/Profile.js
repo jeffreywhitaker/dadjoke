@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
+import FormData from 'form-data'
 
 import Chart from 'chart.js'
 
@@ -17,11 +18,19 @@ import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
 
+let URI_STRING
+if (process.env.NODE_ENV === 'production') {
+  URI_STRING = 'https://jeffsdadjokes-node-be.herokuapp.com'
+} else {
+  URI_STRING = 'http://localhost:5000'
+}
+
 const Profile = (props) => {
   const loggedInUsername = props.loggedInUsername
   const [isUpdatingDesc, setIsUpdatingDesc] = useState(false)
   const [username, setUsername] = useState(props.match.params.username)
   const [user, setUser] = useState(null)
+  const [isUserHaveAvatar, setIsUserHaveAvatar] = useState(false)
   const [newDescription, setNewDescription] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -44,11 +53,31 @@ const Profile = (props) => {
     if (isLoading) {
       userData.getProfileStats(username).then((res) => {
         setUser(res.data)
+        setIsUserHaveAvatar(res.data.hasAvatar)
         setNewDescription(res.data.description)
         setIsLoading(false)
       })
     }
   }, [username, isLoading])
+
+  const handleUploadAvatar = (e) => {
+    const img = e.target.files[0]
+    console.log('img', img)
+    let data = new FormData()
+    data.append('image', img)
+    data.append('foo', 'bar')
+
+    console.log('formdata', data)
+    userData.uploadAvatar(data).then((res) => {
+      console.log('upload good')
+    })
+  }
+
+  const getImage = (username) => {
+    userData.getAvatar(username).then((res) => {
+      return res.data
+    })
+  }
 
   // build the canvas chart
   useEffect(() => {
@@ -132,6 +161,27 @@ const Profile = (props) => {
         <div className="mainContainer">
           <div className="columnWrapper">
             <div className="leftColumn">
+              <h2 className="subTitle">Avatar</h2>
+              <hr />
+              <div>
+                {/* <img
+                  src={
+                    !isUserHaveAvatar
+                      ? '/img/defaultAvatar.png'
+                      : getImage(username)
+                  }
+                /> */}
+                <img src={`${URI_STRING}/api/users/profile/avatar/Jeffy`} />
+                <div>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    onChange={handleUploadAvatar}
+                  />
+                </div>
+              </div>
+
               <h2 className="subTitle">Statistics</h2>
               <hr />
 

@@ -53,6 +53,7 @@ function SingleJokeCard(props: Props) {
 
   // helper functions
   function handleDelete(id: string) {
+    // TODO: update delete joke to not be an action, and handle deleting the joke client side
     if (window.confirm('Are you sure you want to delete this joke?')) {
       deleteJoke(id)
     }
