@@ -19,6 +19,10 @@ export default {
     return axios.delete(`${URI_STRING}/api/jokes/${jokeId}`, { withCredentials: true})
   },
 
+  getComments(jokeId: string): Promise<AxiosPromise> {
+    return axios.get(`${URI_STRING}/api/comments/${jokeId}`)
+  },
+
   getPrivateJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
     console.log('getPrivateJokes with criteria: ', criteria)
     return axios.post(`${URI_STRING}/api/jokes/private`, criteria, { withCredentials: true})
@@ -27,6 +31,10 @@ export default {
   getPublicJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
     console.log('getPublicJokes with criteria: ', criteria)
     return axios.post(`${URI_STRING}/api/jokes/public`, criteria, { withCredentials: true})
+  },
+
+  uploadComment(comment: Record<string, unknown>): Promise<AxiosPromise> {
+    return axios.post(`${URI_STRING}/api/comments/add`, comment, { withCredentials: true})
   },
 
   updateJoke(jokeToUpdate: Joke, jokeId: string): Promise<AxiosPromise> {

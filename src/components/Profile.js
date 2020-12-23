@@ -161,16 +161,16 @@ const Profile = (props) => {
         <div className="mainContainer">
           <div className="columnWrapper">
             <div className="leftColumn">
-              <h2 className="subTitle">Avatar</h2>
+              {/* <h2 className="subTitle">Avatar</h2>
               <hr />
               <div>
-                {/* <img
+                <img
                   src={
                     !isUserHaveAvatar
                       ? '/img/defaultAvatar.png'
                       : getImage(username)
                   }
-                /> */}
+                />
                 <img src={`${URI_STRING}/api/users/profile/avatar/Jeffy`} />
                 <div>
                   <input
@@ -180,7 +180,7 @@ const Profile = (props) => {
                     onChange={handleUploadAvatar}
                   />
                 </div>
-              </div>
+              </div> */}
 
               <h2 className="subTitle">Statistics</h2>
               <hr />
