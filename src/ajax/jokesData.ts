@@ -19,8 +19,8 @@ export default {
     return axios.delete(`${URI_STRING}/api/jokes/${jokeId}`, { withCredentials: true})
   },
 
-  getComments(jokeId: string): Promise<AxiosPromise> {
-    return axios.get(`${URI_STRING}/api/comments/${jokeId}`)
+  getComments(jokeId: string, criteria: Record<string, unknown>): Promise<AxiosPromise> {
+    return axios.post(`${URI_STRING}/api/comments/${jokeId}`, criteria)
   },
 
   getPrivateJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {

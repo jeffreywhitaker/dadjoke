@@ -30,6 +30,7 @@ const Profile = (props) => {
   const [isUpdatingDesc, setIsUpdatingDesc] = useState(false)
   const [username, setUsername] = useState(props.match.params.username)
   const [user, setUser] = useState(null)
+  const [binary, setBinary] = useState(null)
   const [isUserHaveAvatar, setIsUserHaveAvatar] = useState(false)
   const [newDescription, setNewDescription] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -77,6 +78,19 @@ const Profile = (props) => {
     userData.getAvatar(username).then((res) => {
       return res.data
     })
+  }
+
+  function hexToBase64(str) {
+    return btoa(
+      String.fromCharCode.apply(
+        null,
+        str
+          .replace(/\r|\n/g, '')
+          .replace(/([\da-fA-F]{2}) ?/g, '0x$1 ')
+          .replace(/ +$/, '')
+          .split(' '),
+      ),
+    )
   }
 
   // build the canvas chart
@@ -171,7 +185,11 @@ const Profile = (props) => {
                       : getImage(username)
                   }
                 />
-                <img src={`${URI_STRING}/api/users/profile/avatar/Jeffy`} />
+                <img
+                  src={
+                    'data:image/jpeg;base64,' + hexToBase64(getImage(username))
+                  }
+                />
                 <div>
                   <input
                     type="file"

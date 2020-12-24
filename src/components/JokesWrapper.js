@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button'
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
+import Pagination from './small/Pagination'
 
 // joke display page component
 function JokesWrapper({ isLoggedIn, username }) {
@@ -185,25 +186,12 @@ function JokesWrapper({ isLoggedIn, username }) {
               <button onClick={setKeywordSearch}>Set Keyword</button>
             </div>
 
-            <div className="pagination">
-              <Button
-                size="sm"
-                onClick={handlePageDown}
-                variant={criteria.page <= 1 ? 'secondary' : 'primary'}
-                disabled={criteria.page <= 1}
-              >
-                {'<<'}
-              </Button>
-              <span className="page">Page: {criteria.page}</span>
-              <Button
-                size="sm"
-                variant={!hasNextPage ? 'secondary' : 'primary'}
-                disabled={!hasNextPage}
-                onClick={handlePageUp}
-              >
-                {'>>'}
-              </Button>
-            </div>
+            <Pagination
+              criteria={criteria}
+              hasNextPage={hasNextPage}
+              handlePageDown={handlePageDown}
+              handlePageUp={handlePageUp}
+            />
           </SortDiv>
           {jokes.length < 1 ? (
             <div className="emptyWrapper">
@@ -281,15 +269,5 @@ const SortDiv = styled.div`
 
   > .sortOptions {
     padding-left: 20px;
-  }
-
-  > .pagination {
-    display: flex;
-    padding-right: 20px;
-    align-items: center;
-
-    > .page {
-      margin: 0 5px;
-    }
   }
 `
