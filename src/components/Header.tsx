@@ -53,10 +53,16 @@ export const Header: React.FC<Props> = (props: Props) => {
     console.log('new joke:')
     console.log(newJoke)
     // addJoke(newJoke)
-    jokesData.addNewJoke(newJoke).then(() => {
-      setNewJoke(blankJoke)
-      window.location.reload()
-    })
+    jokesData
+      .addNewJoke(newJoke)
+      .then(() => {
+        setNewJoke(blankJoke)
+        // RELOAD THE APP RATHER THAN BOTHER PIPING NEW JOKE TO THE CORRECT COMPONENT
+        window.location.reload()
+      })
+      .catch((err) => {
+        window.alert('Unable to add new joke: ' + err)
+      })
   }
 
   useEffect(() => {

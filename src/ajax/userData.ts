@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 export default {
 
   getAvatar(username: string): Promise<AxiosPromise> {
-    return axios.get(`${URI_STRING}/api/users/profile/avatar/${username}`)
+    return axios.get(`${URI_STRING}/api/users/profile/avatar/${username}`, { withCredentials: true})
   },
   getProfileStats(username: string): Promise<AxiosPromise> {
     return axios.get(`${URI_STRING}/api/users/profile/${username}`, { withCredentials: true})

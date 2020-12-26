@@ -37,7 +37,9 @@ const JokeVoteDashboard: React.FC<Props> = (props) => {
         }
       })
       .catch((err) => {
-        console.log('error voting on joke', err)
+        window.alert(
+          `There was an error trying to vote, please try again later: ${err}`,
+        )
       })
   }
 

@@ -39,11 +39,19 @@ function CommentModal(props) {
     if (!comments && showModal) {
       // get comments
       setLoading(true)
-      jokesData.getComments(jokeID, criteria).then((res) => {
-        setComments(res.data.comments)
-        setHasNextPage(res.data.hasNextPage)
-        setLoading(false)
-      })
+      jokesData
+        .getComments(jokeID, criteria)
+        .then((res) => {
+          setComments(res.data.comments)
+          setHasNextPage(res.data.hasNextPage)
+          setLoading(false)
+        })
+        .catch((err) => {
+          window.alert(
+            'There was an error loading comments for this joke: ',
+            err,
+          )
+        })
     }
   }, [comments, showModal])
 
@@ -52,11 +60,19 @@ function CommentModal(props) {
     if (showModal) {
       // get comments
       setLoading(true)
-      jokesData.getComments(jokeID, criteria).then((res) => {
-        setComments(res.data.comments)
-        setHasNextPage(res.data.hasNextPage)
-        setLoading(false)
-      })
+      jokesData
+        .getComments(jokeID, criteria)
+        .then((res) => {
+          setComments(res.data.comments)
+          setHasNextPage(res.data.hasNextPage)
+          setLoading(false)
+        })
+        .catch((err) => {
+          window.alert(
+            'There was an error loading comments for this joke: ',
+            err,
+          )
+        })
     }
   }, [criteria])
 
@@ -76,10 +92,15 @@ function CommentModal(props) {
 
   function handleSubmitComment() {
     console.log('submitting new comment', newComment)
-    jokesData.uploadComment(newComment).then(() => {
-      setLoading(true)
-      setComments(null)
-    })
+    jokesData
+      .uploadComment(newComment)
+      .then(() => {
+        setLoading(true)
+        setComments(null)
+      })
+      .catch((err) => {
+        window.alert('There was an error uploading your comment: ', err)
+      })
   }
 
   return (

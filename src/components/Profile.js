@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -18,14 +18,8 @@ import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
 
-let URI_STRING
-if (process.env.NODE_ENV === 'production') {
-  URI_STRING = 'https://jeffsdadjokes-node-be.herokuapp.com'
-} else {
-  URI_STRING = 'http://localhost:5000'
-}
-
 const Profile = (props) => {
+  const inputRef = useRef(null)
   const loggedInUsername = props.loggedInUsername
   const [isUpdatingDesc, setIsUpdatingDesc] = useState(false)
   const [username, setUsername] = useState(props.match.params.username)
@@ -45,19 +39,26 @@ const Profile = (props) => {
         setIsLoading(true)
       })
       .catch((error) => {
-        console.log('error updating descrip', error)
+        window.alert(
+          'There was an error updating your user description: ' + error,
+        )
       })
   }
 
   // gather user data on page load, and when prompted
   useEffect(() => {
     if (isLoading) {
-      userData.getProfileStats(username).then((res) => {
-        setUser(res.data)
-        setIsUserHaveAvatar(res.data.hasAvatar)
-        setNewDescription(res.data.description)
-        setIsLoading(false)
-      })
+      userData
+        .getProfileStats(username)
+        .then((res) => {
+          setUser(res.data)
+          setIsUserHaveAvatar(res.data.hasAvatar)
+          setNewDescription(res.data.description)
+          setIsLoading(false)
+        })
+        .catch((err) => {
+          window.alert(`Unable to find ${username}. Error is: ${err}`)
+        })
     }
   }, [username, isLoading])
 
@@ -69,28 +70,34 @@ const Profile = (props) => {
     data.append('foo', 'bar')
 
     console.log('formdata', data)
-    userData.uploadAvatar(data).then((res) => {
-      console.log('upload good')
-    })
+    userData
+      .uploadAvatar(data)
+      .then(() => {
+        window.alert('Image successfully uploaded')
+        setIsLoading(true)
+      })
+      .catch((err) => {
+        window.alert('Unable to upload avatar: ' + err)
+      })
   }
 
-  const getImage = (username) => {
-    userData.getAvatar(username).then((res) => {
-      return res.data
-    })
-  }
+  useEffect(() => {
+    userData
+      .getAvatar(username)
+      .then((res) => {
+        console.log('get avatar res is: ', res)
+        var base64Flag = 'data:image/jpeg;base64,'
+        var imageStr = arrayBufferToBase64(res.data.data.data)
+        setBinary(base64Flag + imageStr)
+      })
+      .catch((error) => console.log('unable to fetch profile avatar', error))
+  }, [])
 
-  function hexToBase64(str) {
-    return btoa(
-      String.fromCharCode.apply(
-        null,
-        str
-          .replace(/\r|\n/g, '')
-          .replace(/([\da-fA-F]{2}) ?/g, '0x$1 ')
-          .replace(/ +$/, '')
-          .split(' '),
-      ),
-    )
+  function arrayBufferToBase64(buffer) {
+    var binary = ''
+    var bytes = [].slice.call(new Uint8Array(buffer))
+    bytes.forEach((b) => (binary += String.fromCharCode(b)))
+    return window.btoa(binary)
   }
 
   // build the canvas chart
@@ -173,190 +180,199 @@ const Profile = (props) => {
         <Loading />
       ) : (
         <div className="mainContainer">
-          <div className="columnWrapper">
-            <div className="leftColumn">
-              {/* <h2 className="subTitle">Avatar</h2>
-              <hr />
-              <div>
-                <img
-                  src={
-                    !isUserHaveAvatar
-                      ? '/img/defaultAvatar.png'
-                      : getImage(username)
-                  }
-                />
-                <img
-                  src={
-                    'data:image/jpeg;base64,' + hexToBase64(getImage(username))
-                  }
-                />
+          {/* LEFT COLUMN */}
+          <div className="leftColumn">
+            {/* AVATAR */}
+            <div className="avatarWrapper">
+              <h2 className="subTitle">Avatar</h2>
+
+              <img
+                className="avatar"
+                src={!isUserHaveAvatar ? '/img/defaultAvatar.png' : binary}
+              />
+              {username === loggedInUsername && (
                 <div>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          'For best results, please upload an image 200 x 200 pixels.',
+                        )
+                      ) {
+                        inputRef.current.click()
+                      }
+                    }}
+                  >
+                    Edit
+                  </Button>
                   <input
                     type="file"
                     id="image"
                     name="image"
+                    ref={inputRef}
+                    accept="image/*"
                     onChange={handleUploadAvatar}
                   />
                 </div>
-              </div> */}
+              )}
+            </div>
 
+            {/* STATS */}
+            <div>
               <h2 className="subTitle">Statistics</h2>
-              <hr />
 
               <canvas id="myChart" width="400" height="400" />
             </div>
-            <div className="verticalSpacer" />
-            <div className="rightColumn">
-              <div className="descWrapper">
-                <h2 className="subTitle">Description</h2>
-                <hr />
-                {!isUpdatingDesc ? (
-                  <>
-                    <p>
-                      {'"'}
-                      {user.description
-                        ? user.description
-                        : '[No description provided]'}
-                      {'"'}
-                    </p>
-                    <div className="descButtonWrapper">
-                      {user.username === loggedInUsername && (
-                        <Button
-                          size="sm"
-                          onClick={() => setIsUpdatingDesc(true)}
-                        >
-                          Edit
-                        </Button>
-                      )}
-                      <span>
-                        User since:{' '}
-                        {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
-                      </span>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <InputGroup className="mb-3" size="sm">
-                      <InputGroup.Prepend>
-                        <InputGroup.Text>Description</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl
-                        aria-label="User Description Update"
-                        as="textarea"
-                        name="description"
-                        value={newDescription}
-                        onChange={(e) => {
-                          console.log('e target value: ', e.currentTarget.value)
-                          setNewDescription(e.currentTarget.value)
+          </div>
+
+          <div className="verticalSpacer" />
+
+          {/* RIGHT COLUMN */}
+          <div className="rightColumn">
+            {/* DESCRIPTION */}
+            <div className="descWrapper">
+              <h2 className="subTitle">Description</h2>
+              {!isUpdatingDesc ? (
+                <>
+                  <p>
+                    {'"'}
+                    {user.description
+                      ? user.description
+                      : '[No description provided]'}
+                    {'"'}
+                  </p>
+                  <div className="descButtonWrapper">
+                    {user.username === loggedInUsername && (
+                      <Button size="sm" onClick={() => setIsUpdatingDesc(true)}>
+                        Edit
+                      </Button>
+                    )}
+                    <span>
+                      User since:{' '}
+                      {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <InputGroup className="mb-3" size="sm">
+                    <FormControl
+                      aria-label="User Description Update"
+                      as="textarea"
+                      name="description"
+                      value={newDescription}
+                      onChange={(e) => {
+                        console.log('e target value: ', e.currentTarget.value)
+                        setNewDescription(e.currentTarget.value)
+                      }}
+                    />
+                  </InputGroup>
+                  <div className="descButtonWrapper">
+                    <div>
+                      <Button
+                        size="sm"
+                        variant="success"
+                        onClick={callUpdateDesc}
+                      >
+                        Accept
+                      </Button>
+                      &nbsp;
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => {
+                          setNewDescription(user.description)
+                          setIsUpdatingDesc(false)
                         }}
-                      />
-                    </InputGroup>
-                    <div className="descButtonWrapper">
-                      <div>
-                        <Button
-                          size="sm"
-                          variant="success"
-                          onClick={callUpdateDesc}
-                        >
-                          Accept
-                        </Button>
-                        &nbsp;
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => {
-                            setNewDescription(user.description)
-                            setIsUpdatingDesc(false)
-                          }}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                      <span>
-                        User since:{' '}
-                        {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
-                      </span>
+                      >
+                        Cancel
+                      </Button>
                     </div>
-                  </>
-                )}
-              </div>
+                    <span>
+                      User since:{' '}
+                      {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
 
-              <div className="followingWrapper">
-                <h2 className="subTitle">Following</h2>
-                <hr />
-                <Accordion defaultActiveKey="0">
-                  <Card>
-                    <Accordion.Toggle
-                      as={Card.Header}
-                      variant="link"
-                      eventKey="0"
-                    >
-                      {'['}
-                      {user.followingUsers.length}
-                      {']'} Following these users:
-                    </Accordion.Toggle>
+            <div className="followingWrapper">
+              <h2 className="subTitle">Following</h2>
+              <hr />
+              <Accordion defaultActiveKey="0">
+                <Card>
+                  <Accordion.Toggle
+                    as={Card.Header}
+                    variant="link"
+                    eventKey="0"
+                  >
+                    {'['}
+                    {user.followingUsers.length}
+                    {']'} Following these users:
+                  </Accordion.Toggle>
 
-                    <Accordion.Collapse eventKey="0">
-                      <Card.Body>
-                        {user.followingUsers.length < 1 && <span>[N/A]</span>}
-                        {user.followingUsers.map((username) => {
-                          return (
-                            <>
-                              <Link
-                                to={`/profile/${username}`}
-                                onClick={() => {
-                                  setIsLoading(true)
-                                  setUser(null)
-                                  setUsername(username)
-                                }}
-                                key={`${username}_following`}
-                              >
-                                -&nbsp;{username}
-                              </Link>
-                              <br />
-                            </>
-                          )
-                        })}
-                      </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-                  <Card>
-                    <Accordion.Toggle
-                      as={Card.Header}
-                      variant="link"
-                      eventKey="1"
-                    >
-                      {'['}
-                      {user.followedByUsers.length}
-                      {']'} Followed by these users:
-                    </Accordion.Toggle>
+                  <Accordion.Collapse eventKey="0">
+                    <Card.Body>
+                      {user.followingUsers.length < 1 && <span>[N/A]</span>}
+                      {user.followingUsers.map((username) => {
+                        return (
+                          <>
+                            <Link
+                              to={`/profile/${username}`}
+                              onClick={() => {
+                                setIsLoading(true)
+                                setUser(null)
+                                setUsername(username)
+                              }}
+                              key={`${username}_following`}
+                            >
+                              -&nbsp;{username}
+                            </Link>
+                            <br />
+                          </>
+                        )
+                      })}
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+                <Card>
+                  <Accordion.Toggle
+                    as={Card.Header}
+                    variant="link"
+                    eventKey="1"
+                  >
+                    {'['}
+                    {user.followedByUsers.length}
+                    {']'} Followed by these users:
+                  </Accordion.Toggle>
 
-                    <Accordion.Collapse eventKey="1">
-                      <Card.Body>
-                        {user.followedByUsers.length < 1 && <span>[N/A]</span>}
-                        {user.followedByUsers.map((username) => {
-                          return (
-                            <>
-                              <Link
-                                to={`/profile/${username}`}
-                                onClick={() => {
-                                  setIsLoading(true)
-                                  setUser(null)
-                                  setUsername(username)
-                                }}
-                                key={`${username}_follower`}
-                              >
-                                -&nbsp;{username}
-                              </Link>
-                              <br />
-                            </>
-                          )
-                        })}
-                      </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-                </Accordion>
-              </div>
+                  <Accordion.Collapse eventKey="1">
+                    <Card.Body>
+                      {user.followedByUsers.length < 1 && <span>[N/A]</span>}
+                      {user.followedByUsers.map((username) => {
+                        return (
+                          <>
+                            <Link
+                              to={`/profile/${username}`}
+                              onClick={() => {
+                                setIsLoading(true)
+                                setUser(null)
+                                setUsername(username)
+                              }}
+                              key={`${username}_follower`}
+                            >
+                              -&nbsp;{username}
+                            </Link>
+                            <br />
+                          </>
+                        )
+                      })}
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
             </div>
           </div>
         </div>
@@ -390,6 +406,9 @@ const WrapperDiv = styled.div`
 
   .subTitle {
     text-align: center;
+    border-bottom: 1px solid black;
+    display: block;
+    width: 100%;
   }
 
   .mainContainer {
@@ -397,23 +416,43 @@ const WrapperDiv = styled.div`
     margin-top: 10px;
     border-radius: 15px;
     padding: 10px 80px;
+    display: flex;
+    justify-content: space-between;
 
-    .columnWrapper {
+    .leftColumn {
+      width: 420px;
+      background-color: lightblue;
+    }
+
+    .rightColumn {
+      width: 420px;
+      background-color: lightblue;
+    }
+
+    .avatarWrapper {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
 
-      @media only screen and (max-width: 1000px) {
-        flex-direction: column;
-        align-items: center;
+      .avatar {
+        display: block;
+        max-width: 200px;
+        max-height: 200px;
+        width: auto;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 10px;
       }
 
-      .leftColumn {
-        width: 420px;
+      input {
+        align-self: flex-end;
+        display: none;
       }
+    }
 
-      .rightColumn {
-        width: 420px;
-      }
+    .descWrapper {
+      margin-bottom: 10px;
     }
 
     .descButtonWrapper {
@@ -423,6 +462,13 @@ const WrapperDiv = styled.div`
 
     .verticalSpacer {
       width: 100px;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      flex-direction: column;
+      align-items: center;
+      width: max-content;
+      margin: 10px auto;
     }
   }
 `

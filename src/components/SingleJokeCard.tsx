@@ -67,12 +67,20 @@ function SingleJokeCard(props: Props) {
   }
 
   function handleUpdate(updatedJoke: Joke) {
-    jokesData.updateJoke(updatedJoke, joke._id as string).then((res) => {
-      console.log('update joke res', res)
-      // get function from parent to update joke in array
-      toggleUpdate()
-      updateJokeDetails(joke._id as string, res)
-    })
+    jokesData
+      .updateJoke(updatedJoke, joke._id as string)
+      .then((res) => {
+        console.log('update joke res', res)
+        // get function from parent to update joke in array
+        toggleUpdate()
+        updateJokeDetails(joke._id as string, res)
+      })
+      .catch((err) => {
+        window.alert(
+          'There was an error updating your joke, please try again later: ' +
+            err,
+        )
+      })
   }
 
   function toggleUpdate() {
@@ -361,6 +369,11 @@ function SingleJokeCard(props: Props) {
                               false,
                             )
                           })
+                          .catch((err) => {
+                            window.alert(
+                              'There was an error following this user: ' + err,
+                            )
+                          })
                       }
                     >
                       <i className="fas fa-user-friends"></i>
@@ -393,6 +406,11 @@ function SingleJokeCard(props: Props) {
                             updateFollowJokeCreator(
                               (joke.username as unknown) as string,
                               true,
+                            )
+                          })
+                          .catch((err) => {
+                            window.alert(
+                              'There was an error following this user: ' + err,
                             )
                           })
                       }
