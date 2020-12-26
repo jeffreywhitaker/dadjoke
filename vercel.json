@@ -1,0 +1,8 @@
+{
+  "public": false,
+  "routes": [
+    { "src": "/publicjokes", "dest": "/index.html" },
+    { "src": "/privatejokes", "dest": "/index.html" },
+    { "src": "/profile/*", "dest": "/index.html" }
+  ]
+}
