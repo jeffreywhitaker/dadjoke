@@ -18,8 +18,6 @@ import dayjs from 'dayjs'
 function CommentModal(props) {
   const { isLoggedIn, showModal, handleClose, jokeID } = props
 
-  console.log('comment modal open')
-
   const [newComment, setNewComment] = useState({
     data: '',
     jokeID: jokeID,
