@@ -3,6 +3,6 @@
   "redirects": [
     { "source": "/publicjokes", "destination": "/index.html" },
     { "source": "/privatejokes", "destination": "/index.html" },
-    { "source": "/profile/*", "destination": "/index.html" }
+    { "source": "/profile/", "destination": "/index.html" }
   ]
 }
