@@ -1,8 +1,8 @@
 {
   "public": false,
   "redirects": [
-    { "src": "/publicjokes", "destination": "/index.html" },
-    { "src": "/privatejokes", "destination": "/index.html" },
-    { "src": "/profile/*", "destination": "/index.html" }
+    { "source": "/publicjokes", "destination": "/index.html" },
+    { "source": "/privatejokes", "destination": "/index.html" },
+    { "source": "/profile/*", "destination": "/index.html" }
   ]
 }
