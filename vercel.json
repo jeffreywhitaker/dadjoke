@@ -1,8 +1,8 @@
 {
   "public": false,
-  "rewrites": [
-    { "source": "/publicjokes", "destination": "/index.html" },
-    { "source": "/privatejokes", "destination": "/index.html" },
-    { "source": "/profile/", "destination": "/index.html" }
+  "routes": [
+    { "src": "/publicjokes", "dest": "/index.html" },
+    { "src": "/privatejokes", "dest": "/index.html" },
+    { "src": "/profile/", "dest": "/index.html" }
   ]
 }
