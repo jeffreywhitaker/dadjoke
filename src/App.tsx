@@ -54,7 +54,9 @@ function App(props: Props) {
     <>
       <Route component={Header} />
       <AppWrapper className="App">
-        <Redirect exact path="/" to="/publicjokes" />
+        <Route exact path="/">
+          <Redirect to="/publicjokes" />
+        </Route>
         <Route path="/publicjokes" component={JokesWrapper} />
         <Route path="/privatejokes" component={JokesWrapper} />
         <Route path="/login" component={Login} />
