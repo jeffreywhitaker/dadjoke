@@ -91,7 +91,7 @@ const Profile = (props) => {
         setBinary(base64Flag + imageStr)
       })
       .catch((error) => console.log('unable to fetch profile avatar', error))
-  }, [])
+  }, [username])
 
   function arrayBufferToBase64(buffer) {
     var binary = ''
