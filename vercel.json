@@ -1,8 +1,8 @@
 {
   "public": false,
   "routes": [
-    { "src": "/publicjokes", "destination": "/index.html" },
-    { "src": "/privatejokes", "destination": "/index.html" },
-    { "src": "/profile/*", "destination": "/index.html" }
+    { "src": "/publicjokes", "dest": "/index.html" },
+    { "src": "/privatejokes", "dest": "/index.html" },
+    { "src": "/profile/*", "dest": "/index.html" }
   ]
 }
