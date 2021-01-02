@@ -23,14 +23,9 @@ export default {
     return axios.post(`${URI_STRING}/api/comments/${jokeId}`, criteria)
   },
 
-  getPrivateJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
-    console.log('getPrivateJokes with criteria: ', criteria)
-    return axios.post(`${URI_STRING}/api/jokes/private`, criteria, { withCredentials: true})
-  },
-
-  getPublicJokes(criteria: Record<string, unknown>): Promise<AxiosPromise> {
-    console.log('getPublicJokes with criteria: ', criteria)
-    return axios.post(`${URI_STRING}/api/jokes/public`, criteria, { withCredentials: true})
+  getJokes(criteria: Record<string, unknown>, publicOrPrivate: string): Promise<AxiosPromise> {
+    console.log(`get ${publicOrPrivate} Jokes with: `, criteria)
+    return axios.post(`${URI_STRING}/api/jokes/${publicOrPrivate}`, criteria, { withCredentials: true})
   },
 
   uploadComment(comment: Record<string, unknown>): Promise<AxiosPromise> {

@@ -38,23 +38,19 @@ function JokesWrapper({ isLoggedIn, username }) {
   // get jokes on page load
   useEffect(() => {
     console.log('calling useEffect with criteria', criteria)
+    let publicOrPrivate
+
     if (location.pathname === '/publicjokes') {
+      publicOrPrivate = 'public'
       setDisplay({ ...display, heading: 'Public Jokes' })
-      jokesData
-        .getPublicJokes(criteria)
-        .then((res) => {
-          console.log('jokes response:', res)
-          setJokes(res.data.jokes)
-          setHasNextPage(res.data.hasNextPage)
-          setIsLoading(false)
-        })
-        .catch((err) => {
-          window.alert('Unable to find public jokes: ', err)
-        })
-    } else if (isLoggedIn) {
+    } else {
+      publicOrPrivate = 'private'
       setDisplay({ ...display, heading: `${username}'s Jokes` })
+    }
+
+    if (location.pathname === '/publicjokes' || isLoggedIn) {
       jokesData
-        .getPrivateJokes(criteria)
+        .getJokes(criteria, publicOrPrivate)
         .then((res) => {
           console.log('jokes response:', res)
           setJokes(res.data.jokes)
@@ -62,7 +58,7 @@ function JokesWrapper({ isLoggedIn, username }) {
           setIsLoading(false)
         })
         .catch((err) => {
-          window.alert('Unable to find private jokes: ', err)
+          window.alert('Unable to find jokes: ', err)
         })
     }
   }, [criteria])
