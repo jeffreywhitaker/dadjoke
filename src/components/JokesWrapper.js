@@ -39,7 +39,6 @@ function JokesWrapper({ isLoggedIn, username }) {
   // get jokes on page load
   useEffect(() => {
     console.log('calling useEffect with criteria', criteria)
-    let publicOrPrivate
 
     if (location.pathname === '/publicjokes') {
       setDisplay({ ...display, heading: 'Public Jokes' })
