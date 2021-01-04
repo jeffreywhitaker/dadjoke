@@ -28,7 +28,7 @@ export default {
 
     const { sortBy, resultsPerPage, searchString, page, isprivate } = criteria
 
-    return axios.get(`${URI_STRING}/api/jokes?isprivate=${isprivate}&page=${page}$sortBy=${sortBy}&resultsPerPage=${resultsPerPage}&searchString=${searchString}`, { withCredentials: true})
+    return axios.get(`${URI_STRING}/api/jokes?isprivate=${isprivate}&page=${page}&sortBy=${sortBy}&resultsPerPage=${resultsPerPage}&searchString=${searchString}`, { withCredentials: true})
   },
 
   uploadComment(comment: Record<string, unknown>): Promise<AxiosPromise> {
