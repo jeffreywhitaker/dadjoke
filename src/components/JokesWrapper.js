@@ -5,9 +5,7 @@ import { useLocation } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
-
-// bootstrap
-import Button from 'react-bootstrap/Button'
+import queryString from 'query-string'
 
 // import actions
 import jokesData from '../ajax/jokesData'
@@ -17,8 +15,10 @@ import Pagination from './small/Pagination'
 
 // joke display page component
 function JokesWrapper({ isLoggedIn, username }) {
+  // set location and get query
   const location = useLocation()
-  console.log('location is: ', location)
+  const parsedQuery = queryString.parse(location.search)
+
   // set up state
   const [isLoading, setIsLoading] = useState(true)
   const [jokes, setJokes] = useState([])
@@ -28,10 +28,10 @@ function JokesWrapper({ isLoggedIn, username }) {
   })
 
   const [criteria, setCriteria] = useState({
-    sortBy: '-createdAt',
-    resultsPerPage: '5',
-    searchString: '',
-    page: 1,
+    sortBy: parsedQuery.sortBy || '-createdAt',
+    resultsPerPage: parsedQuery.resultsPerPage || '5',
+    searchString: parsedQuery.searchString || '',
+    page: parsedQuery.page || 1,
     isprivate: location.pathname === '/privatejokes',
   })
   const [hasNextPage, setHasNextPage] = useState(false)
