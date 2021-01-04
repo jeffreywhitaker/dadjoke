@@ -25,7 +25,10 @@ export default {
 
   getJokes(criteria: Record<string, unknown>, publicOrPrivate: string): Promise<AxiosPromise> {
     console.log(`get ${publicOrPrivate} Jokes with: `, criteria)
-    return axios.post(`${URI_STRING}/api/jokes/${publicOrPrivate}`, criteria, { withCredentials: true})
+
+    const { sortBy, resultsPerPage, searchString, page, isprivate } = criteria
+
+    return axios.get(`${URI_STRING}/api/jokes?isprivate=${isprivate}&page=${page}$sortBy=${sortBy}&resultsPerPage=${resultsPerPage}&searchString=${searchString}`, { withCredentials: true})
   },
 
   uploadComment(comment: Record<string, unknown>): Promise<AxiosPromise> {

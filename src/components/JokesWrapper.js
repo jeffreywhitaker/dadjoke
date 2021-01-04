@@ -32,6 +32,7 @@ function JokesWrapper({ isLoggedIn, username }) {
     resultsPerPage: '5',
     searchString: '',
     page: 1,
+    isprivate: location.pathname === '/privatejokes',
   })
   const [hasNextPage, setHasNextPage] = useState(false)
 
@@ -41,16 +42,14 @@ function JokesWrapper({ isLoggedIn, username }) {
     let publicOrPrivate
 
     if (location.pathname === '/publicjokes') {
-      publicOrPrivate = 'public'
       setDisplay({ ...display, heading: 'Public Jokes' })
     } else {
-      publicOrPrivate = 'private'
       setDisplay({ ...display, heading: `${username}'s Jokes` })
     }
 
     if (location.pathname === '/publicjokes' || isLoggedIn) {
       jokesData
-        .getJokes(criteria, publicOrPrivate)
+        .getJokes(criteria)
         .then((res) => {
           console.log('jokes response:', res)
           setJokes(res.data.jokes)
