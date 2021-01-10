@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
@@ -17,6 +17,7 @@ import Pagination from './small/Pagination'
 function JokesWrapper({ isLoggedIn, username }) {
   // set location and get query
   const location = useLocation()
+  const history = useHistory()
   const parsedQuery = queryString.parse(location.search)
 
   // set up state
@@ -46,6 +47,17 @@ function JokesWrapper({ isLoggedIn, username }) {
       setDisplay({ ...display, heading: `${username}'s Jokes` })
     }
 
+    // set the URL search params based on criteria state
+    const params = new URLSearchParams()
+    const keys = Object.keys(criteria)
+
+    keys.forEach((key) => {
+      params.append(key, criteria[key])
+    })
+
+    history.push({ search: params.toString() })
+
+    // get the jokes
     if (location.pathname === '/publicjokes' || isLoggedIn) {
       jokesData
         .getJokes(criteria)
