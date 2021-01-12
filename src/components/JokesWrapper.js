@@ -28,11 +28,20 @@ function JokesWrapper({ isLoggedIn, username }) {
     heading: '',
   })
 
+  const defaultCriteria = {
+    sortBy: '-createdAt',
+    resultsPerPage: '5',
+    searchString: '',
+    page: 1,
+  }
+
   const [criteria, setCriteria] = useState({
-    sortBy: parsedQuery.sortBy || '-createdAt',
-    resultsPerPage: parsedQuery.resultsPerPage || '5',
-    searchString: parsedQuery.searchString || '',
-    page: parsedQuery.page || 1,
+    // set criteria by URL first, then by default if no URL search param
+    sortBy: parsedQuery.sortBy || defaultCriteria.sortBy,
+    resultsPerPage:
+      parsedQuery.resultsPerPage || defaultCriteria.resultsPerPage,
+    searchString: parsedQuery.searchString || defaultCriteria.searchString,
+    page: parsedQuery.page || defaultCriteria.page,
     isprivate: location.pathname === '/privatejokes',
   })
   const [hasNextPage, setHasNextPage] = useState(false)
@@ -52,13 +61,19 @@ function JokesWrapper({ isLoggedIn, username }) {
     const keys = Object.keys(criteria)
 
     keys.forEach((key) => {
-      params.append(key, criteria[key])
+      // update params if different from default
+      // don't reflect the isprivate criteria in the URL, as this is already in the path param
+      if (criteria[key] !== defaultCriteria[key] && key !== 'isprivate') {
+        params.append(key, criteria[key])
+      }
     })
 
+    // add search params
     history.push({ search: params.toString() })
 
     // get the jokes
     if (location.pathname === '/publicjokes' || isLoggedIn) {
+      // TODO: here or earlier, set isLoading to true and show a load spinner while loading new data
       jokesData
         .getJokes(criteria)
         .then((res) => {
