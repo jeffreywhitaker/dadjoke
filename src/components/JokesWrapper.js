@@ -132,6 +132,7 @@ function JokesWrapper({ isLoggedIn, username }) {
     })
   }
 
+  // TODO :consolidate these handle functions
   const handlePageDown = () => {
     setCriteria({
       ...criteria,
@@ -158,15 +159,12 @@ function JokesWrapper({ isLoggedIn, username }) {
     const updatedJokes = cloneDeep(jokes)
     updatedJokes[index] = res.data
     setJokes(updatedJokes)
-    //old
-    // const updatedJokes = cloneDeep(jokes).filter((joke) => joke._id !== jokeID)
-    // updatedJokes.push(res.data)
-    // setJokes(updatedJokes)
   }
 
   // login check
   if (location.pathname === '/privatejokes' && !isLoggedIn) {
     return (
+      // TODO: add JokeWrapper here and a cool image
       <p style={{ textAlign: 'center' }}>
         You must be logged in to see your private jokes. Please log in above!
       </p>
