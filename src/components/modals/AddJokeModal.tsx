@@ -10,7 +10,19 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-export default function AddJokeModal(props) {
+import { Joke } from '../../types/types'
+
+type Props = {
+  callAddJoke: (event: React.MouseEvent<HTMLElement>) => void
+  handleClose: () => void
+  handleKeywordsChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleValueChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleSetIsPrivate: (isprviate: boolean) => void
+  newJoke: Joke
+  showAddJokeModal: boolean
+}
+
+const AddJokeModal: React.FC<Props> = (props: Props) => {
   // destructure props
   const {
     callAddJoke,
@@ -103,3 +115,5 @@ export default function AddJokeModal(props) {
     </Modal>
   )
 }
+
+export default AddJokeModal
