@@ -105,6 +105,16 @@ function JokesWrapper({ isLoggedIn, username }) {
       setJokes(updatedJokes)
   }
 
+  const removeDeletedJoke = (id) => {
+    // TODO: add loading spinner
+    let updatedJokes = cloneDeep(jokes)
+    updatedJokes = updatedJokes.filter((joke) => {
+      return joke._id !== id
+    })
+
+    setJokes(updatedJokes)
+  }
+
   const updateFollowJokeCreator = (jokeCreator, isFollowing) => {
     console.log('updateFollowJokeCreator', jokeCreator, isFollowing)
     const updatedJokes = cloneDeep(jokes)
@@ -234,6 +244,7 @@ function JokesWrapper({ isLoggedIn, username }) {
                   joke={joke}
                   username={username}
                   key={joke.dadjokequestion}
+                  removeDeletedJoke={removeDeletedJoke}
                   updateJokeKarma={updateJokeKarma}
                   updateJokeDetails={updateJokeDetails}
                   updateFollowJokeCreator={updateFollowJokeCreator}

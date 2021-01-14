@@ -13,7 +13,6 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-import { deleteJoke } from '../actions/actions'
 import jokesData from '../ajax/jokesData'
 import followData from '../ajax/followData'
 import { Joke } from '../types/types'
@@ -29,12 +28,12 @@ function SingleJokeCard(props: Props) {
   // destructure props
   const {
     joke,
-    deleteJoke,
     username,
     updateFollowJokeCreator,
     updateJokeDetails,
     updateJokeKarma,
     isLoggedIn,
+    removeDeletedJoke,
   } = props
 
   console.log('username:', username)
@@ -60,9 +59,20 @@ function SingleJokeCard(props: Props) {
 
   // helper functions
   function handleDelete(id: string) {
-    // TODO: update delete joke to not be an action, and handle deleting the joke client side
+    console.log('id in handleDelete is: ', id)
     if (window.confirm('Are you sure you want to delete this joke?')) {
-      deleteJoke(id)
+      // new version
+      jokesData
+        .deleteJoke(id)
+        .then(() => {
+          // delete joke by id
+          removeDeletedJoke(id)
+        })
+        .catch((err) => {
+          window.alert(
+            'There was an error deleting this joke. Please try again: ' + err,
+          )
+        })
     }
   }
 
@@ -441,7 +451,7 @@ const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean } }) => {
 }
 
 // export component
-const connector = connect(mapStateToProps, { deleteJoke })
+const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   joke: Joke
@@ -449,6 +459,7 @@ type Props = PropsFromRedux & {
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
   updateJokeDetails: (jokeId: string, res: AxiosPromise) => void
   updateFollowJokeCreator: (username: string, isFollowing: boolean) => void
+  removeDeletedJoke: (id: string) => void
 }
 
 export default connector(SingleJokeCard)
