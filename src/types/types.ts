@@ -2,6 +2,20 @@ import { Action } from 'redux'
 import { RootState } from '../reducers/rootReducer'
 import { ThunkAction } from 'redux-thunk'
 
+export type Comment = {
+  _id: string
+  creatorName: string
+  createdAt: Date
+  data: string
+}
+
+export interface CommentResponse {
+  data: {
+    comments: Comment[]
+    hasNextPage: boolean      
+  }
+}
+
 export type Joke = {
   dadjokequestion: string
   _id?: string

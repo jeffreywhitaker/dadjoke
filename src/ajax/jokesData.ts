@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
-import { Joke } from '../types/types'
+import { CommentResponse, Joke } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -19,7 +19,7 @@ export default {
     return axios.delete(`${URI_STRING}/api/jokes/${jokeId}`, { withCredentials: true})
   },
 
-  getComments(jokeId: string, criteria: Record<string, unknown>): Promise<AxiosPromise> {
+  getComments(jokeId: string, criteria: Record<string, unknown>): Promise<CommentResponse> {
     return axios.post(`${URI_STRING}/api/comments/${jokeId}`, criteria)
   },
 

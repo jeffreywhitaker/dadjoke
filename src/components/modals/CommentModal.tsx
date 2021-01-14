@@ -15,7 +15,17 @@ import Pagination from '../small/Pagination'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
-function CommentModal(props) {
+// types
+import { Comment, CommentResponse } from '../../types/types'
+
+type Props = {
+  isLoggedIn: boolean
+  showModal: boolean
+  handleClose: () => void
+  jokeID: string
+}
+
+const CommentModal: React.FC<Props> = (props: Props) => {
   const { isLoggedIn, showModal, handleClose, jokeID } = props
 
   const [newComment, setNewComment] = useState({
@@ -27,7 +37,7 @@ function CommentModal(props) {
     page: 1,
     resultsPerPage: '5',
   })
-  const [comments, setComments] = useState(null)
+  const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [hasNextPage, setHasNextPage] = useState(false)
 
@@ -39,15 +49,14 @@ function CommentModal(props) {
       setLoading(true)
       jokesData
         .getComments(jokeID, criteria)
-        .then((res) => {
+        .then((res: CommentResponse) => {
           setComments(res.data.comments)
           setHasNextPage(res.data.hasNextPage)
           setLoading(false)
         })
         .catch((err) => {
           window.alert(
-            'There was an error loading comments for this joke: ',
-            err,
+            'There was an error loading comments for this joke: ' + err,
           )
         })
     }
@@ -60,15 +69,14 @@ function CommentModal(props) {
       setLoading(true)
       jokesData
         .getComments(jokeID, criteria)
-        .then((res) => {
+        .then((res: CommentResponse) => {
           setComments(res.data.comments)
           setHasNextPage(res.data.hasNextPage)
           setLoading(false)
         })
         .catch((err) => {
           window.alert(
-            'There was an error loading comments for this joke: ',
-            err,
+            'There was an error loading comments for this joke: ' + err,
           )
         })
     }
@@ -94,10 +102,10 @@ function CommentModal(props) {
       .uploadComment(newComment)
       .then(() => {
         setLoading(true)
-        setComments(null)
+        setComments([])
       })
       .catch((err) => {
-        window.alert('There was an error uploading your comment: ', err)
+        window.alert('There was an error uploading your comment: ' + err)
       })
   }
 
@@ -118,35 +126,37 @@ function CommentModal(props) {
           <span>Loading...</span>
         ) : (
           <>
-            {comments.map((comment) => {
-              return (
-                <Card key={comment._id}>
-                  <Card.Header>
-                    <HeaderDiv>
-                      <Link to={`/profile/${comment.creatorName}`}>
-                        {comment.creatorName}
-                      </Link>
-                      <span>
-                        {dayjs(comment.createdAt).format("h:mm a MMM DD, 'YY")}
-                      </span>
-                    </HeaderDiv>
-                  </Card.Header>
-                  <Card.Body>
-                    <p>{comment.data}</p>
-                  </Card.Body>
-                </Card>
-              )
-            })}
-            {!comments ||
-              (comments.length < 1 && (
-                <>
-                  <span>
-                    This joke currently has no comments - you should add one!
-                  </span>
-                  <br />
-                  <br />
-                </>
-              ))}
+            {comments.length < 1 ? (
+              <>
+                <span>
+                  This joke currently has no comments - you should add one!
+                </span>
+                <br />
+                <br />
+              </>
+            ) : (
+              comments.map((comment: Comment) => {
+                return (
+                  <Card key={comment._id}>
+                    <Card.Header>
+                      <HeaderDiv>
+                        <Link to={`/profile/${comment.creatorName}`}>
+                          {comment.creatorName}
+                        </Link>
+                        <span>
+                          {dayjs(comment.createdAt).format(
+                            "h:mm a MMM DD, 'YY",
+                          )}
+                        </span>
+                      </HeaderDiv>
+                    </Card.Header>
+                    <Card.Body>
+                      <p>{comment.data}</p>
+                    </Card.Body>
+                  </Card>
+                )
+              })
+            )}
           </>
         )}
       </Modal.Body>
