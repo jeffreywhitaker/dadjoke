@@ -437,7 +437,7 @@ function SingleJokeCard(props: Props) {
       <CommentModal
         showModal={showModal}
         handleClose={handleClose}
-        jokeID={joke._id}
+        jokeID={joke._id as string}
         isLoggedIn={isLoggedIn}
       />
     </>
