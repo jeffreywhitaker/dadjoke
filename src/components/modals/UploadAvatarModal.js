@@ -6,11 +6,15 @@ import Modal from 'react-bootstrap/Modal'
 import ReactCrop from 'react-image-crop'
 
 const UploadAvatarModal = (props) => {
-  const { handleCloseUploadModal, showUploadModal, uncroppedPhoto } = props
+  const {
+    handleCloseUploadModal,
+    showUploadModal,
+    photoSrc,
+    setPhotoSrc,
+  } = props
 
   // local photo state
   const [photoState, setPhotoState] = useState({
-    src: null,
     crop: {
       unit: '%',
       width: 30,
@@ -22,42 +26,48 @@ const UploadAvatarModal = (props) => {
   })
 
   useEffect(() => {
-    // pass in the uncropped photo on load
-    setPhotoState({ ...photoState, src: uncroppedPhoto })
+    console.log('photostate changed')
+    console.log(photoState)
+  }, [photoState])
+
+  useEffect(() => {
+    console.log('photoSrc chagned')
+    console.log(photoSrc)
   }, [])
 
-  handleFinishedCropping = (e) => {
+  const handleFinishedCropping = (e) => {
     // done cropping
     // should now convert to form data and send to back end
   }
 
   // react crop methods
   // TODO: has to maybe return false
-  onImageLoaded = (image) => {
+  const onImageLoaded = (image) => {
+    console.log('on image loaded called with img: ', image)
     setPhotoState({ ...photoState, imageRef: image })
     return false
   }
 
-  onCropComplete = (crop) => {
+  const onCropComplete = (crop) => {
     makeClientCrop(crop)
   }
 
-  onCropChange = (crop) => {
+  const onCropChange = (crop) => {
     setPhotoState({ ...photoState, crop })
   }
 
-  makeClientCrop = async function(crop) {
-    if (imageRef && crop.width && crop.height) {
+  const makeClientCrop = async function(crop) {
+    if (photoState.imageRef && crop.width && crop.height) {
       const croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
+        photoState.imageRef,
+        photoState.crop,
         'newFile.jpeg',
       )
       setPhotoState({ ...photoState, croppedImageUrl })
     }
   }
 
-  getCroppedImg = (image, crop, fileName) => {
+  const getCroppedImg = (image, crop, fileName) => {
     const canvas = document.createElement('canvas')
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
@@ -95,26 +105,40 @@ const UploadAvatarModal = (props) => {
           fileUrl: window.URL.createObjectURL(blob),
         })
 
-        resolve(fileUrl)
+        resolve(photoState.fileUrl)
       }, 'image/jpeg')
     })
   }
 
+  const imageStyle = {
+    maxWidth: '400px',
+  }
+
   return (
     <Modal show={showUploadModal} onHide={handleCloseUploadModal}>
-      <ReactCrop
-        src={photoState.src}
-        crop={photoState.crop}
-        onImageLoaded={onImageLoaded}
-        onComplete={onCropComplete}
-        onChange={onCropChange}
-      />
-      {croppedImageUrl && (
-        <img
-          alt="Crop"
-          style={{ maxWidth: '100%' }}
-          src={photoState.croppedImageUrl}
-        />
+      {photoSrc && (
+        <>
+          <span>SRC IS LOADED</span>
+          <ReactCrop
+            src={photoSrc}
+            crop={photoState.crop}
+            onImageLoaded={onImageLoaded}
+            onComplete={onCropComplete}
+            onChange={onCropChange}
+            imageStyle={imageStyle}
+          />
+        </>
+      )}
+
+      {photoState.croppedImageUrl && (
+        <>
+          <span>EXAMPLE HERE</span>
+          <img
+            alt="Crop"
+            style={{ maxWidth: '100%' }}
+            src={photoState.croppedImageUrl}
+          />
+        </>
       )}
       <button onClick={handleFinishedCropping}>Finished Cropping</button>
     </Modal>

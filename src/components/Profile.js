@@ -18,6 +18,8 @@ import Loading from '../components/Loading'
 
 import userData from '../ajax/userData'
 
+import UploadAvatarModal from './modals/UploadAvatarModal'
+
 const Profile = (props) => {
   const inputRef = useRef(null)
   const loggedInUsername = props.loggedInUsername
@@ -28,6 +30,10 @@ const Profile = (props) => {
   const [isUserHaveAvatar, setIsUserHaveAvatar] = useState(false)
   const [newDescription, setNewDescription] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+
+  // for the new version
+  const [photoSrc, setPhotoSrc] = useState(null)
+  const [showUploadModal, setShowUploadModal] = useState(false)
 
   // send the updated description to server
   const callUpdateDesc = () => {
@@ -63,22 +69,35 @@ const Profile = (props) => {
   }, [username, isLoading])
 
   const handleUploadAvatar = (e) => {
-    const img = e.target.files[0]
-    console.log('img', img)
-    let data = new FormData()
-    data.append('image', img)
-    data.append('foo', 'bar')
+    if (e.target.files && e.target.files.length > 0) {
+      setShowUploadModal(true)
+      const reader = new FileReader()
+      reader.addEventListener('load', () => setPhotoSrc(reader.result))
+      reader.readAsDataURL(e.target.files[0])
+    }
 
-    console.log('formdata', data)
-    userData
-      .uploadAvatar(data)
-      .then(() => {
-        window.alert('Image successfully uploaded')
-        setIsLoading(true)
-      })
-      .catch((err) => {
-        window.alert('Unable to upload avatar: ' + err)
-      })
+    // const img = e.target.files[0]
+    // console.log('img', img)
+
+    // setShowUploadModal(true)
+    // setPhotoSrc(img)
+    // let data = new FormData()
+    // data.append('image', img)
+
+    // console.log('formdata', data)
+    // userData
+    //   .uploadAvatar(data)
+    //   .then(() => {
+    //     window.alert('Image successfully uploaded')
+    //     setIsLoading(true)
+    //   })
+    //   .catch((err) => {
+    //     window.alert('Unable to upload avatar: ' + err)
+    //   })
+  }
+
+  const handleCloseUploadModal = () => {
+    setShowUploadModal(false)
   }
 
   useEffect(() => {
@@ -174,210 +193,222 @@ const Profile = (props) => {
   }, [user])
 
   return (
-    <WrapperDiv>
-      <h1 className="title">{username}'s Profile</h1>
-      {!user ? (
-        <Loading />
-      ) : (
-        <div className="mainContainer">
-          {/* LEFT COLUMN */}
-          <div className="leftColumn">
-            {/* AVATAR */}
-            <div className="avatarWrapper">
-              <h2 className="subTitle">Avatar</h2>
+    <>
+      <WrapperDiv>
+        <h1 className="title">{username}'s Profile</h1>
+        {!user ? (
+          <Loading />
+        ) : (
+          <div className="mainContainer">
+            {/* LEFT COLUMN */}
+            <div className="leftColumn">
+              {/* AVATAR */}
+              <div className="avatarWrapper">
+                <h2 className="subTitle">Avatar</h2>
 
-              <img
-                className="avatar"
-                src={!isUserHaveAvatar ? '/img/defaultAvatar.png' : binary}
-              />
-              {username === loggedInUsername && (
-                <div>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          'For best results, please upload an image 200 x 200 pixels.',
-                        )
-                      ) {
-                        inputRef.current.click()
-                      }
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    ref={inputRef}
-                    accept="image/*"
-                    onChange={handleUploadAvatar}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* STATS */}
-            <div>
-              <h2 className="subTitle">Statistics</h2>
-
-              <canvas id="myChart" width="400" height="400" />
-            </div>
-          </div>
-
-          <div className="verticalSpacer" />
-
-          {/* RIGHT COLUMN */}
-          <div className="rightColumn">
-            {/* DESCRIPTION */}
-            <div className="descWrapper">
-              <h2 className="subTitle">Description</h2>
-              {!isUpdatingDesc ? (
-                <>
-                  <p>
-                    {'"'}
-                    {user.description
-                      ? user.description
-                      : '[No description provided]'}
-                    {'"'}
-                  </p>
-                  <div className="descButtonWrapper">
-                    {user.username === loggedInUsername && (
-                      <Button size="sm" onClick={() => setIsUpdatingDesc(true)}>
-                        Edit
-                      </Button>
-                    )}
-                    <span>
-                      User since:{' '}
-                      {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <InputGroup className="mb-3" size="sm">
-                    <FormControl
-                      aria-label="User Description Update"
-                      as="textarea"
-                      name="description"
-                      value={newDescription}
-                      onChange={(e) => {
-                        console.log('e target value: ', e.currentTarget.value)
-                        setNewDescription(e.currentTarget.value)
+                <img
+                  className="avatar"
+                  src={!isUserHaveAvatar ? '/img/defaultAvatar.png' : binary}
+                />
+                {username === loggedInUsername && (
+                  <div>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            'For best results, please upload an image 200 x 200 pixels.',
+                          )
+                        ) {
+                          inputRef.current.click()
+                        }
                       }}
+                    >
+                      Edit
+                    </Button>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      ref={inputRef}
+                      accept="image/*"
+                      onChange={handleUploadAvatar}
                     />
-                  </InputGroup>
-                  <div className="descButtonWrapper">
-                    <div>
-                      <Button
-                        size="sm"
-                        variant="success"
-                        onClick={callUpdateDesc}
-                      >
-                        Accept
-                      </Button>
-                      &nbsp;
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => {
-                          setNewDescription(user.description)
-                          setIsUpdatingDesc(false)
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                    <span>
-                      User since:{' '}
-                      {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
-                    </span>
                   </div>
-                </>
-              )}
+                )}
+              </div>
+
+              {/* STATS */}
+              <div>
+                <h2 className="subTitle">Statistics</h2>
+
+                <canvas id="myChart" width="400" height="400" />
+              </div>
             </div>
 
-            <div className="followingWrapper">
-              <h2 className="subTitle">Following</h2>
-              <hr />
-              <Accordion defaultActiveKey="0">
-                <Card>
-                  <Accordion.Toggle
-                    as={Card.Header}
-                    variant="link"
-                    eventKey="0"
-                  >
-                    {'['}
-                    {user.followingUsers.length}
-                    {']'} Following these users:
-                  </Accordion.Toggle>
+            <div className="verticalSpacer" />
 
-                  <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-                      {user.followingUsers.length < 1 && <span>[N/A]</span>}
-                      {user.followingUsers.map((username) => {
-                        return (
-                          <>
-                            <Link
-                              to={`/profile/${username}`}
-                              onClick={() => {
-                                setIsLoading(true)
-                                setUser(null)
-                                setUsername(username)
-                              }}
-                              key={`${username}_following`}
-                            >
-                              -&nbsp;{username}
-                            </Link>
-                            <br />
-                          </>
-                        )
-                      })}
-                    </Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-                <Card>
-                  <Accordion.Toggle
-                    as={Card.Header}
-                    variant="link"
-                    eventKey="1"
-                  >
-                    {'['}
-                    {user.followedByUsers.length}
-                    {']'} Followed by these users:
-                  </Accordion.Toggle>
+            {/* RIGHT COLUMN */}
+            <div className="rightColumn">
+              {/* DESCRIPTION */}
+              <div className="descWrapper">
+                <h2 className="subTitle">Description</h2>
+                {!isUpdatingDesc ? (
+                  <>
+                    <p>
+                      {'"'}
+                      {user.description
+                        ? user.description
+                        : '[No description provided]'}
+                      {'"'}
+                    </p>
+                    <div className="descButtonWrapper">
+                      {user.username === loggedInUsername && (
+                        <Button
+                          size="sm"
+                          onClick={() => setIsUpdatingDesc(true)}
+                        >
+                          Edit
+                        </Button>
+                      )}
+                      <span>
+                        User since:{' '}
+                        {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <InputGroup className="mb-3" size="sm">
+                      <FormControl
+                        aria-label="User Description Update"
+                        as="textarea"
+                        name="description"
+                        value={newDescription}
+                        onChange={(e) => {
+                          console.log('e target value: ', e.currentTarget.value)
+                          setNewDescription(e.currentTarget.value)
+                        }}
+                      />
+                    </InputGroup>
+                    <div className="descButtonWrapper">
+                      <div>
+                        <Button
+                          size="sm"
+                          variant="success"
+                          onClick={callUpdateDesc}
+                        >
+                          Accept
+                        </Button>
+                        &nbsp;
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => {
+                            setNewDescription(user.description)
+                            setIsUpdatingDesc(false)
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                      <span>
+                        User since:{' '}
+                        {dayjs(user.accountCreationDate).format('MMM DD, YYYY')}
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
 
-                  <Accordion.Collapse eventKey="1">
-                    <Card.Body>
-                      {user.followedByUsers.length < 1 && <span>[N/A]</span>}
-                      {user.followedByUsers.map((username) => {
-                        return (
-                          <>
-                            <Link
-                              to={`/profile/${username}`}
-                              onClick={() => {
-                                setIsLoading(true)
-                                setUser(null)
-                                setUsername(username)
-                              }}
-                              key={`${username}_follower`}
-                            >
-                              -&nbsp;{username}
-                            </Link>
-                            <br />
-                          </>
-                        )
-                      })}
-                    </Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
+              <div className="followingWrapper">
+                <h2 className="subTitle">Following</h2>
+                <hr />
+                <Accordion defaultActiveKey="0">
+                  <Card>
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      variant="link"
+                      eventKey="0"
+                    >
+                      {'['}
+                      {user.followingUsers.length}
+                      {']'} Following these users:
+                    </Accordion.Toggle>
+
+                    <Accordion.Collapse eventKey="0">
+                      <Card.Body>
+                        {user.followingUsers.length < 1 && <span>[N/A]</span>}
+                        {user.followingUsers.map((username) => {
+                          return (
+                            <>
+                              <Link
+                                to={`/profile/${username}`}
+                                onClick={() => {
+                                  setIsLoading(true)
+                                  setUser(null)
+                                  setUsername(username)
+                                }}
+                                key={`${username}_following`}
+                              >
+                                -&nbsp;{username}
+                              </Link>
+                              <br />
+                            </>
+                          )
+                        })}
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      variant="link"
+                      eventKey="1"
+                    >
+                      {'['}
+                      {user.followedByUsers.length}
+                      {']'} Followed by these users:
+                    </Accordion.Toggle>
+
+                    <Accordion.Collapse eventKey="1">
+                      <Card.Body>
+                        {user.followedByUsers.length < 1 && <span>[N/A]</span>}
+                        {user.followedByUsers.map((username) => {
+                          return (
+                            <>
+                              <Link
+                                to={`/profile/${username}`}
+                                onClick={() => {
+                                  setIsLoading(true)
+                                  setUser(null)
+                                  setUsername(username)
+                                }}
+                                key={`${username}_follower`}
+                              >
+                                -&nbsp;{username}
+                              </Link>
+                              <br />
+                            </>
+                          )
+                        })}
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </WrapperDiv>
+        )}
+      </WrapperDiv>
+
+      <UploadAvatarModal
+        handleCloseUploadModal={handleCloseUploadModal}
+        showUploadModal={showUploadModal}
+        photoSrc={photoSrc}
+        setPhotoSrc={setPhotoSrc}
+      />
+    </>
   )
 }
 
