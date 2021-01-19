@@ -49,15 +49,18 @@ const UploadAvatarModal = (props) => {
   }
 
   const onCropComplete = (crop) => {
+    console.log('onCropComplete called')
     makeClientCrop(crop)
   }
 
   const onCropChange = (crop) => {
+    console.log('onCropChange called')
     setPhotoState({ ...photoState, crop })
   }
 
   const makeClientCrop = async function(crop) {
     if (photoState.imageRef && crop.width && crop.height) {
+      console.log('makeClientCrop called')
       const croppedImageUrl = await getCroppedImg(
         photoState.imageRef,
         photoState.crop,
@@ -96,9 +99,11 @@ const UploadAvatarModal = (props) => {
         }
         blob.name = fileName
 
-        if (photoState.fileUrl) {
-          window.URL.revokeObjectURL(photoState.fileUrl)
-        }
+        // if (photoState.fileUrl) {
+        window.URL.revokeObjectURL(photoState.fileUrl)
+        // }
+
+        console.log('fileUrl is: ', window.URL.createObjectURL(blob))
 
         setPhotoState({
           ...photoState,
