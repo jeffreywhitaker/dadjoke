@@ -137,6 +137,7 @@ const UploadAvatarModal = (props) => {
             onImageLoaded={onImageLoaded}
             onComplete={onCropComplete}
             onChange={onCropChange}
+            style={imageStyle}
           />
         </>
       )}
