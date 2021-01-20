@@ -6,34 +6,37 @@ import Modal from 'react-bootstrap/Modal'
 import ReactCrop from 'react-image-crop'
 
 const UploadAvatarModal = (props) => {
-  const {
-    handleCloseUploadModal,
-    showUploadModal,
-    photoSrc,
-    setPhotoSrc,
-  } = props
+  const { handleCloseUploadModal, showUploadModal, photoSrc } = props
 
   // local photo state
-  const [photoState, setPhotoState] = useState({
-    crop: {
-      unit: '%',
-      width: 30,
-      aspect: 16 / 9,
-    },
-    imageRef: null,
-    croppedImageUrl: null,
-    fileUrl: null,
+  const [crop, setCrop] = useState({
+    unit: '%',
+    width: 30,
+    aspect: 16 / 9,
   })
+  const [fileUrl, setFileUrl] = useState(null)
+  const [croppedImageUrl, setCroppedImageUrl] = useState(null)
+  const [imageRef, setImageRef] = useState(null)
 
   useEffect(() => {
-    console.log('photostate changed')
-    console.log(photoState)
-  }, [photoState])
+    console.log('fileURL changed')
+    console.log(fileUrl)
+  }, [fileUrl])
+
+  useEffect(() => {
+    console.log('imageRef changed')
+    console.log(imageRef)
+  }, [imageRef])
+
+  useEffect(() => {
+    console.log('croppedImageUrl changed')
+    console.log(croppedImageUrl)
+  }, [croppedImageUrl])
 
   useEffect(() => {
     console.log('photoSrc chagned')
     console.log(photoSrc)
-  }, [])
+  }, [photoSrc])
 
   const handleFinishedCropping = (e) => {
     // done cropping
@@ -44,7 +47,7 @@ const UploadAvatarModal = (props) => {
   // TODO: has to maybe return false
   const onImageLoaded = (image) => {
     console.log('on image loaded called with img: ', image)
-    setPhotoState({ ...photoState, imageRef: image })
+    setImageRef(image)
     return false
   }
 
@@ -55,22 +58,24 @@ const UploadAvatarModal = (props) => {
 
   const onCropChange = (crop) => {
     console.log('onCropChange called')
-    setPhotoState({ ...photoState, crop })
+    console.log('new crop is: ', crop)
+    setCrop(crop)
   }
 
   const makeClientCrop = async function(crop) {
-    if (photoState.imageRef && crop.width && crop.height) {
+    if (imageRef && crop.width && crop.height) {
       console.log('makeClientCrop called')
-      const croppedImageUrl = await getCroppedImg(
-        photoState.imageRef,
-        photoState.crop,
+      const _croppedImageUrl = await getCroppedImg(
+        imageRef,
+        crop,
         'newFile.jpeg',
       )
-      setPhotoState({ ...photoState, croppedImageUrl })
+      setCroppedImageUrl(_croppedImageUrl)
     }
   }
 
   const getCroppedImg = (image, crop, fileName) => {
+    console.log('get cropped img called')
     const canvas = document.createElement('canvas')
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
@@ -78,6 +83,7 @@ const UploadAvatarModal = (props) => {
     canvas.height = crop.height
     const ctx = canvas.getContext('2d')
 
+    console.log(scaleX, scaleY, crop.x, crop.y, crop.width, crop.height)
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -92,6 +98,7 @@ const UploadAvatarModal = (props) => {
 
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
+        console.log('blob is: ', blob)
         if (!blob) {
           //reject(new Error('Canvas is empty'));
           console.error('Canvas is empty')
@@ -100,17 +107,17 @@ const UploadAvatarModal = (props) => {
         blob.name = fileName
 
         // if (photoState.fileUrl) {
-        window.URL.revokeObjectURL(photoState.fileUrl)
+        // window.URL.revokeObjectURL(fileUrl)
+        // window.URL.revokeObjectURL(this.fileUrl)
         // }
 
         console.log('fileUrl is: ', window.URL.createObjectURL(blob))
 
-        setPhotoState({
-          ...photoState,
-          fileUrl: window.URL.createObjectURL(blob),
-        })
+        setFileUrl(window.URL.createObjectURL(blob))
+        // this.fileUrl = window.URL.createObjectURL(blob)
 
-        resolve(photoState.fileUrl)
+        // resolve(this.fileUrl)
+        resolve(fileUrl)
       }, 'image/jpeg')
     })
   }
@@ -126,23 +133,18 @@ const UploadAvatarModal = (props) => {
           <span>SRC IS LOADED</span>
           <ReactCrop
             src={photoSrc}
-            crop={photoState.crop}
+            crop={crop}
             onImageLoaded={onImageLoaded}
             onComplete={onCropComplete}
             onChange={onCropChange}
-            imageStyle={imageStyle}
           />
         </>
       )}
 
-      {photoState.croppedImageUrl && (
+      {croppedImageUrl && (
         <>
           <span>EXAMPLE HERE</span>
-          <img
-            alt="Crop"
-            style={{ maxWidth: '100%' }}
-            src={photoState.croppedImageUrl}
-          />
+          <img alt="Crop" src={croppedImageUrl} />
         </>
       )}
       <button onClick={handleFinishedCropping}>Finished Cropping</button>

@@ -406,7 +406,6 @@ const Profile = (props) => {
         handleCloseUploadModal={handleCloseUploadModal}
         showUploadModal={showUploadModal}
         photoSrc={photoSrc}
-        setPhotoSrc={setPhotoSrc}
       />
     </>
   )
