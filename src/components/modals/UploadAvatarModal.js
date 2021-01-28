@@ -74,16 +74,30 @@ const UploadAvatarModal = (props) => {
     }
   }
 
-  const getCroppedImg = (image, crop, fileName) => {
-    console.log('get cropped img called')
-    const canvas = document.createElement('canvas')
+  const onLoad = useCallback((img) => {
+    imgRef.current = img
+  }, [])
+
+  useEffect(() => {
+    if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+      return
+    }
+
+    const image = imgRef.current
+    const canvas = previewCanvasRef.current
+    const crop = completedCrop
+
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
-    canvas.width = crop.width
-    canvas.height = crop.height
     const ctx = canvas.getContext('2d')
+    const pixelRatio = window.devicePixelRatio
 
-    console.log(scaleX, scaleY, crop.x, crop.y, crop.width, crop.height)
+    canvas.width = crop.width * pixelRatio
+    canvas.height = crop.height * pixelRatio
+
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+    ctx.imageSmoothingQuality = 'high'
+
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -95,32 +109,7 @@ const UploadAvatarModal = (props) => {
       crop.width,
       crop.height,
     )
-
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        console.log('blob is: ', blob)
-        if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error('Canvas is empty')
-          return
-        }
-        blob.name = fileName
-
-        // if (photoState.fileUrl) {
-        // window.URL.revokeObjectURL(fileUrl)
-        // window.URL.revokeObjectURL(this.fileUrl)
-        // }
-
-        console.log('fileUrl is: ', window.URL.createObjectURL(blob))
-
-        setFileUrl(window.URL.createObjectURL(blob))
-        // this.fileUrl = window.URL.createObjectURL(blob)
-
-        // resolve(this.fileUrl)
-        resolve(fileUrl)
-      }, 'image/jpeg')
-    })
-  }
+  }, [completedCrop])
 
   const imageStyle = {
     maxWidth: '400px',
@@ -134,7 +123,7 @@ const UploadAvatarModal = (props) => {
           <ReactCrop
             src={photoSrc}
             crop={crop}
-            onImageLoaded={onImageLoaded}
+            onImageLoaded={onLoad}
             onComplete={onCropComplete}
             onChange={onCropChange}
             style={imageStyle}
