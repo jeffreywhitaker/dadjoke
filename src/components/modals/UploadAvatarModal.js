@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // bootstrap
 import Modal from 'react-bootstrap/Modal'
 
 import ReactCrop from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 
 const UploadAvatarModal = (props) => {
   const { handleCloseUploadModal, showUploadModal, photoSrc } = props
+  const previewCanvasRef = useRef(null)
 
   // local photo state
   const [crop, setCrop] = useState({
@@ -78,6 +80,27 @@ const UploadAvatarModal = (props) => {
     imgRef.current = img
   }, [])
 
+  function generateDownload(canvas, crop) {
+    if (!crop || !canvas) {
+      return
+    }
+
+    canvas.toBlob(
+      (blob) => {
+        const previewUrl = window.URL.createObjectURL(blob)
+
+        const anchor = document.createElement('a')
+        anchor.download = 'cropPreview.png'
+        anchor.href = URL.createObjectURL(blob)
+        anchor.click()
+
+        window.URL.revokeObjectURL(previewUrl)
+      },
+      'image/png',
+      1,
+    )
+  }
+
   useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
       return
@@ -131,12 +154,16 @@ const UploadAvatarModal = (props) => {
         </>
       )}
 
-      {croppedImageUrl && (
-        <>
-          <span>EXAMPLE HERE</span>
-          <img alt="Crop" src={croppedImageUrl} />
-        </>
-      )}
+      <div>
+        <canvas
+          ref={previewCanvasRef}
+          // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+          style={{
+            width: Math.round(completedCrop?.width ?? 0),
+            height: Math.round(completedCrop?.height ?? 0),
+          }}
+        />
+      </div>
       <button onClick={handleFinishedCropping}>Finished Cropping</button>
     </Modal>
   )
