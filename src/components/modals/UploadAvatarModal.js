@@ -46,24 +46,6 @@ const UploadAvatarModal = (props) => {
   }
 
   // react crop methods
-  // TODO: has to maybe return false
-  const onImageLoaded = (image) => {
-    console.log('on image loaded called with img: ', image)
-    setImageRef(image)
-    return false
-  }
-
-  const onCropComplete = (crop) => {
-    console.log('onCropComplete called')
-    makeClientCrop(crop)
-  }
-
-  const onCropChange = (crop) => {
-    console.log('onCropChange called')
-    console.log('new crop is: ', crop)
-    setCrop(crop)
-  }
-
   const makeClientCrop = async function(crop) {
     if (imageRef && crop.width && crop.height) {
       console.log('makeClientCrop called')
@@ -147,8 +129,8 @@ const UploadAvatarModal = (props) => {
             src={photoSrc}
             crop={crop}
             onImageLoaded={onLoad}
-            onComplete={onCropComplete}
-            onChange={onCropChange}
+            onChange={(c) => setCrop(c)}
+            onComplete={(c) => setCompletedCrop(c)}
             style={imageStyle}
           />
         </>
