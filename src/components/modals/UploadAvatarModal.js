@@ -40,23 +40,18 @@ const UploadAvatarModal = (props) => {
     console.log(photoSrc)
   }, [photoSrc])
 
-  const handleFinishedCropping = (e) => {
-    // done cropping
-    // should now convert to form data and send to back end
-  }
-
   // react crop methods
-  const makeClientCrop = async function(crop) {
-    if (imageRef && crop.width && crop.height) {
-      console.log('makeClientCrop called')
-      const _croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'newFile.jpeg',
-      )
-      setCroppedImageUrl(_croppedImageUrl)
-    }
-  }
+  // const makeClientCrop = async function(crop) {
+  //   if (imageRef && crop.width && crop.height) {
+  //     console.log('makeClientCrop called')
+  //     const _croppedImageUrl = await getCroppedImg(
+  //       imageRef,
+  //       crop,
+  //       'newFile.jpeg',
+  //     )
+  //     setCroppedImageUrl(_croppedImageUrl)
+  //   }
+  // }
 
   const onLoad = useCallback((img) => {
     imgRef.current = img
@@ -146,7 +141,13 @@ const UploadAvatarModal = (props) => {
           }}
         />
       </div>
-      <button onClick={handleFinishedCropping}>Finished Cropping</button>
+      <button
+        onClick={() =>
+          generateDownload(previewCanvasRef.current, completedCrop)
+        }
+      >
+        Finished Cropping
+      </button>
     </Modal>
   )
 }
