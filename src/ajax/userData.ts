@@ -1,4 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
+import { AvatarResponse } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -11,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 
 export default {
 
-  getAvatar(username: string): Promise<AxiosPromise> {
+  getAvatar(username: string): Promise<AvatarResponse> {
     return axios.get(`${URI_STRING}/api/users/profile/avatar/${username}`, { withCredentials: true})
   },
   getProfileStats(username: string): Promise<AxiosPromise> {

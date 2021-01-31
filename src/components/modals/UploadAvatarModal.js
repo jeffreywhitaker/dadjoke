@@ -11,6 +11,8 @@ const UploadAvatarModal = (props) => {
   const { handleCloseUploadModal, showUploadModal, photoSrc } = props
 
   // local state for modal
+  // TODO: set up loading
+  const [loading, setLoading] = useState(false)
   const previewCanvasRef = useRef(null)
   const imgRef = useRef(null)
   const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 16 / 9 })

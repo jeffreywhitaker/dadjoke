@@ -15,7 +15,8 @@ import Tooltip from 'react-bootstrap/Tooltip'
 
 import jokesData from '../ajax/jokesData'
 import followData from '../ajax/followData'
-import { Joke } from '../types/types'
+import userData from '../ajax/userData'
+import { AvatarResponse, Joke } from '../types/types'
 
 import CommentModal from './modals/CommentModal'
 import JokeVoteDashboard from './JokeVoteDashboard'
@@ -56,6 +57,33 @@ function SingleJokeCard(props: Props) {
   // set local update state
   const [isBeingUpdated, setIsBeingUpdated] = useState(false)
   const [updatedJoke, setUpdatedJoke] = useState(emptyJoke)
+
+  // methods for displaying user image
+  const [creatorAvatar, setCreatorAvatar] = useState('')
+  useEffect(() => {
+    if (joke.username) {
+      userData
+        .getAvatar(joke.username as string)
+        .then((res: AvatarResponse) => {
+          console.log('get avatar res is: ', res)
+          const base64Flag = 'data:image/jpeg;base64,'
+          const imageStr = arrayBufferToBase64(res.data.data.data)
+          setCreatorAvatar(base64Flag + imageStr)
+        })
+        .catch((error) =>
+          console.log('unable to fetch joke creator avatar', error),
+        )
+    }
+  }, [joke])
+
+  // TODO: this is copy/pasted and used twice - import from helper functions
+  function arrayBufferToBase64(buffer: Buffer) {
+    let binary = ''
+    const bytes = [].slice.call(new Uint8Array(buffer))
+    bytes.forEach((b) => (binary += String.fromCharCode(b)))
+    console.log('window.btoa is: ', window.btoa(binary))
+    return window.btoa(binary)
+  }
 
   // helper functions
   function handleDelete(id: string) {
@@ -344,6 +372,15 @@ function SingleJokeCard(props: Props) {
                 </OverlayTrigger>
                 {/* SUBMITTED BY */}
                 &nbsp; submitted by:{' '}
+                <img
+                  className="creatorAvatarImg"
+                  src={
+                    creatorAvatar === ''
+                      ? '/img/defaultAvatar.png'
+                      : creatorAvatar
+                  }
+                />
+                &nbsp;
                 <OverlayTrigger
                   key={`${joke.username}_link`}
                   placement="top"
@@ -472,4 +509,10 @@ const DetailsDiv = styled.div`
 
 const DivWrapper = styled.div`
   margin: 10px;
+
+  .creatorAvatarImg {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+  }
 `

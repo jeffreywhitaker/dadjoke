@@ -16,6 +16,14 @@ export interface CommentResponse {
   }
 }
 
+export interface AvatarResponse {
+  data: {
+    data: {
+      data: Buffer
+    }
+  }
+}
+
 export type Joke = {
   dadjokequestion: string
   _id?: string
@@ -28,6 +36,7 @@ export type Joke = {
   userVote?: string
   keywords?: string[]
   userFollowingCreator?: boolean
+  creator?: string
 }
 
 export type Thunk<ReturnType = void> = ThunkAction<
