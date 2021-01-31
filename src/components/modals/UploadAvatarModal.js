@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 // bootstrap
 import Modal from 'react-bootstrap/Modal'
@@ -7,51 +7,20 @@ import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
 const UploadAvatarModal = (props) => {
+  // destructure props
   const { handleCloseUploadModal, showUploadModal, photoSrc } = props
+
+  // local state for modal
   const previewCanvasRef = useRef(null)
+  const imgRef = useRef(null)
+  const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 16 / 9 })
+  const [completedCrop, setCompletedCrop] = useState(null)
 
-  // local photo state
-  const [crop, setCrop] = useState({
-    unit: '%',
-    width: 30,
-    aspect: 16 / 9,
-  })
-  const [fileUrl, setFileUrl] = useState(null)
-  const [croppedImageUrl, setCroppedImageUrl] = useState(null)
-  const [imageRef, setImageRef] = useState(null)
-
+  // methods
   useEffect(() => {
-    console.log('fileURL changed')
-    console.log(fileUrl)
-  }, [fileUrl])
-
-  useEffect(() => {
-    console.log('imageRef changed')
-    console.log(imageRef)
-  }, [imageRef])
-
-  useEffect(() => {
-    console.log('croppedImageUrl changed')
-    console.log(croppedImageUrl)
-  }, [croppedImageUrl])
-
-  useEffect(() => {
-    console.log('photoSrc chagned')
+    console.log('photoSrc changed')
     console.log(photoSrc)
   }, [photoSrc])
-
-  // react crop methods
-  // const makeClientCrop = async function(crop) {
-  //   if (imageRef && crop.width && crop.height) {
-  //     console.log('makeClientCrop called')
-  //     const _croppedImageUrl = await getCroppedImg(
-  //       imageRef,
-  //       crop,
-  //       'newFile.jpeg',
-  //     )
-  //     setCroppedImageUrl(_croppedImageUrl)
-  //   }
-  // }
 
   const onLoad = useCallback((img) => {
     imgRef.current = img
@@ -111,10 +80,21 @@ const UploadAvatarModal = (props) => {
     )
   }, [completedCrop])
 
+  // style
   const imageStyle = {
     maxWidth: '400px',
   }
 
+  const canvasStyle = {
+    // TODO: get loaders that will handle new JS
+    width: completedCrop ? Math.round(completedCrop.width) : 0,
+    height: completedCrop ? Math.round(completedCrop.height) : 0,
+
+    // width: Math.round(completedCrop?.width ?? 0),
+    // height: Math.round(completedCrop?.height ?? 0),
+  }
+
+  // return the modal
   return (
     <Modal show={showUploadModal} onHide={handleCloseUploadModal}>
       {photoSrc && (
@@ -135,10 +115,7 @@ const UploadAvatarModal = (props) => {
         <canvas
           ref={previewCanvasRef}
           // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-          style={{
-            width: Math.round(completedCrop?.width ?? 0),
-            height: Math.round(completedCrop?.height ?? 0),
-          }}
+          style={canvasStyle}
         />
       </div>
       <button
@@ -152,4 +129,5 @@ const UploadAvatarModal = (props) => {
   )
 }
 
+// export
 export default UploadAvatarModal
