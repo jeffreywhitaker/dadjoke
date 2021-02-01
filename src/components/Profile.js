@@ -16,6 +16,7 @@ import FormControl from 'react-bootstrap/FormControl'
 
 import Loading from '../components/Loading'
 
+import imageData from '../ajax/imageData'
 import userData from '../ajax/userData'
 
 import UploadAvatarModal from './modals/UploadAvatarModal'
@@ -79,6 +80,24 @@ const Profile = (props) => {
 
   const handleCloseUploadModal = () => {
     setShowUploadModal(false)
+  }
+
+  const handleDeleteAvatar = () => {
+    if (username !== loggedInUsername) {
+      // not the correct user
+      window.alert('You can only delete your own avatar.')
+    } else {
+      // correct user, delete avatar
+      imageData
+        .deleteAvatar(username)
+        .then(() => {
+          window.alert('Avatar successfully deleted.')
+          // TODO: refresh
+        })
+        .catch((err) => {
+          window.alert('There was an error deleting your avatar: ' + err)
+        })
+    }
   }
 
   useEffect(() => {
@@ -217,7 +236,7 @@ const Profile = (props) => {
                             'Are you sure you want to delete this image? This action cannot be undone.',
                           )
                         ) {
-                          console.log('do a thing!')
+                          handleDeleteAvatar()
                         }
                       }}
                     >
