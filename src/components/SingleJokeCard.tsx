@@ -81,7 +81,6 @@ function SingleJokeCard(props: Props) {
     let binary = ''
     const bytes = [].slice.call(new Uint8Array(buffer))
     bytes.forEach((b) => (binary += String.fromCharCode(b)))
-    console.log('window.btoa is: ', window.btoa(binary))
     return window.btoa(binary)
   }
 
@@ -371,18 +370,33 @@ function SingleJokeCard(props: Props) {
                   <i className="fas fa-key"></i>
                 </OverlayTrigger>
                 {/* SUBMITTED BY */}
-                &nbsp; submitted by:{' '}
-                <img
-                  className="creatorAvatarImg"
-                  src={
-                    creatorAvatar === ''
-                      ? '/img/defaultAvatar.png'
-                      : creatorAvatar
-                  }
-                />
-                &nbsp;
+                &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
                 <OverlayTrigger
                   key={`${joke.username}_link`}
+                  placement="top"
+                  overlay={
+                    <Tooltip
+                      id={`${joke.username}_avatarlink_onJoke_${joke._id}`}
+                    >
+                      {`Visit ${joke.username}'s profile`}
+                    </Tooltip>
+                  }
+                >
+                  <Link to={`/profile/${joke.username}`}>
+                    <img
+                      className="creatorAvatarImg"
+                      src={
+                        creatorAvatar === ''
+                          ? '/img/defaultAvatar.png'
+                          : creatorAvatar
+                      }
+                    />
+                  </Link>
+                </OverlayTrigger>
+                &nbsp;
+                {/* CREATOR NAME LINK */}
+                <OverlayTrigger
+                  key={`${joke.username}_textlink_onJoke_${joke._id}`}
                   placement="top"
                   overlay={
                     <Tooltip id={`${joke.username}_link`}>

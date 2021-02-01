@@ -43,8 +43,7 @@ const CommentModal: React.FC<Props> = (props: Props) => {
 
   // get comments for the appropriate joke
   useEffect(() => {
-    console.log('in comment modal use effect')
-    if (!comments && showModal) {
+    if (comments.length < 1 && showModal) {
       // get comments
       setLoading(true)
       jokesData
