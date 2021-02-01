@@ -75,25 +75,6 @@ const Profile = (props) => {
       reader.addEventListener('load', () => setPhotoSrc(reader.result))
       reader.readAsDataURL(e.target.files[0])
     }
-
-    // const img = e.target.files[0]
-    // console.log('img', img)
-
-    // setShowUploadModal(true)
-    // setPhotoSrc(img)
-    // let data = new FormData()
-    // data.append('image', img)
-
-    // console.log('formdata', data)
-    // userData
-    //   .uploadAvatar(data)
-    //   .then(() => {
-    //     window.alert('Image successfully uploaded')
-    //     setIsLoading(true)
-    //   })
-    //   .catch((err) => {
-    //     window.alert('Unable to upload avatar: ' + err)
-    //   })
   }
 
   const handleCloseUploadModal = () => {
@@ -225,6 +206,22 @@ const Profile = (props) => {
                       }}
                     >
                       Edit
+                    </Button>
+                    &nbsp;
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            'Are you sure you want to delete this image? This action cannot be undone.',
+                          )
+                        ) {
+                          console.log('do a thing!')
+                        }
+                      }}
+                    >
+                      Delete
                     </Button>
                     <input
                       type="file"
@@ -404,6 +401,7 @@ const Profile = (props) => {
 
       <UploadAvatarModal
         handleCloseUploadModal={handleCloseUploadModal}
+        setShowUploadModal={setShowUploadModal}
         showUploadModal={showUploadModal}
         photoSrc={photoSrc}
       />

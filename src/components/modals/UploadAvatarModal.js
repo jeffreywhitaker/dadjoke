@@ -6,16 +6,23 @@ import Modal from 'react-bootstrap/Modal'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
+import userData from '../../ajax/userData'
+
 const UploadAvatarModal = (props) => {
   // destructure props
-  const { handleCloseUploadModal, showUploadModal, photoSrc } = props
+  const {
+    handleCloseUploadModal,
+    setShowUploadModal,
+    showUploadModal,
+    photoSrc,
+  } = props
 
   // local state for modal
   // TODO: set up loading
   const [loading, setLoading] = useState(false)
   const previewCanvasRef = useRef(null)
   const imgRef = useRef(null)
-  const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 16 / 9 })
+  const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 200 / 200 })
   const [completedCrop, setCompletedCrop] = useState(null)
 
   // methods
@@ -33,16 +40,24 @@ const UploadAvatarModal = (props) => {
       return
     }
 
+    // convert the canvas to a blob
     canvas.toBlob(
       (blob) => {
-        const previewUrl = window.URL.createObjectURL(blob)
+        // create a form data to send, and append the blob
+        let data = new FormData()
+        data.append('image', blob)
 
-        const anchor = document.createElement('a')
-        anchor.download = 'cropPreview.png'
-        anchor.href = URL.createObjectURL(blob)
-        anchor.click()
-
-        window.URL.revokeObjectURL(previewUrl)
+        // send the image
+        userData
+          .uploadAvatar(data)
+          .then(() => {
+            window.alert('Image successfully uploaded')
+            setShowUploadModal(false)
+            // setIsLoading(false)
+          })
+          .catch((err) => {
+            window.alert('Unable to upload avatar: ' + err)
+          })
       },
       'image/png',
       1,
@@ -101,7 +116,7 @@ const UploadAvatarModal = (props) => {
     <Modal show={showUploadModal} onHide={handleCloseUploadModal}>
       {photoSrc && (
         <>
-          <span>SRC IS LOADED</span>
+          <h2>Please crop the image:</h2>
           <ReactCrop
             src={photoSrc}
             crop={crop}
@@ -114,6 +129,7 @@ const UploadAvatarModal = (props) => {
       )}
 
       <div>
+        <h2>Image to upload:</h2>
         <canvas
           ref={previewCanvasRef}
           // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
@@ -125,7 +141,7 @@ const UploadAvatarModal = (props) => {
           generateDownload(previewCanvasRef.current, completedCrop)
         }
       >
-        Finished Cropping
+        Upload Cropped Image
       </button>
     </Modal>
   )
