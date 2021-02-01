@@ -1,25 +1,18 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { Link } from 'react-router-dom'
-import dayjs from 'dayjs'
 import styled from 'styled-components'
 
-import Alert from 'react-bootstrap/Alert'
-import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
 
 import jokesData from '../ajax/jokesData'
-import followData from '../ajax/followData'
 import userData from '../ajax/userData'
 import { AvatarResponse, Joke } from '../types/types'
 
 import CommentModal from './modals/CommentModal'
-import JokeVoteDashboard from './JokeVoteDashboard'
+import JokeCardHeader from './small/JokeCardHeader'
+import JokeCardBody from './small/JokeCardBody'
+import JokeCardFooter from './small/JokeCardFooter'
 
 import '../styles/styles.css'
 import { AxiosPromise } from 'axios'
@@ -36,8 +29,6 @@ function SingleJokeCard(props: Props) {
     isLoggedIn,
     removeDeletedJoke,
   } = props
-
-  console.log('username:', username)
 
   // empty joke object
   const emptyJoke: Joke = {
@@ -65,7 +56,6 @@ function SingleJokeCard(props: Props) {
       userData
         .getAvatar(joke.username as string)
         .then((res: AvatarResponse) => {
-          console.log('get avatar res is: ', res)
           const base64Flag = 'data:image/jpeg;base64,'
           const imageStr = arrayBufferToBase64(res.data.data.data)
           setCreatorAvatar(base64Flag + imageStr)
@@ -190,301 +180,45 @@ function SingleJokeCard(props: Props) {
     voteOptions.downvoteTooltip = 'You must be logged in to downvote a joke'
   }
 
-  // render the following
+  // render the Joke Card
   return (
     <>
       <DivWrapper>
         <Card>
-          <Card.Header>
-            <JokeVoteDashboard
-              voteOptions={voteOptions}
-              joke={joke}
-              updateJokeKarma={updateJokeKarma}
-              isLoggedIn={isLoggedIn}
-            />
-            {/* DATE */}
-            <DetailsDiv className="floatRight">
-              <OverlayTrigger
-                key={`${joke._id}_submit`}
-                placement="top"
-                overlay={
-                  <Tooltip id={`${joke._id}_submit`}>
-                    Joke Submission date
-                  </Tooltip>
-                }
-              >
-                <span>{dayjs(joke.createdAt).format("MMM DD, 'YY")}</span>
-              </OverlayTrigger>
-              &nbsp;
-              {/* GLOBE OR LOCK ICON */}
-              {joke.isprivate && (
-                <OverlayTrigger
-                  key={`${joke._id}_lock`}
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-lock`}>
-                      Joke is <strong>Private</strong>
-                    </Tooltip>
-                  }
-                >
-                  <i className="fas fa-lock floatRight"></i>
-                </OverlayTrigger>
-              )}
-              {!joke.isprivate && (
-                <OverlayTrigger
-                  key={`${joke._id}_globe`}
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-globe`}>
-                      Joke is <strong>Public</strong>
-                    </Tooltip>
-                  }
-                >
-                  <i className="fas fa-globe floatRight"></i>
-                </OverlayTrigger>
-              )}
-            </DetailsDiv>
-          </Card.Header>
-          <Card.Body>
-            {/* QUESTION DISPLAY */}
-            <Card.Title>
-              {!isBeingUpdated && <span>Q: {joke.dadjokequestion}</span>}
-              {isBeingUpdated && (
-                <InputGroup className="mb-3">
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Q</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <FormControl
-                    aria-label="DadJoke Question Update"
-                    name="dadjokequestion"
-                    value={updatedJoke.dadjokequestion}
-                    onChange={handleValueChange}
-                  />
-                </InputGroup>
-              )}
-            </Card.Title>
-            {/* ANSWER DISPLAY */}
-            <Card.Text>
-              {!isBeingUpdated && <span>A: {joke.dadjokeanswer}</span>}
-              {isBeingUpdated && (
-                <InputGroup className="mb-3">
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>A</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <FormControl
-                    aria-label="DadJoke Answer Update"
-                    name="dadjokeanswer"
-                    value={updatedJoke.dadjokeanswer}
-                    onChange={handleValueChange}
-                  />
-                </InputGroup>
-              )}
-            </Card.Text>
-            {/* KEYWORDS DISPLAY */}
-            <Card.Text>
-              {/* {!isBeingUpdated && (
-              <span>
-                Keywords: {joke.keywords ? joke.keywords.join(', ') : '[None'}
-              </span>
-            )} */}
-              {isBeingUpdated && (
-                <InputGroup className="mb-3">
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Keywords</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <FormControl
-                    aria-label="DadJoke Answer Update"
-                    name="dadjokeanswer"
-                    defaultValue={joke.keywords ? joke.keywords.join(', ') : ''}
-                    onChange={handleKeywordsChange}
-                  />
-                </InputGroup>
-              )}
-            </Card.Text>
-            {/* ERROR DISPLAY */}
-            {joke.error && <Alert variant="danger">{joke.error}</Alert>}
-          </Card.Body>
-          <Card.Footer>
-            {/* COMMENT BUTTON */}
-            <OverlayTrigger
-              key={`${joke._id}_comment_link`}
-              placement="top"
-              overlay={
-                <Tooltip id={`${joke._id}_comment_link`}>
-                  {`See comments for this joke`}
-                </Tooltip>
-              }
-            >
-              <Button size="sm" onClick={() => setShowModal(true)}>
-                <i className="fas fa-comment-dots iconSize"></i>
-              </Button>
-            </OverlayTrigger>
-            &nbsp;&nbsp;
-            {/* UPDATE BUTTON */}
-            {!isBeingUpdated && joke.username === username && (
-              <Button variant="primary" onClick={() => toggleUpdate()}>
-                Edit
-              </Button>
-            )}
-            {isBeingUpdated && (
-              <>
-                <Button
-                  variant="primary"
-                  onClick={() => handleUpdate(updatedJoke)}
-                >
-                  Accept Changes
-                </Button>
-                &nbsp;
-                <Button variant="warning" onClick={() => toggleUpdate()}>
-                  Cancel Edit
-                </Button>
-              </>
-            )}
-            &nbsp;
-            {/* DELETE BUTTON */}
-            {joke.username === username && (
-              <Button
-                variant="danger"
-                onClick={() => handleDelete(joke._id as string)}
-              >
-                Del
-              </Button>
-            )}
-            {/* FLOAT RIGHT IN FOOTER */}
-            {window.location.pathname !== '/privatejokes' && (
-              <span className="floatRight">
-                {/* KEYWORDS */}
-                <OverlayTrigger
-                  key={`${joke.dadjokequestion}_keywords`}
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`${joke.dadjokequestion}_keywords`}>
-                      {`Keywords: ${
-                        joke.keywords && joke.keywords.length >= 1
-                          ? joke.keywords.join(', ')
-                          : '[None]'
-                      }`}
-                    </Tooltip>
-                  }
-                >
-                  <i className="fas fa-key"></i>
-                </OverlayTrigger>
-                {/* SUBMITTED BY */}
-                &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
-                <OverlayTrigger
-                  key={`${joke.username}_link`}
-                  placement="top"
-                  overlay={
-                    <Tooltip
-                      id={`${joke.username}_avatarlink_onJoke_${joke._id}`}
-                    >
-                      {`Visit ${joke.username}'s profile`}
-                    </Tooltip>
-                  }
-                >
-                  <Link to={`/profile/${joke.username}`}>
-                    <img
-                      className="creatorAvatarImg"
-                      src={
-                        creatorAvatar === ''
-                          ? '/img/defaultAvatar.png'
-                          : creatorAvatar
-                      }
-                    />
-                  </Link>
-                </OverlayTrigger>
-                &nbsp;
-                {/* CREATOR NAME LINK */}
-                <OverlayTrigger
-                  key={`${joke.username}_textlink_onJoke_${joke._id}`}
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`${joke.username}_link`}>
-                      {`Visit ${joke.username}'s profile`}
-                    </Tooltip>
-                  }
-                >
-                  <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
-                </OverlayTrigger>
-                &nbsp;&nbsp;
-                {/* FOLLOW USER BUTTON */}
-                {joke.userFollowingCreator ? (
-                  <OverlayTrigger
-                    key={`${joke.username}_follow`}
-                    placement="top"
-                    overlay={
-                      <Tooltip id={`${joke.username}_follow`}>
-                        {`You are following ${joke.username} - click to unfollow`}
-                      </Tooltip>
-                    }
-                  >
-                    <Button
-                      size="sm"
-                      variant="success"
-                      onClick={() =>
-                        followData
-                          .unfollowUser((joke.username as unknown) as string)
-                          .then(() => {
-                            updateFollowJokeCreator(
-                              (joke.username as unknown) as string,
-                              false,
-                            )
-                          })
-                          .catch((err) => {
-                            window.alert(
-                              'There was an error following this user: ' + err,
-                            )
-                          })
-                      }
-                    >
-                      <i className="fas fa-user-friends"></i>
-                    </Button>
-                  </OverlayTrigger>
-                ) : (
-                  <OverlayTrigger
-                    key={`${joke.username}_follow`}
-                    placement="top"
-                    overlay={
-                      <Tooltip id={`${joke.username}_follow`}>
-                        {!username ? (
-                          <span>{`You must be logged in to follow someone`}</span>
-                        ) : joke.username === username ? (
-                          <span>{`You can't follow yourself`}</span>
-                        ) : (
-                          <span>{`Click to follow ${joke.username}`}</span>
-                        )}
-                      </Tooltip>
-                    }
-                  >
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      disabled={!username || joke.username === username}
-                      onClick={() =>
-                        followData
-                          .followUser((joke.username as unknown) as string)
-                          .then(() => {
-                            updateFollowJokeCreator(
-                              (joke.username as unknown) as string,
-                              true,
-                            )
-                          })
-                          .catch((err) => {
-                            window.alert(
-                              'There was an error following this user: ' + err,
-                            )
-                          })
-                      }
-                    >
-                      <i className="fas fa-user-friends"></i>
-                    </Button>
-                  </OverlayTrigger>
-                )}
-              </span>
-            )}
-          </Card.Footer>
+          {/* HEADER */}
+          <JokeCardHeader
+            isLoggedIn={isLoggedIn}
+            joke={joke}
+            voteOptions={voteOptions}
+            updateJokeKarma={updateJokeKarma}
+          />
+
+          {/* BODY */}
+          <JokeCardBody
+            isBeingUpdated={isBeingUpdated}
+            joke={joke}
+            updatedJoke={updatedJoke}
+            handleValueChange={handleValueChange}
+            handleKeywordsChange={handleKeywordsChange}
+          />
+
+          {/* FOOTER */}
+          <JokeCardFooter
+            creatorAvatar={creatorAvatar}
+            handleDelete={handleDelete}
+            handleUpdate={handleUpdate}
+            isBeingUpdated={isBeingUpdated}
+            joke={joke}
+            setShowModal={setShowModal}
+            toggleUpdate={toggleUpdate}
+            updateFollowJokeCreator={updateFollowJokeCreator}
+            updatedJoke={updatedJoke}
+            username={username}
+          />
         </Card>
       </DivWrapper>
+
+      {/* COMMENT MODAL */}
       <CommentModal
         showModal={showModal}
         handleClose={handleClose}
@@ -514,12 +248,6 @@ type Props = PropsFromRedux & {
 }
 
 export default connector(SingleJokeCard)
-
-// styled components
-const DetailsDiv = styled.div`
-  display: flex;
-  align-items: center;
-`
 
 const DivWrapper = styled.div`
   margin: 10px;
