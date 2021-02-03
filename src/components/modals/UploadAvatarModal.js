@@ -114,38 +114,46 @@ const UploadAvatarModal = (props) => {
   // return the modal
   return (
     <Modal show={showUploadModal} onHide={handleCloseUploadModal}>
-      {photoSrc && (
-        <>
-          <h2>Please crop the image:</h2>
-          <ReactCrop
-            src={photoSrc}
-            crop={crop}
-            onImageLoaded={onLoad}
-            onChange={(c) => setCrop(c)}
-            onComplete={(c) => setCompletedCrop(c)}
-            style={imageStyle}
-          />
-        </>
-      )}
+      <UploadModalWrapper>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : (
+          <>
+            {photoSrc && (
+              <>
+                <h2>Please crop the image:</h2>
+                <ReactCrop
+                  src={photoSrc}
+                  crop={crop}
+                  onImageLoaded={onLoad}
+                  onChange={(c) => setCrop(c)}
+                  onComplete={(c) => setCompletedCrop(c)}
+                  style={imageStyle}
+                />
+              </>
+            )}
 
-      <div>
-        <h2>Image to upload:</h2>
-        <canvas
-          ref={previewCanvasRef}
-          // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-          style={canvasStyle}
-        />
-      </div>
-      <button
-        onClick={() =>
-          generateDownload(previewCanvasRef.current, completedCrop)
-        }
-      >
-        Upload Cropped Image
-      </button>
+            <div>
+              <h2>Image to upload:</h2>
+              <canvas ref={previewCanvasRef} style={canvasStyle} />
+            </div>
+            <div>
+              <button
+                onClick={() =>
+                  generateDownload(previewCanvasRef.current, completedCrop)
+                }
+              >
+                Upload Cropped Image
+              </button>
+            </div>
+          </>
+        )}
+      </UploadModalWrapper>
     </Modal>
   )
 }
 
 // export
 export default UploadAvatarModal
+
+const UploadModalWrapper = styled.div``
