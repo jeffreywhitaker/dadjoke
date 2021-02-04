@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 // bootstrap
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
 
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
+import Loading from '../Loading'
 import userData from '../../ajax/userData'
+
+import styled from 'styled-components'
 
 const UploadAvatarModal = (props) => {
   // destructure props
@@ -19,19 +24,16 @@ const UploadAvatarModal = (props) => {
 
   // local state for modal
   // TODO: set up loading
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const previewCanvasRef = useRef(null)
   const imgRef = useRef(null)
   const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 200 / 200 })
   const [completedCrop, setCompletedCrop] = useState(null)
 
   // methods
-  useEffect(() => {
-    console.log('photoSrc changed')
-    console.log(photoSrc)
-  }, [photoSrc])
-
   const onLoad = useCallback((img) => {
+    console.log('on load called')
+    setLoading(false)
     imgRef.current = img
   }, [])
 
@@ -104,24 +106,30 @@ const UploadAvatarModal = (props) => {
 
   const canvasStyle = {
     // TODO: get loaders that will handle new JS
-    width: completedCrop ? Math.round(completedCrop.width) : 0,
-    height: completedCrop ? Math.round(completedCrop.height) : 0,
+    // working version
+    // width: completedCrop ? Math.round(completedCrop.width) : 0,
+    // height: completedCrop ? Math.round(completedCrop.height) : 0,
 
+    // their version
     // width: Math.round(completedCrop?.width ?? 0),
     // height: Math.round(completedCrop?.height ?? 0),
+
+    // set to 200
+    width: 200,
+    height: 200,
   }
 
   // return the modal
   return (
     <Modal show={showUploadModal} onHide={handleCloseUploadModal}>
       <UploadModalWrapper>
-        {loading ? (
-          <h2>Loading...</h2>
-        ) : (
-          <>
-            {photoSrc && (
-              <>
-                <h2>Please crop the image:</h2>
+        {/* LOADING */}
+        {loading && <h3>Loading ...</h3>}
+        <Card style={{ display: loading ? 'none' : null }}>
+          {photoSrc && (
+            <>
+              <Card.Header>Please crop the image:</Card.Header>
+              <Card.Body>
                 <ReactCrop
                   src={photoSrc}
                   crop={crop}
@@ -130,24 +138,35 @@ const UploadAvatarModal = (props) => {
                   onComplete={(c) => setCompletedCrop(c)}
                   style={imageStyle}
                 />
-              </>
-            )}
-
-            <div>
-              <h2>Image to upload:</h2>
-              <canvas ref={previewCanvasRef} style={canvasStyle} />
-            </div>
-            <div>
-              <button
-                onClick={() =>
-                  generateDownload(previewCanvasRef.current, completedCrop)
-                }
-              >
-                Upload Cropped Image
-              </button>
-            </div>
-          </>
-        )}
+              </Card.Body>
+            </>
+          )}
+        </Card>
+        <Card style={{ display: loading ? 'none' : null }}>
+          <Card.Header>Image to upload:</Card.Header>
+          <Card.Body className="previewWrapper">
+            <canvas ref={previewCanvasRef} style={canvasStyle} />
+          </Card.Body>
+          <Card.Footer>
+            <Button
+              onClick={() =>
+                generateDownload(previewCanvasRef.current, completedCrop)
+              }
+            >
+              Upload Cropped Image
+            </Button>
+            &nbsp;
+            <Button
+              variant="danger"
+              onClick={() => {
+                setShowUploadModal(false)
+                setLoading(true)
+              }}
+            >
+              Cancel
+            </Button>
+          </Card.Footer>
+        </Card>
       </UploadModalWrapper>
     </Modal>
   )
@@ -156,4 +175,13 @@ const UploadAvatarModal = (props) => {
 // export
 export default UploadAvatarModal
 
-const UploadModalWrapper = styled.div``
+const UploadModalWrapper = styled.div`
+  padding: 20px;
+
+  .previewCard {
+  }
+
+  .previewWrapper {
+    display: flex;
+  }
+`
