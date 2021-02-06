@@ -180,5 +180,6 @@ const UploadModalWrapper = styled.div`
 
   .previewWrapper {
     display: flex;
+    justify-content: center;
   }
 `

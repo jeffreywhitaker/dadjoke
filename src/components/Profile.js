@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
-import FormData from 'form-data'
 
 import Chart from 'chart.js'
 
@@ -217,7 +216,7 @@ const Profile = (props) => {
                       onClick={() => {
                         if (
                           window.confirm(
-                            'For best results, please upload an image 200 x 200 pixels.',
+                            'For best results, please upload an image 200 x 200 pixels or larger.',
                           )
                         ) {
                           inputRef.current.click()
