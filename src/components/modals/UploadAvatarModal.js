@@ -8,7 +8,6 @@ import Modal from 'react-bootstrap/Modal'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
-import Loading from '../Loading'
 import userData from '../../ajax/userData'
 
 import styled from 'styled-components'
@@ -23,7 +22,6 @@ const UploadAvatarModal = (props) => {
   } = props
 
   // local state for modal
-  // TODO: set up loading
   const [loading, setLoading] = useState(true)
   const previewCanvasRef = useRef(null)
   const imgRef = useRef(null)
@@ -32,7 +30,6 @@ const UploadAvatarModal = (props) => {
 
   // methods
   const onLoad = useCallback((img) => {
-    console.log('on load called')
     setLoading(false)
     imgRef.current = img
   }, [])
@@ -55,7 +52,7 @@ const UploadAvatarModal = (props) => {
           .then(() => {
             window.alert('Image successfully uploaded')
             setShowUploadModal(false)
-            // setIsLoading(false)
+            setLoading(true)
           })
           .catch((err) => {
             window.alert('Unable to upload avatar: ' + err)
