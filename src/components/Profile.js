@@ -91,6 +91,7 @@ const Profile = (props) => {
         .deleteAvatar(username)
         .then(() => {
           window.alert('Avatar successfully deleted.')
+          setIsUserHaveAvatar(false)
           // TODO: refresh
         })
         .catch((err) => {
@@ -100,6 +101,10 @@ const Profile = (props) => {
   }
 
   useEffect(() => {
+    getUserAvatar()
+  }, [username])
+
+  function getUserAvatar() {
     userData
       .getAvatar(username)
       .then((res) => {
@@ -107,9 +112,10 @@ const Profile = (props) => {
         var base64Flag = 'data:image/jpeg;base64,'
         var imageStr = arrayBufferToBase64(res.data.data.data)
         setBinary(base64Flag + imageStr)
+        setIsUserHaveAvatar(true)
       })
       .catch((error) => console.log('unable to fetch profile avatar', error))
-  }, [username])
+  }
 
   function arrayBufferToBase64(buffer) {
     var binary = ''
@@ -226,21 +232,23 @@ const Profile = (props) => {
                       Edit
                     </Button>
                     &nbsp;
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            'Are you sure you want to delete this image? This action cannot be undone.',
-                          )
-                        ) {
-                          handleDeleteAvatar()
-                        }
-                      }}
-                    >
-                      Delete
-                    </Button>
+                    {isUserHaveAvatar && (
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              'Are you sure you want to delete this image? This action cannot be undone.',
+                            )
+                          ) {
+                            handleDeleteAvatar()
+                          }
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    )}
                     <input
                       type="file"
                       id="image"
@@ -418,6 +426,7 @@ const Profile = (props) => {
       </WrapperDiv>
 
       <UploadAvatarModal
+        getUserAvatar={getUserAvatar}
         handleCloseUploadModal={handleCloseUploadModal}
         setShowUploadModal={setShowUploadModal}
         showUploadModal={showUploadModal}

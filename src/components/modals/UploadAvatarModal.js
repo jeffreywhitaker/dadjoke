@@ -15,6 +15,7 @@ import styled from 'styled-components'
 const UploadAvatarModal = (props) => {
   // destructure props
   const {
+    getUserAvatar,
     handleCloseUploadModal,
     setShowUploadModal,
     showUploadModal,
@@ -53,6 +54,7 @@ const UploadAvatarModal = (props) => {
             window.alert('Image successfully uploaded')
             setShowUploadModal(false)
             setLoading(true)
+            getUserAvatar()
           })
           .catch((err) => {
             window.alert('Unable to upload avatar: ' + err)
