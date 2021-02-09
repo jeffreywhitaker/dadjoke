@@ -55,6 +55,22 @@ function JokeCardFooter(props: Props) {
           <i className="fas fa-comment-dots iconSize"></i>
         </Button>
       </OverlayTrigger>
+      {/* KEYWORDS */}
+      <OverlayTrigger
+        key={`${joke.dadjokequestion}_keywords`}
+        placement="top"
+        overlay={
+          <Tooltip id={`${joke.dadjokequestion}_keywords`}>
+            {`Keywords: ${
+              joke.keywords && joke.keywords.length >= 1
+                ? joke.keywords.join(', ')
+                : '[None]'
+            }`}
+          </Tooltip>
+        }
+      >
+        <i className="fas fa-key"></i>
+      </OverlayTrigger>
       &nbsp;&nbsp;
       {/* UPDATE BUTTON */}
       {!isBeingUpdated && joke.username === username && (
@@ -86,22 +102,6 @@ function JokeCardFooter(props: Props) {
       {/* FLOAT RIGHT IN FOOTER */}
       {window.location.pathname !== '/privatejokes' && (
         <span className="floatRight">
-          {/* KEYWORDS */}
-          <OverlayTrigger
-            key={`${joke.dadjokequestion}_keywords`}
-            placement="top"
-            overlay={
-              <Tooltip id={`${joke.dadjokequestion}_keywords`}>
-                {`Keywords: ${
-                  joke.keywords && joke.keywords.length >= 1
-                    ? joke.keywords.join(', ')
-                    : '[None]'
-                }`}
-              </Tooltip>
-            }
-          >
-            <i className="fas fa-key"></i>
-          </OverlayTrigger>
           {/* SUBMITTED BY */}
           &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
           <OverlayTrigger
