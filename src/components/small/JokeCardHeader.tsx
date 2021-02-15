@@ -9,9 +9,20 @@ import Tooltip from 'react-bootstrap/Tooltip'
 
 import JokeVoteDashboard from '../JokeVoteDashboard'
 
+import { Joke } from '../../types/types'
 import '../../styles/styles.css'
 
-function JokeCardHeader(props) {
+type Props = {
+  voteOptions: {
+    upvoteTooltip: string
+    downvoteTooltip: string
+  }
+  joke: Joke
+  updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
+  isLoggedIn: boolean
+}
+
+function JokeCardHeader(props: Props) {
   const { voteOptions, joke, updateJokeKarma, isLoggedIn } = props
 
   // return Card Header
