@@ -10,8 +10,6 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import followData from '../../ajax/followData'
 import { Joke } from '../../types/types'
 
-import '../../styles/styles.css'
-
 type Props = {
   creatorAvatar: string
   handleUpdate: (updatedJoke: Joke) => void
@@ -50,6 +48,7 @@ function JokeCardFooter(props: Props) {
 
   return (
     <Card.Footer style={cardStyle}>
+      {/* LEFT DIV */}
       <div>
         {/* COMMENT BUTTON */}
         <OverlayTrigger
@@ -84,7 +83,123 @@ function JokeCardFooter(props: Props) {
           </Button>
         </OverlayTrigger>
       </div>
+      {/* MIDDLE DIV */}
       <div>
+        {/* RIGHT DIV */}
+        {window.location.pathname !== '/privatejokes' && (
+          <>
+            {/* SUBMITTED BY */}
+            &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
+            <OverlayTrigger
+              key={`${joke.username}_link`}
+              placement="top"
+              overlay={
+                <Tooltip id={`${joke.username}_avatarlink_onJoke_${joke._id}`}>
+                  {`Visit ${joke.username}'s profile`}
+                </Tooltip>
+              }
+            >
+              <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
+            </OverlayTrigger>
+            &nbsp;
+            {/* CREATOR NAME LINK */}
+            <OverlayTrigger
+              key={`${joke.username}_textlink_onJoke_${joke._id}`}
+              placement="top"
+              overlay={
+                <Tooltip id={`${joke.username}_link`}>
+                  {`Visit ${joke.username}'s profile`}
+                </Tooltip>
+              }
+            >
+              <Link to={`/profile/${joke.username}`}>
+                <img
+                  className="creatorAvatarImg"
+                  src={
+                    creatorAvatar === ''
+                      ? '/img/defaultAvatar.png'
+                      : creatorAvatar
+                  }
+                />
+              </Link>
+            </OverlayTrigger>
+            &nbsp;&nbsp;
+            {/* FOLLOW USER BUTTON */}
+            {joke.userFollowingCreator ? (
+              <OverlayTrigger
+                key={`${joke.username}_follow`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`${joke.username}_follow`}>
+                    {`You are following ${joke.username} - click to unfollow`}
+                  </Tooltip>
+                }
+              >
+                <Button
+                  size="sm"
+                  variant="success"
+                  onClick={() =>
+                    followData
+                      .unfollowUser((joke.username as unknown) as string)
+                      .then(() => {
+                        updateFollowJokeCreator(
+                          (joke.username as unknown) as string,
+                          false,
+                        )
+                      })
+                      .catch((err) => {
+                        window.alert(
+                          'There was an error following this user: ' + err,
+                        )
+                      })
+                  }
+                >
+                  <i className="fas fa-user-friends"></i>
+                </Button>
+              </OverlayTrigger>
+            ) : (
+              <OverlayTrigger
+                key={`${joke.username}_follow`}
+                placement="top"
+                overlay={
+                  <Tooltip id={`${joke.username}_follow`}>
+                    {!username ? (
+                      <span>{`You must be logged in to follow someone`}</span>
+                    ) : joke.username === username ? (
+                      <span>{`You can't follow yourself`}</span>
+                    ) : (
+                      <span>{`Click to follow ${joke.username}`}</span>
+                    )}
+                  </Tooltip>
+                }
+              >
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  disabled={!username || joke.username === username}
+                  onClick={() =>
+                    followData
+                      .followUser((joke.username as unknown) as string)
+                      .then(() => {
+                        updateFollowJokeCreator(
+                          (joke.username as unknown) as string,
+                          true,
+                        )
+                      })
+                      .catch((err) => {
+                        window.alert(
+                          'There was an error following this user: ' + err,
+                        )
+                      })
+                  }
+                >
+                  <i className="fas fa-user-friends"></i>
+                </Button>
+              </OverlayTrigger>
+            )}
+          </>
+        )}
+        &nbsp;
         {/* UPDATE BUTTON */}
         {!isBeingUpdated && joke.username === username && (
           <Button variant="primary" onClick={() => toggleUpdate()}>
@@ -113,120 +228,6 @@ function JokeCardFooter(props: Props) {
           </Button>
         )}
       </div>
-      {/* FLOAT RIGHT IN FOOTER */}
-      {window.location.pathname !== '/privatejokes' && (
-        <span className="floatRight">
-          {/* SUBMITTED BY */}
-          &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
-          <OverlayTrigger
-            key={`${joke.username}_link`}
-            placement="top"
-            overlay={
-              <Tooltip id={`${joke.username}_avatarlink_onJoke_${joke._id}`}>
-                {`Visit ${joke.username}'s profile`}
-              </Tooltip>
-            }
-          >
-            <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
-          </OverlayTrigger>
-          &nbsp;
-          {/* CREATOR NAME LINK */}
-          <OverlayTrigger
-            key={`${joke.username}_textlink_onJoke_${joke._id}`}
-            placement="top"
-            overlay={
-              <Tooltip id={`${joke.username}_link`}>
-                {`Visit ${joke.username}'s profile`}
-              </Tooltip>
-            }
-          >
-            <Link to={`/profile/${joke.username}`}>
-              <img
-                className="creatorAvatarImg"
-                src={
-                  creatorAvatar === ''
-                    ? '/img/defaultAvatar.png'
-                    : creatorAvatar
-                }
-              />
-            </Link>
-          </OverlayTrigger>
-          &nbsp;&nbsp;
-          {/* FOLLOW USER BUTTON */}
-          {joke.userFollowingCreator ? (
-            <OverlayTrigger
-              key={`${joke.username}_follow`}
-              placement="top"
-              overlay={
-                <Tooltip id={`${joke.username}_follow`}>
-                  {`You are following ${joke.username} - click to unfollow`}
-                </Tooltip>
-              }
-            >
-              <Button
-                size="sm"
-                variant="success"
-                onClick={() =>
-                  followData
-                    .unfollowUser((joke.username as unknown) as string)
-                    .then(() => {
-                      updateFollowJokeCreator(
-                        (joke.username as unknown) as string,
-                        false,
-                      )
-                    })
-                    .catch((err) => {
-                      window.alert(
-                        'There was an error following this user: ' + err,
-                      )
-                    })
-                }
-              >
-                <i className="fas fa-user-friends"></i>
-              </Button>
-            </OverlayTrigger>
-          ) : (
-            <OverlayTrigger
-              key={`${joke.username}_follow`}
-              placement="top"
-              overlay={
-                <Tooltip id={`${joke.username}_follow`}>
-                  {!username ? (
-                    <span>{`You must be logged in to follow someone`}</span>
-                  ) : joke.username === username ? (
-                    <span>{`You can't follow yourself`}</span>
-                  ) : (
-                    <span>{`Click to follow ${joke.username}`}</span>
-                  )}
-                </Tooltip>
-              }
-            >
-              <Button
-                size="sm"
-                variant="secondary"
-                disabled={!username || joke.username === username}
-                onClick={() =>
-                  followData
-                    .followUser((joke.username as unknown) as string)
-                    .then(() => {
-                      updateFollowJokeCreator(
-                        (joke.username as unknown) as string,
-                        true,
-                      )
-                    })
-                    .catch((err) => {
-                      window.alert(
-                        'There was an error following this user: ' + err,
-                      )
-                    })
-                }
-              >
-                <i className="fas fa-user-friends"></i>
-              </Button>
-            </OverlayTrigger>
-          )}
-        </span>
-      )}
     </Card.Footer>
   )
 }
