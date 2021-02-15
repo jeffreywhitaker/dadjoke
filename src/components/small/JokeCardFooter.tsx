@@ -48,7 +48,9 @@ function JokeCardFooter(props: Props) {
 
   return (
     <Card.Footer style={cardStyle}>
+      {/* --- */}
       {/* LEFT DIV */}
+      {/* --- */}
       <div>
         {/* COMMENT BUTTON */}
         <OverlayTrigger
@@ -83,13 +85,14 @@ function JokeCardFooter(props: Props) {
           </Button>
         </OverlayTrigger>
       </div>
-      {/* MIDDLE DIV */}
+      {/* --- */}
+      {/* RIGHT DIV */}
+      {/* --- */}
       <div>
-        {/* RIGHT DIV */}
         {window.location.pathname !== '/privatejokes' && (
           <>
-            {/* SUBMITTED BY */}
-            &nbsp; submitted by: {/* CREATOR AVATAR LINK */}
+            {/* SUBMITTED BY TEXT LINK */}
+            &nbsp; submitted by:
             <OverlayTrigger
               key={`${joke.username}_link`}
               placement="top"
@@ -102,7 +105,7 @@ function JokeCardFooter(props: Props) {
               <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
             </OverlayTrigger>
             &nbsp;
-            {/* CREATOR NAME LINK */}
+            {/* SUBMITTED BY IMG LINK */}
             <OverlayTrigger
               key={`${joke.username}_textlink_onJoke_${joke._id}`}
               placement="top"
@@ -123,7 +126,7 @@ function JokeCardFooter(props: Props) {
                 />
               </Link>
             </OverlayTrigger>
-            &nbsp;&nbsp;
+            &nbsp;
             {/* FOLLOW USER BUTTON */}
             {joke.userFollowingCreator ? (
               <OverlayTrigger
@@ -202,17 +205,23 @@ function JokeCardFooter(props: Props) {
         &nbsp;
         {/* UPDATE BUTTON */}
         {!isBeingUpdated && joke.username === username && (
-          <Button variant="primary" onClick={() => toggleUpdate()}>
-            Edit
-          </Button>
+          <>
+            <Button size="sm" variant="primary" onClick={() => toggleUpdate()}>
+              Edit
+            </Button>
+          </>
         )}
         {isBeingUpdated && (
           <>
-            <Button variant="primary" onClick={() => handleUpdate(updatedJoke)}>
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => handleUpdate(updatedJoke)}
+            >
               Accept Changes
             </Button>
             &nbsp;
-            <Button variant="warning" onClick={() => toggleUpdate()}>
+            <Button size="sm" variant="warning" onClick={() => toggleUpdate()}>
               Cancel Edit
             </Button>
           </>
@@ -221,6 +230,7 @@ function JokeCardFooter(props: Props) {
         {/* DELETE BUTTON */}
         {joke.username === username && (
           <Button
+            size="sm"
             variant="danger"
             onClick={() => handleDelete(joke._id as string)}
           >
