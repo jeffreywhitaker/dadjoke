@@ -39,66 +39,80 @@ function JokeCardFooter(props: Props) {
     updatedJoke,
   } = props
 
+  const keywordStyle = {
+    marginLeft: '5px',
+  }
+
+  const cardStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+  }
+
   return (
-    <Card.Footer>
-      {/* COMMENT BUTTON */}
-      <OverlayTrigger
-        key={`${joke._id}_comment_link`}
-        placement="top"
-        overlay={
-          <Tooltip id={`${joke._id}_comment_link`}>
-            {`See comments for this joke`}
-          </Tooltip>
-        }
-      >
-        <Button size="sm" onClick={() => setShowModal(true)}>
-          <i className="fas fa-comment-dots iconSize"></i>
-        </Button>
-      </OverlayTrigger>
-      {/* KEYWORDS */}
-      <OverlayTrigger
-        key={`${joke.dadjokequestion}_keywords`}
-        placement="top"
-        overlay={
-          <Tooltip id={`${joke.dadjokequestion}_keywords`}>
-            {`Keywords: ${
-              joke.keywords && joke.keywords.length >= 1
-                ? joke.keywords.join(', ')
-                : '[None]'
-            }`}
-          </Tooltip>
-        }
-      >
-        <i className="fas fa-key"></i>
-      </OverlayTrigger>
-      &nbsp;&nbsp;
-      {/* UPDATE BUTTON */}
-      {!isBeingUpdated && joke.username === username && (
-        <Button variant="primary" onClick={() => toggleUpdate()}>
-          Edit
-        </Button>
-      )}
-      {isBeingUpdated && (
-        <>
-          <Button variant="primary" onClick={() => handleUpdate(updatedJoke)}>
-            Accept Changes
-          </Button>
-          &nbsp;
-          <Button variant="warning" onClick={() => toggleUpdate()}>
-            Cancel Edit
-          </Button>
-        </>
-      )}
-      &nbsp;
-      {/* DELETE BUTTON */}
-      {joke.username === username && (
-        <Button
-          variant="danger"
-          onClick={() => handleDelete(joke._id as string)}
+    <Card.Footer style={cardStyle}>
+      <div>
+        {/* COMMENT BUTTON */}
+        <OverlayTrigger
+          key={`${joke._id}_comment_link`}
+          placement="top"
+          overlay={
+            <Tooltip id={`${joke._id}_comment_link`}>
+              {`See comments for this joke`}
+            </Tooltip>
+          }
         >
-          Del
-        </Button>
-      )}
+          <Button size="sm" onClick={() => setShowModal(true)}>
+            <i className="fas fa-comment-dots iconSize"></i>
+          </Button>
+        </OverlayTrigger>
+        {/* KEYWORDS */}
+        <OverlayTrigger
+          key={`${joke.dadjokequestion}_keywords`}
+          placement="top"
+          overlay={
+            <Tooltip id={`${joke.dadjokequestion}_keywords`}>
+              {`Keywords: ${
+                joke.keywords && joke.keywords.length >= 1
+                  ? joke.keywords.join(', ')
+                  : '[None]'
+              }`}
+            </Tooltip>
+          }
+        >
+          <Button size="sm" style={keywordStyle}>
+            <i className="fas fa-key"></i>
+          </Button>
+        </OverlayTrigger>
+      </div>
+      <div>
+        {/* UPDATE BUTTON */}
+        {!isBeingUpdated && joke.username === username && (
+          <Button variant="primary" onClick={() => toggleUpdate()}>
+            Edit
+          </Button>
+        )}
+        {isBeingUpdated && (
+          <>
+            <Button variant="primary" onClick={() => handleUpdate(updatedJoke)}>
+              Accept Changes
+            </Button>
+            &nbsp;
+            <Button variant="warning" onClick={() => toggleUpdate()}>
+              Cancel Edit
+            </Button>
+          </>
+        )}
+        &nbsp;
+        {/* DELETE BUTTON */}
+        {joke.username === username && (
+          <Button
+            variant="danger"
+            onClick={() => handleDelete(joke._id as string)}
+          >
+            Del
+          </Button>
+        )}
+      </div>
       {/* FLOAT RIGHT IN FOOTER */}
       {window.location.pathname !== '/privatejokes' && (
         <span className="floatRight">
@@ -113,16 +127,7 @@ function JokeCardFooter(props: Props) {
               </Tooltip>
             }
           >
-            <Link to={`/profile/${joke.username}`}>
-              <img
-                className="creatorAvatarImg"
-                src={
-                  creatorAvatar === ''
-                    ? '/img/defaultAvatar.png'
-                    : creatorAvatar
-                }
-              />
-            </Link>
+            <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
           </OverlayTrigger>
           &nbsp;
           {/* CREATOR NAME LINK */}
@@ -135,7 +140,16 @@ function JokeCardFooter(props: Props) {
               </Tooltip>
             }
           >
-            <Link to={`/profile/${joke.username}`}>{joke.username}</Link>
+            <Link to={`/profile/${joke.username}`}>
+              <img
+                className="creatorAvatarImg"
+                src={
+                  creatorAvatar === ''
+                    ? '/img/defaultAvatar.png'
+                    : creatorAvatar
+                }
+              />
+            </Link>
           </OverlayTrigger>
           &nbsp;&nbsp;
           {/* FOLLOW USER BUTTON */}

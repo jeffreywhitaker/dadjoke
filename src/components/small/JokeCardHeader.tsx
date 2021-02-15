@@ -22,7 +22,7 @@ type Props = {
   isLoggedIn: boolean
 }
 
-function JokeCardHeader(props: Props) {
+function JokeCardHeader(props: Props): React.ReactElement {
   const { voteOptions, joke, updateJokeKarma, isLoggedIn } = props
 
   // return Card Header
