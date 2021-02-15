@@ -1,5 +1,5 @@
 // import dependencies
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
 import Button from 'react-bootstrap/Button'
@@ -23,7 +23,7 @@ type Props = {
   username?: string
 }
 
-function JokeCardFooter(props: Props) {
+function JokeCardFooter(props: Props): ReactElement {
   const {
     joke,
     isBeingUpdated,
@@ -92,7 +92,7 @@ function JokeCardFooter(props: Props) {
         {window.location.pathname !== '/privatejokes' && (
           <>
             {/* SUBMITTED BY TEXT LINK */}
-            &nbsp; submitted by:
+            &nbsp; submitted by: &nbsp;
             <OverlayTrigger
               key={`${joke.username}_link`}
               placement="top"

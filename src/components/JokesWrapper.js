@@ -188,8 +188,8 @@ function JokesWrapper({ isLoggedIn, username }) {
       {isLoading ? (
         <Loading />
       ) : (
-        <div>
-          <SortDiv>
+        <>
+          <div className="sortDiv">
             <div className="sortOptions">
               Sort by:{' '}
               <select
@@ -231,7 +231,9 @@ function JokesWrapper({ isLoggedIn, username }) {
               handlePageDown={handlePageDown}
               handlePageUp={handlePageUp}
             />
-          </SortDiv>
+          </div>
+          {/* --- */}
+          {/* JOKES LIST */}
           {jokes.length < 1 ? (
             <div className="emptyWrapper">
               <img src="/img/maninrain.png" className="image" />
@@ -252,7 +254,7 @@ function JokesWrapper({ isLoggedIn, username }) {
               )
             })
           )}
-        </div>
+        </>
       )}
     </JokeWrapper>
   )
@@ -287,6 +289,21 @@ const JokeWrapper = styled.article`
     padding: 10px 0;
   }
 
+  .sortDiv {
+    background: lightblue;
+    margin: 0 auto;
+    border-radius: 6px;
+    display: flex;
+    padding: 10px;
+    margin-top: 10px;
+    justify-content: space-between;
+    width: 100%;
+
+    .sortOptions {
+      padding-left: 20px;
+    }
+  }
+
   .emptyWrapper {
     display: flex;
     flex-direction: column;
@@ -295,19 +312,5 @@ const JokeWrapper = styled.article`
     .image {
       max-width: 400px;
     }
-  }
-`
-
-const SortDiv = styled.div`
-  background: lightblue;
-  margin: 0 auto;
-  border-radius: 6px;
-  display: flex;
-  padding: 10px;
-  margin-top: 10px;
-  justify-content: space-between;
-
-  > .sortOptions {
-    padding-left: 20px;
   }
 `
