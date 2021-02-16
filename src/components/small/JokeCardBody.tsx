@@ -1,12 +1,22 @@
 // import dependencies
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import Alert from 'react-bootstrap/Alert'
 import Card from 'react-bootstrap/Card'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
 
-function JokeCardBody(props) {
+import { Joke } from '../../types/types'
+
+type Props = {
+  isBeingUpdated: boolean
+  joke: Joke
+  updatedJoke: Joke
+  handleValueChange: () => void
+  handleKeywordsChange: () => void
+}
+
+function JokeCardBody(props: Props): ReactElement {
   const {
     isBeingUpdated,
     joke,
