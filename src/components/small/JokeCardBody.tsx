@@ -12,8 +12,8 @@ type Props = {
   isBeingUpdated: boolean
   joke: Joke
   updatedJoke: Joke
-  handleValueChange: () => void
-  handleKeywordsChange: () => void
+  handleValueChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleKeywordsChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 function JokeCardBody(props: Props): ReactElement {
