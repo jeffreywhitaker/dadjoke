@@ -86,7 +86,8 @@ function JokeCardFooter(props: Props): ReactElement {
           {window.location.pathname !== '/privatejokes' && (
             <>
               {/* SUBMITTED BY TEXT LINK */}
-              &nbsp; submitted by: &nbsp;
+              &nbsp; <span className="submittedText">submitted&nbsp; </span> by:
+              &nbsp;
               <OverlayTrigger
                 key={`${joke.username}_link`}
                 placement="top"
@@ -270,5 +271,11 @@ const Wrapper = styled.div`
 
   .keywordButton {
     margin-left: 5px;
+  }
+
+  @media only screen and (max-width: 400px) {
+    .submittedText {
+      display: none;
+    }
   }
 `
