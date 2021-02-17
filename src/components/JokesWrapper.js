@@ -11,7 +11,7 @@ import queryString from 'query-string'
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
-import Pagination from './small/Pagination'
+import FilterJokesDashboard from './small/FilterJokesDashboard'
 
 // joke display page component
 function JokesWrapper({ isLoggedIn, username }) {
@@ -189,49 +189,20 @@ function JokesWrapper({ isLoggedIn, username }) {
         <Loading />
       ) : (
         <>
-          <div className="sortDiv">
-            <div className="sortOptions">
-              Sort by:{' '}
-              <select
-                name="sortBy"
-                id="sortBy"
-                value={criteria.sortBy}
-                onChange={handleSortByChange}
-              >
-                <option value="-createdAt">Newest to Oldest</option>
-                <option value="createdAt">Oldest to Newest</option>
-                <option value="-karma">Karma, Highest to Lowest</option>
-                <option value="karma">Karma, Lowest to Highest</option>
-              </select>
-              &nbsp;&nbsp; Results:{' '}
-              <select
-                name="resultsPerPage"
-                id="resultsPerPage"
-                value={criteria.resultsPerPage}
-                onChange={handleResultsPerPageChange}
-              >
-                <option value="2">2</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-              </select>
-              &nbsp;&nbsp; Keyword:{' '}
-              <input
-                name="search"
-                value={searchString}
-                onChange={(e) => setSearchString(e.currentTarget.value)}
-              />
-              &nbsp;&nbsp;
-              <button onClick={setKeywordSearch}>Set Keyword</button>
-            </div>
+          {/* --- */}
+          {/* SEARCH FILTERS */}
+          <FilterJokesDashboard
+            criteria={criteria}
+            handlePageDown={handlePageDown}
+            handlePageUp={handlePageUp}
+            handleResultsPerPageChange={handleResultsPerPageChange}
+            handleSortByChange={handleSortByChange}
+            hasNextPage={hasNextPage}
+            searchString={searchString}
+            setKeywordSearch={setKeywordSearch}
+            setSearchString={setSearchString}
+          />
 
-            <Pagination
-              criteria={criteria}
-              hasNextPage={hasNextPage}
-              handlePageDown={handlePageDown}
-              handlePageUp={handlePageUp}
-            />
-          </div>
           {/* --- */}
           {/* JOKES LIST */}
           {jokes.length < 1 ? (
@@ -287,21 +258,6 @@ const JokeWrapper = styled.article`
     margin: 0 auto;
     border-radius: 15px;
     padding: 10px 0;
-  }
-
-  .sortDiv {
-    background: lightblue;
-    margin: 0 auto;
-    border-radius: 6px;
-    display: flex;
-    padding: 10px;
-    margin-top: 10px;
-    justify-content: space-between;
-    width: 100%;
-
-    .sortOptions {
-      padding-left: 20px;
-    }
   }
 
   .emptyWrapper {
