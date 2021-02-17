@@ -21,9 +21,11 @@ function JokesWrapper({ isLoggedIn, username }) {
   const parsedQuery = queryString.parse(location.search)
 
   // set up state
+  const [advancedFilter, setAdvancedFilter] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [jokes, setJokes] = useState([])
-  const [searchString, setSearchString] = useState('')
+
+  // criteria
   const [display, setDisplay] = useState({
     heading: '',
   })
@@ -32,6 +34,7 @@ function JokesWrapper({ isLoggedIn, username }) {
     sortBy: '-createdAt',
     resultsPerPage: '5',
     searchString: '',
+    submittedBy: '',
     page: 1,
   }
 
@@ -44,7 +47,14 @@ function JokesWrapper({ isLoggedIn, username }) {
     searchString: parsedQuery.searchString || defaultCriteria.searchString,
     page: parseInt(parsedQuery.page || defaultCriteria.page),
     isprivate: location.pathname === '/privatejokes',
+    submittedBy: parsedQuery.submittedBy || defaultCriteria.submittedBy,
   })
+
+  // advanced filters
+  const [searchString, setSearchString] = useState(criteria.searchString || '')
+  const [submittedBy, setSubmittedBy] = useState(criteria.submittedBy || '')
+
+  // has next page
   const [hasNextPage, setHasNextPage] = useState(false)
 
   // get jokes on page load
@@ -72,11 +82,18 @@ function JokesWrapper({ isLoggedIn, username }) {
     // add search params
     history.push({ search: params.toString() })
 
+    // change searchCriteria based on advancedFilter
+    let searchCriteria = criteria
+    if (!advancedFilter) {
+      searchCriteria.submittedBy = ''
+      searchCriteria.keywords = ''
+    }
+
     // get the jokes
     if (location.pathname === '/publicjokes' || isLoggedIn) {
       // TODO: here or earlier, set isLoading to true and show a load spinner while loading new data
       jokesData
-        .getJokes(criteria)
+        .getJokes(searchCriteria)
         .then((res) => {
           console.log('jokes response:', res)
           setJokes(res.data.jokes)
@@ -89,9 +106,9 @@ function JokesWrapper({ isLoggedIn, username }) {
     }
   }, [criteria])
 
-  // set keyword search by search string, but with debounce
-  const setKeywordSearch = () => {
-    setCriteria({ ...criteria, searchString: searchString })
+  // set advanced filters to criteria, triggering joke GET call
+  const setAdvancedFilterCriteria = () => {
+    setCriteria({ ...criteria, searchString, submittedBy })
   }
 
   const updateJokeKarma = (jokeID, newKarma, newVote) => {
@@ -193,6 +210,7 @@ function JokesWrapper({ isLoggedIn, username }) {
           {/* --- */}
           {/* SEARCH FILTERS */}
           <FilterJokesDashboard
+            advancedFilter={advancedFilter}
             criteria={criteria}
             handlePageDown={handlePageDown}
             handlePageUp={handlePageUp}
@@ -200,8 +218,11 @@ function JokesWrapper({ isLoggedIn, username }) {
             handleSortByChange={handleSortByChange}
             hasNextPage={hasNextPage}
             searchString={searchString}
-            setKeywordSearch={setKeywordSearch}
+            setAdvancedFilter={setAdvancedFilter}
+            setAdvancedFilterCriteria={setAdvancedFilterCriteria}
             setSearchString={setSearchString}
+            setSubmittedBy={setSubmittedBy}
+            submittedBy={submittedBy}
           />
 
           {/* --- */}

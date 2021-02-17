@@ -42,6 +42,7 @@ export default function Pagination(props: Props): ReactElement {
 // styled component
 const Wrapper = styled.article`
   display: flex;
+  align-self: flex-start;
   padding-right: 20px;
   align-items: center;
 

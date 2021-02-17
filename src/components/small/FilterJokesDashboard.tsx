@@ -1,10 +1,13 @@
 import React, { ReactElement } from 'react'
 
+import Button from 'react-bootstrap/Button'
+
 import Pagination from '../small/Pagination'
 
 import styled from 'styled-components'
 
 interface Props {
+  advancedFilter: boolean
   criteria: {
     sortBy: string
     resultsPerPage: string
@@ -18,12 +21,16 @@ interface Props {
   handleSortByChange: () => void
   hasNextPage: boolean
   searchString: string
-  setKeywordSearch: () => void
-  setSearchString: (value: string) => void
+  setAdvancedFilter: (val: boolean) => void
+  setAdvancedFilterCriteria: () => void
+  setSearchString: (val: string) => void
+  setSubmittedBy: (val: string) => void
+  submittedBy: string
 }
 
 export default function FilterJokesDashboard(props: Props): ReactElement {
   const {
+    advancedFilter,
     criteria,
     handlePageDown,
     handlePageUp,
@@ -31,14 +38,20 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
     handleSortByChange,
     hasNextPage,
     searchString,
-    setKeywordSearch,
+    setAdvancedFilter,
+    setAdvancedFilterCriteria,
     setSearchString,
+    setSubmittedBy,
+    submittedBy,
   } = props
 
   return (
     <Wrapper>
       <div className="sortOptions">
-        Sort by:{' '}
+        <Button size="sm" onClick={() => setAdvancedFilter(!advancedFilter)}>
+          {'>>'}
+        </Button>
+        &nbsp; Sort by:{' '}
         <select
           name="sortBy"
           id="sortBy"
@@ -62,14 +75,30 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
           <option value="10">10</option>
           <option value="20">20</option>
         </select>
-        &nbsp;&nbsp; Keyword:{' '}
-        <input
-          name="search"
-          value={searchString}
-          onChange={(e) => setSearchString(e.currentTarget.value)}
-        />
-        &nbsp;&nbsp;
-        <button onClick={setKeywordSearch}>Set Keyword</button>
+        {advancedFilter && (
+          <>
+            <hr />
+            <h4>Advanced Filters</h4>
+            <div>
+              <span>Keyword: </span>
+              <input
+                name="search"
+                value={searchString}
+                onChange={(e) => setSearchString(e.currentTarget.value)}
+              />
+              &nbsp;&nbsp;
+            </div>
+            <div>
+              <span>Submitted by: </span>
+              <input
+                name="submittedBy"
+                value={submittedBy}
+                onChange={(e) => setSubmittedBy(e.currentTarget.value)}
+              />
+            </div>
+            <button onClick={setAdvancedFilterCriteria}>Search</button>
+          </>
+        )}
       </div>
 
       <Pagination
