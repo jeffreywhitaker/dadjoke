@@ -114,7 +114,7 @@ const CommentModal: React.FC<Props> = (props: Props) => {
         <Modal.Title>Joke Comments</Modal.Title>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Pagination
-          criteria={criteria}
+          page={criteria.page}
           hasNextPage={hasNextPage}
           handlePageDown={handlePageDown}
           handlePageUp={handlePageUp}

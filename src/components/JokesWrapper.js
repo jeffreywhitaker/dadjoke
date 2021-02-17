@@ -37,11 +37,12 @@ function JokesWrapper({ isLoggedIn, username }) {
 
   const [criteria, setCriteria] = useState({
     // set criteria by URL first, then by default if no URL search param
+    // TODO: one saved as number, one saved as string
     sortBy: parsedQuery.sortBy || defaultCriteria.sortBy,
     resultsPerPage:
       parsedQuery.resultsPerPage || defaultCriteria.resultsPerPage,
     searchString: parsedQuery.searchString || defaultCriteria.searchString,
-    page: parsedQuery.page || defaultCriteria.page,
+    page: parseInt(parsedQuery.page || defaultCriteria.page),
     isprivate: location.pathname === '/privatejokes',
   })
   const [hasNextPage, setHasNextPage] = useState(false)

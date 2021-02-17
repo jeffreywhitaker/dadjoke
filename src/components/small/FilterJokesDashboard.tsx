@@ -9,7 +9,7 @@ interface Props {
     sortBy: string
     resultsPerPage: string
     searchString: string
-    page: string
+    page: number
     isprivate: boolean
   }
   handlePageDown: () => void
@@ -73,7 +73,7 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
       </div>
 
       <Pagination
-        criteria={criteria}
+        page={criteria.page}
         hasNextPage={hasNextPage}
         handlePageDown={handlePageDown}
         handlePageUp={handlePageUp}
