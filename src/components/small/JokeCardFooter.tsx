@@ -253,7 +253,6 @@ export default JokeCardFooter
 const Wrapper = styled.div`
   .cardFooter {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
   }
 
@@ -274,6 +273,10 @@ const Wrapper = styled.div`
   }
 
   @media only screen and (max-width: 400px) {
+    .cardFooter {
+      flex-direction: column;
+    }
+
     .submittedText {
       display: none;
     }
