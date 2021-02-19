@@ -51,30 +51,34 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
         <Button size="sm" onClick={() => setAdvancedFilter(!advancedFilter)}>
           {'>>'}
         </Button>
-        &nbsp; Sort by:{' '}
-        <select
-          name="sortBy"
-          id="sortBy"
-          value={criteria.sortBy}
-          onChange={handleSortByChange}
-        >
-          <option value="-createdAt">Newest to Oldest</option>
-          <option value="createdAt">Oldest to Newest</option>
-          <option value="-karma">Karma, Highest to Lowest</option>
-          <option value="karma">Karma, Lowest to Highest</option>
-        </select>
-        &nbsp;&nbsp; Results:{' '}
-        <select
-          name="resultsPerPage"
-          id="resultsPerPage"
-          value={criteria.resultsPerPage}
-          onChange={handleResultsPerPageChange}
-        >
-          <option value="2">2</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
+        <div>
+          <span>Sort by: </span>
+          <select
+            name="sortBy"
+            id="sortBy"
+            value={criteria.sortBy}
+            onChange={handleSortByChange}
+          >
+            <option value="-createdAt">Newest to Oldest</option>
+            <option value="createdAt">Oldest to Newest</option>
+            <option value="-karma">Karma, Highest to Lowest</option>
+            <option value="karma">Karma, Lowest to Highest</option>
+          </select>
+        </div>
+        <div>
+          <span>Results: </span>
+          <select
+            name="resultsPerPage"
+            id="resultsPerPage"
+            value={criteria.resultsPerPage}
+            onChange={handleResultsPerPageChange}
+          >
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
         {advancedFilter && (
           <>
             <hr />
@@ -123,5 +127,18 @@ const Wrapper = styled.section`
 
   .sortOptions {
     padding-left: 20px;
+    align-items: center;
+    /* display: flex;
+    flex-direction: column; */
+
+    div {
+      margin: 0 5px;
+    }
+  }
+
+  @media only screen and (min-width: 610px) {
+    .sortOptions {
+      display: flex;
+    }
   }
 `
