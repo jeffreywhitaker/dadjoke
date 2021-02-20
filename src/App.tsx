@@ -1,16 +1,12 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { Route, Redirect, useHistory } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-
-// bootstrap
-import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Modal from 'react-bootstrap/Modal'
 
 // import components
 import Header from './components/Header'
+import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
 import Profile from './components/Profile'
@@ -20,7 +16,6 @@ import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 
 // App component
 function App(props: Props) {
-  const history = useHistory()
   // destructure props
   const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
 
@@ -64,64 +59,14 @@ function App(props: Props) {
         <Route path="/profile/:username" component={Profile} />
       </AppWrapper>
 
-      {showModal && (
-        <Modal show={showModal} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Welcome to JeffsDadJokes!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <InputGroup className="mb-3">
-              {!isLoggedIn ? (
-                <>
-                  <p>
-                    Here you can add, update, and browse dad jokes. You can
-                    upvote your favorites - and downvotes those you don't find
-                    as funny.
-                  </p>
-                  <p>
-                    You can even follow other users and view your joke stats on
-                    your profile!
-                  </p>
-                  <p>
-                    Please feel free to click the 'demo' button below to log in
-                    to a test account and check out all the features!
-                  </p>
-                  <div>
-                    <Button
-                      onClick={() => {
-                        setShowModal(false)
-                        history.push('/login')
-                      }}
-                    >
-                      Login
-                    </Button>
-                    &nbsp;
-                    <Button
-                      onClick={() => {
-                        setShowModal(false)
-                        history.push('/signup')
-                      }}
-                    >
-                      Signup
-                    </Button>
-                    &nbsp;
-                    <Button variant="success" onClick={handleDemo}>
-                      Demo
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <p>You are currently logged in - thanks for visiting!</p>
-              )}
-            </InputGroup>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="danger" onClick={handleDoNotShowAgain}>
-              Close and Do Not Show Again
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
+      <IntroModal
+        handleClose={handleClose}
+        handleDemo={handleDemo}
+        handleDoNotShowAgain={handleDoNotShowAgain}
+        isLoggedIn={isLoggedIn}
+        setShowModal={setShowModal}
+        showModal={showModal}
+      />
     </>
   )
 }
