@@ -80,7 +80,7 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
           </select>
         </div>
         {advancedFilter && (
-          <>
+          <div className="advancedFilters">
             <hr />
             <h4>Advanced Filters</h4>
             <div>
@@ -101,7 +101,7 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
               />
             </div>
             <button onClick={setAdvancedFilterCriteria}>Search</button>
-          </>
+          </div>
         )}
       </div>
 
@@ -134,6 +134,10 @@ const Wrapper = styled.section`
     div {
       margin: 0 5px;
     }
+  }
+
+  .advancedFilters {
+    display: block;
   }
 
   @media only screen and (min-width: 610px) {
