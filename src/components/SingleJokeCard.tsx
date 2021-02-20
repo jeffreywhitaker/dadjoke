@@ -249,7 +249,7 @@ type Props = PropsFromRedux & {
 
 export default connector(SingleJokeCard)
 
-const DivWrapper = styled.div`
+const DivWrapper = styled.article`
   margin: 10px;
 
   .creatorAvatarImg {
