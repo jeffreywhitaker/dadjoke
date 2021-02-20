@@ -47,42 +47,53 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
 
   return (
     <Wrapper>
-      <div className="sortOptions">
-        <Button size="sm" onClick={() => setAdvancedFilter(!advancedFilter)}>
-          {'>>'}
-        </Button>
-        <div>
-          <span>Sort by: </span>
-          <select
-            name="sortBy"
-            id="sortBy"
-            value={criteria.sortBy}
-            onChange={handleSortByChange}
-          >
-            <option value="-createdAt">Newest to Oldest</option>
-            <option value="createdAt">Oldest to Newest</option>
-            <option value="-karma">Karma, Highest to Lowest</option>
-            <option value="karma">Karma, Lowest to Highest</option>
-          </select>
+      <div className="topRow">
+        <div className="sortOptions">
+          <Button size="sm" onClick={() => setAdvancedFilter(!advancedFilter)}>
+            More
+          </Button>
+          <div>
+            <span>Sort by: </span>
+            <select
+              name="sortBy"
+              id="sortBy"
+              value={criteria.sortBy}
+              onChange={handleSortByChange}
+            >
+              <option value="-createdAt">Newest to Oldest</option>
+              <option value="createdAt">Oldest to Newest</option>
+              <option value="-karma">Karma, Highest to Lowest</option>
+              <option value="karma">Karma, Lowest to Highest</option>
+            </select>
+          </div>
+          <div>
+            <span>Results: </span>
+            <select
+              name="resultsPerPage"
+              id="resultsPerPage"
+              value={criteria.resultsPerPage}
+              onChange={handleResultsPerPageChange}
+            >
+              <option value="2">2</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <span>Results: </span>
-          <select
-            name="resultsPerPage"
-            id="resultsPerPage"
-            value={criteria.resultsPerPage}
-            onChange={handleResultsPerPageChange}
-          >
-            <option value="2">2</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-        </div>
-        {advancedFilter && (
+        <Pagination
+          page={criteria.page}
+          hasNextPage={hasNextPage}
+          handlePageDown={handlePageDown}
+          handlePageUp={handlePageUp}
+        />
+      </div>
+
+      {advancedFilter && (
+        <div className="bottomRow">
+          <hr />
+          <h4>Advanced Filters</h4>
           <div className="advancedFilters">
-            <hr />
-            <h4>Advanced Filters</h4>
             <div>
               <span>Keyword: </span>
               <input
@@ -102,15 +113,8 @@ export default function FilterJokesDashboard(props: Props): ReactElement {
             </div>
             <button onClick={setAdvancedFilterCriteria}>Search</button>
           </div>
-        )}
-      </div>
-
-      <Pagination
-        page={criteria.page}
-        hasNextPage={hasNextPage}
-        handlePageDown={handlePageDown}
-        handlePageUp={handlePageUp}
-      />
+        </div>
+      )}
     </Wrapper>
   )
 }
@@ -120,24 +124,49 @@ const Wrapper = styled.section`
   margin: 0 auto;
   border-radius: 6px;
   display: flex;
+  flex-direction: column;
   padding: 10px;
   margin-top: 10px;
-  justify-content: space-between;
   width: 100%;
 
-  .sortOptions {
-    padding-left: 20px;
-    align-items: center;
-    /* display: flex;
-    flex-direction: column; */
+  .topRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
 
-    div {
-      margin: 0 5px;
+    .sortOptions {
+      align-items: center;
+
+      div {
+        margin: 0 5px;
+      }
     }
   }
 
-  .advancedFilters {
-    display: block;
+  .bottomRow {
+    padding: 0 20px;
+
+    .advancedFilters {
+      display: flex;
+
+      button {
+        margin: 0 5px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 520px) {
+    .advancedFilters {
+      flex-direction: column;
+
+      button {
+        max-width: 100px;
+      }
+
+      > * {
+        margin: 2px 0;
+      }
+    }
   }
 
   @media only screen and (min-width: 610px) {
