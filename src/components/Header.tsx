@@ -193,7 +193,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux
 export default connector(Header)
 
-const HeaderWrapper = styled.section`
+const HeaderWrapper = styled.header`
   .button {
     max-width: 150px;
   }

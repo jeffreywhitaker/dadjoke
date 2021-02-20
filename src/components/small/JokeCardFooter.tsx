@@ -254,22 +254,29 @@ const Wrapper = styled.div`
   .cardFooter {
     display: flex;
     justify-content: space-between;
-  }
 
-  .leftDiv {
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
-  }
+    .leftDiv {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
 
-  .rightDiv {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-  }
+      .keywordButton {
+        margin-left: 5px;
+      }
+    }
 
-  .keywordButton {
-    margin-left: 5px;
+    .rightDiv {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+
+      .creatorAvatarImg {
+        height: 25px;
+        width: 25px;
+        border-radius: 5px;
+      }
+    }
   }
 
   @media only screen and (max-width: 400px) {

@@ -251,10 +251,4 @@ export default connector(SingleJokeCard)
 
 const DivWrapper = styled.article`
   margin: 10px;
-
-  .creatorAvatarImg {
-    height: 25px;
-    width: 25px;
-    border-radius: 5px;
-  }
 `
