@@ -34,8 +34,8 @@ export const userLogin = (credentials: LoginCredentials): Thunk => (dispatch) =>
     })
     .catch((err) => {
       console.log(`unable to login user: ${err}`)
-      // console.log(err.response)
-      // dispatch({ type: LOGIN_USER_FAILURE, payload: err.response.data.error })
+      console.log(err.response)
+      dispatch({ type: LOGIN_USER_FAILURE, payload: err.response.data.error })
     })
 }
 

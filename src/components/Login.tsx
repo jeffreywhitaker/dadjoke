@@ -107,7 +107,7 @@ const Login: React.FC<Props> = (props) => {
           onChange={handleInputChange}
         />
         {errors.username.length > 0 ? (
-          <ErrorP className="error">{errors.email}</ErrorP>
+          <p className="error">{errors.email}</p>
         ) : null}
         <p>Password:</p>
         <input
@@ -117,11 +117,11 @@ const Login: React.FC<Props> = (props) => {
           onChange={handleInputChange}
         />
         {errors.password.length > 0 ? (
-          <ErrorP className="error">{errors.password}</ErrorP>
+          <p className="error">{errors.password}</p>
         ) : null}
         <br />
         <br />
-        {loginError && <ErrorP>{loginError}</ErrorP>}
+        {loginError && <p className="error">{loginError}</p>}
         <button disabled={buttonDisabled}>Log in</button>
       </form>
       <h2>Not registered?</h2>
@@ -151,12 +151,15 @@ export default connector(Login)
 
 // styled components
 const LoginDiv = styled.div`
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 50%;
   margin: 20px auto;
-`
 
-const ErrorP = styled.p`
-  color: red;
-  font-size: 12px;
-  background-color: lightgray;
+  .error {
+    color: red;
+    font-size: 12px;
+    background-color: lightgray;
+  }
 `
