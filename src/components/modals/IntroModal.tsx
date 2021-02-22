@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useHistory } from 'react-router-dom'
 
 // bootstrap
@@ -6,7 +6,16 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Modal from 'react-bootstrap/Modal'
 
-export default function(props) {
+interface Props {
+  handleClose: () => void
+  handleDemo: () => void
+  handleDoNotShowAgain: () => void
+  isLoggedIn: boolean
+  setShowModal: (value: boolean) => void
+  showModal: boolean
+}
+
+export default function(props: Props): ReactElement {
   // history
   const history = useHistory()
 
