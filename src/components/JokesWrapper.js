@@ -83,7 +83,7 @@ function JokesWrapper({ isLoggedIn, username }) {
     history.push({ search: params.toString() })
 
     // change searchCriteria based on advancedFilter
-    let searchCriteria = criteria
+    const searchCriteria = criteria
     if (!advancedFilter) {
       searchCriteria.submittedBy = ''
       searchCriteria.keywords = ''

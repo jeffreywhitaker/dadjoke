@@ -14,8 +14,14 @@ import * as Yup from 'yup'
 // import actions
 import { userSignup } from '../actions/actions'
 
+interface Props {
+  userSignup: (values: unknown) => void
+  isLoggedIn: boolean
+  signupError: string
+}
+
 // signup page component
-const Signup = (props) => {
+const Signup: React.FC<Props> = (props) => {
   const { userSignup, isLoggedIn, signupError } = props
   // use history
   const history = useHistory()
@@ -73,7 +79,7 @@ const Signup = (props) => {
                 value={values.username}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={touched.username && errors.username}
+                isInvalid={(touched.username && errors.username) as boolean}
               />
               {errors.username ? <ErrorP>{errors.username}</ErrorP> : ''}
             </Form.Group>
@@ -86,7 +92,7 @@ const Signup = (props) => {
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={touched.password && errors.password}
+                isInvalid={(touched.password && errors.password) as boolean}
               />
               {errors.password ? <ErrorP>{errors.password}</ErrorP> : ''}
             </Form.Group>
@@ -99,7 +105,9 @@ const Signup = (props) => {
                 value={values.primaryemail}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={touched.primaryemail && errors.primaryemail}
+                isInvalid={
+                  (touched.primaryemail && errors.primaryemail) as boolean
+                }
               />
               {errors.primaryemail ? (
                 <ErrorP>{errors.primaryemail}</ErrorP>
@@ -116,10 +124,10 @@ const Signup = (props) => {
                   : 'primary'
               }
               disabled={
-                errors.username ||
-                errors.password ||
-                errors.primaryemail ||
-                isSubmitting
+                (errors.username ||
+                  errors.password ||
+                  errors.primaryemail ||
+                  isSubmitting) as boolean
               }
             >
               Submit
@@ -135,7 +143,13 @@ const Signup = (props) => {
 }
 
 // connect component to redux store
-const mapStateToProps = (state) => {
+interface State {
+  loginReducer: {
+    isLoggedIn: boolean
+    signupError: string
+  }
+}
+const mapStateToProps = (state: State) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     signupError: state.loginReducer.signupError,
