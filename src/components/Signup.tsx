@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
 // bootstrap
@@ -13,12 +13,6 @@ import * as Yup from 'yup'
 
 // import actions
 import { userSignup } from '../actions/actions'
-
-interface Props {
-  userSignup: (values: unknown) => void
-  isLoggedIn: boolean
-  signupError: string
-}
 
 // signup page component
 const Signup: React.FC<Props> = (props) => {
@@ -157,7 +151,15 @@ const mapStateToProps = (state: State) => {
 }
 
 // export component
-export default connect(mapStateToProps, { userSignup })(Signup)
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux & {
+  userSignup: (values: unknown) => void
+  isLoggedIn: boolean
+  signupError: string
+}
+
+export default connector(Signup)
 
 // styled components
 const SignupDiv = styled.div`
