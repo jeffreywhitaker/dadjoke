@@ -31,9 +31,12 @@ const Login: React.FC<Props> = (props) => {
 
   // form validation
   const formSchema = Yup.object().shape({
-    username: Yup.string().required('A username is required.'),
+    username: Yup.string()
+      .required('A username is required.')
+      .min(2, 'Username must be at least 2 characters')
+      .max(10, 'Username must be 10 characters or less'),
     password: Yup.string()
-      .min(6, 'Password must be at least 6 characters.')
+      .min(4, 'Password must be at least 4 characters.')
       .required('A password is required'),
   })
 
