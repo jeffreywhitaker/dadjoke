@@ -101,34 +101,36 @@ const Login: React.FC<Props> = (props) => {
   // render the following
   return (
     <LoginDiv>
-      <form onSubmit={callLogin}>
-        <p>Username:</p>
-        <input
-          type="text"
-          name="username"
-          value={credentials.username}
-          onChange={handleInputChange}
-        />
-        {errors.username.length > 0 ? (
-          <p className="error">{errors.email}</p>
-        ) : null}
-        <p>Password:</p>
-        <input
-          type="password"
-          name="password"
-          value={credentials.password}
-          onChange={handleInputChange}
-        />
-        {errors.password.length > 0 ? (
-          <p className="error">{errors.password}</p>
-        ) : null}
-        <br />
-        <br />
-        {loginError && <p className="error">{loginError}</p>}
-        <button disabled={buttonDisabled}>Log in</button>
-      </form>
-      <h2>Not registered?</h2>
-      <Link to="/signup">Sign Up!</Link>
+      <div className="box">
+        <form onSubmit={callLogin}>
+          <p>Username:</p>
+          <input
+            type="text"
+            name="username"
+            value={credentials.username}
+            onChange={handleInputChange}
+          />
+          {errors.username.length > 0 ? (
+            <p className="error">{errors.email}</p>
+          ) : null}
+          <p>Password:</p>
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleInputChange}
+          />
+          {errors.password.length > 0 ? (
+            <p className="error">{errors.password}</p>
+          ) : null}
+          <br />
+          <br />
+          {loginError && <p className="error">{loginError}</p>}
+          <button disabled={buttonDisabled}>Log in</button>
+        </form>
+        <h2>Not registered?</h2>
+        <Link to="/signup">Sign Up!</Link>
+      </div>
     </LoginDiv>
   )
 }
@@ -159,6 +161,14 @@ const LoginDiv = styled.div`
   align-items: center;
   max-width: 50%;
   margin: 20px auto;
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 50%;
+    margin: 20px auto;
+  }
 
   .error {
     color: red;
