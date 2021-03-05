@@ -168,6 +168,7 @@ const LoginDiv = styled.div`
     align-items: center;
     max-width: 50%;
     margin: 20px auto;
+    border-radius: 5px;
   }
 
   .error {
