@@ -101,6 +101,7 @@ const Login: React.FC<Props> = (props) => {
   // render the following
   return (
     <LoginDiv>
+      <h1 className="title">Login</h1>
       <div className="box">
         <form onSubmit={callLogin}>
           <p>Username:</p>
@@ -156,18 +157,26 @@ export default connector(Login)
 
 // styled components
 const LoginDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 50%;
-  margin: 20px auto;
+  padding: 10px;
+
+  .title {
+    text-align: center;
+    font-size: 20px;
+    background: lightblue;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 10px 0;
+  }
 
   .box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 50%;
+    width: 250px;
     margin: 20px auto;
+    border: 1px solid black;
+    padding: 10px 20px;
     border-radius: 5px;
   }
 
