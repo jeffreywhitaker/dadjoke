@@ -5,6 +5,8 @@ import { connect, ConnectedProps } from 'react-redux'
 import * as Yup from 'yup'
 import styled from 'styled-components'
 
+import Header from './small/PageHeader'
+
 // import actions
 import { userLogin } from '../actions/actions'
 
@@ -100,8 +102,10 @@ const Login: React.FC<Props> = (props) => {
 
   // render the following
   return (
-    <LoginDiv>
-      <h1 className="title">Login</h1>
+    <Wrapper>
+      {/* TODO: make this title thing a small component */}
+      <Header text={'Login'} />
+      {/* <h1 className="title">Login</h1> */}
       <div className="box">
         <form onSubmit={callLogin}>
           <p>Username:</p>
@@ -132,7 +136,7 @@ const Login: React.FC<Props> = (props) => {
         <h2>Not registered?</h2>
         <Link to="/signup">Sign Up!</Link>
       </div>
-    </LoginDiv>
+    </Wrapper>
   )
 }
 
@@ -156,7 +160,7 @@ type Props = PropsFromRedux
 export default connector(Login)
 
 // styled components
-const LoginDiv = styled.div`
+const Wrapper = styled.div`
   padding: 10px;
 
   .title {
