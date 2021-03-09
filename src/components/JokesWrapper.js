@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
 import queryString from 'query-string'
 
+import Header from './small/PageHeader'
+
 // import actions
 import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
@@ -202,7 +204,8 @@ function JokesWrapper({ isLoggedIn, username }) {
   // render the following if checks pass
   return (
     <Wrapper>
-      <h1 className="title">{display.heading}</h1>
+      <Header text={display.heading} />
+      {/* <h1 className="title">{display.heading}</h1> */}
       {isLoading ? (
         <Loading />
       ) : (

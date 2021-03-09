@@ -105,7 +105,6 @@ const Login: React.FC<Props> = (props) => {
     <Wrapper>
       {/* TODO: make this title thing a small component */}
       <Header text={'Login'} />
-      {/* <h1 className="title">Login</h1> */}
       <div className="box">
         <form onSubmit={callLogin}>
           <p>Username:</p>
@@ -162,16 +161,6 @@ export default connector(Login)
 // styled components
 const Wrapper = styled.div`
   padding: 10px;
-
-  .title {
-    text-align: center;
-    font-size: 20px;
-    background: lightblue;
-    width: 50%;
-    margin: 0 auto;
-    border-radius: 15px;
-    padding: 10px 0;
-  }
 
   .box {
     display: flex;
