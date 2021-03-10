@@ -205,7 +205,6 @@ function JokesWrapper({ isLoggedIn, username }) {
   return (
     <Wrapper>
       <Header text={display.heading} />
-      {/* <h1 className="title">{display.heading}</h1> */}
       {isLoading ? (
         <Loading />
       ) : (

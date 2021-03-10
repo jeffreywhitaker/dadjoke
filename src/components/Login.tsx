@@ -103,7 +103,6 @@ const Login: React.FC<Props> = (props) => {
   // render the following
   return (
     <Wrapper>
-      {/* TODO: make this title thing a small component */}
       <Header text={'Login'} />
       <div className="box">
         <form onSubmit={callLogin}>
