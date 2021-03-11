@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
@@ -16,7 +16,10 @@ import Loading from './Loading'
 import FilterJokesDashboard from './small/FilterJokesDashboard'
 
 // joke display page component
-function JokesWrapper({ isLoggedIn, username }) {
+function JokesWrapper(props: Props) {
+  // destructure props
+  const { isLoggedIn, username } = props
+
   // set location and get query
   const location = useLocation()
   const history = useHistory()
@@ -40,16 +43,31 @@ function JokesWrapper({ isLoggedIn, username }) {
     page: 1,
   }
 
-  const [criteria, setCriteria] = useState({
+  interface Criteria {
+    sortBy: string
+    // TODO: make results per page a number
+    resultsPerPage: string
+    searchString: string
+    page: number
+    isprivate: boolean
+    submittedBy: string
+  }
+
+  const [criteria, setCriteria] = useState<Criteria>({
     // set criteria by URL first, then by default if no URL search param
     // TODO: one saved as number, one saved as string
-    sortBy: parsedQuery.sortBy || defaultCriteria.sortBy,
+    sortBy: (parsedQuery.sortBy as string) || defaultCriteria.sortBy,
     resultsPerPage:
-      parsedQuery.resultsPerPage || defaultCriteria.resultsPerPage,
-    searchString: parsedQuery.searchString || defaultCriteria.searchString,
-    page: parseInt(parsedQuery.page || defaultCriteria.page),
+      (parsedQuery.resultsPerPage as string) || defaultCriteria.resultsPerPage,
+    searchString:
+      (parsedQuery.searchString as string) || defaultCriteria.searchString,
+    page: parseInt(
+      (parsedQuery.page as string) ||
+        ((defaultCriteria.page as unknown) as string),
+    ), // TODO: change this to always be number
     isprivate: location.pathname === '/privatejokes',
-    submittedBy: parsedQuery.submittedBy || defaultCriteria.submittedBy,
+    submittedBy:
+      (parsedQuery.submittedBy as string) || defaultCriteria.submittedBy,
   })
 
   // advanced filters
@@ -177,10 +195,11 @@ function JokesWrapper({ isLoggedIn, username }) {
     })
   }
 
-  const updateJokeDetails = (jokeID, res) => {
+  const updateJokeDetails = (jokeID: string, res: Record<string, unknown>) => {
     // replace values of updated joke with response
     let index
     for (let i = 0; i < jokes.length; i++) {
+      // TODO: make 2 joke types, one on created, one on return with more info from backend
       if (jokes[i]._id == jokeID) {
         index = i
         break
@@ -255,8 +274,17 @@ function JokesWrapper({ isLoggedIn, username }) {
   )
 }
 
+interface State {
+  loginReducer: {
+    username: string
+    jokesUpvoted: number
+    jokesDownvoted: number
+    isLoggedIn: boolean
+  }
+}
+
 // connect component to redux store
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State) => {
   return {
     username: state.loginReducer.username,
     jokesUpvoted: state.loginReducer.jokesUpvoted,
@@ -266,7 +294,11 @@ const mapStateToProps = (state) => {
 }
 
 // export component
-export default connect(mapStateToProps, {})(JokesWrapper)
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux
+
+export default connector(JokesWrapper)
 
 // styled components
 const Wrapper = styled.div`
