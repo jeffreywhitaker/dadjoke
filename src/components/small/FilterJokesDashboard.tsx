@@ -17,8 +17,8 @@ interface Props {
   }
   handlePageDown: () => void
   handlePageUp: () => void
-  handleResultsPerPageChange: () => void
-  handleSortByChange: () => void
+  handleResultsPerPageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleSortByChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   hasNextPage: boolean
   searchString: string
   setAdvancedFilter: (val: boolean) => void

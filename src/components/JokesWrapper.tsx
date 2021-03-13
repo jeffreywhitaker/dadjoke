@@ -29,7 +29,7 @@ function JokesWrapper(props: Props) {
   // set up state
   const [advancedFilter, setAdvancedFilter] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [jokes, setJokes] = useState([])
+  const [jokes, setJokes] = useState<Joke[]>([])
 
   // criteria
   const [display, setDisplay] = useState({
@@ -132,10 +132,15 @@ function JokesWrapper(props: Props) {
     setCriteria({ ...criteria, searchString, submittedBy })
   }
 
-  const updateJokeKarma = (jokeID, newKarma, newVote) => {
+  // TODO: string or number?
+  const updateJokeKarma = (
+    jokeID: string,
+    newKarma: number,
+    newVote: number,
+  ) => {
     console.log('updateJokeKarma: ', jokeID, newKarma)
     const updatedJokes = cloneDeep(jokes)
-    updatedJokes.forEach((joke) => {
+    updatedJokes.forEach((joke: Joke) => {
       if (joke._id === jokeID) {
         joke.karma = newKarma
         joke.userVote = newVote.toString()
@@ -144,20 +149,23 @@ function JokesWrapper(props: Props) {
       setJokes(updatedJokes)
   }
 
-  const removeDeletedJoke = (id) => {
+  const removeDeletedJoke = (id: string) => {
     // TODO: add loading spinner
     let updatedJokes = cloneDeep(jokes)
-    updatedJokes = updatedJokes.filter((joke) => {
+    updatedJokes = updatedJokes.filter((joke: Joke) => {
       return joke._id !== id
     })
 
     setJokes(updatedJokes)
   }
 
-  const updateFollowJokeCreator = (jokeCreator, isFollowing) => {
+  const updateFollowJokeCreator = (
+    jokeCreator: string,
+    isFollowing: boolean,
+  ) => {
     console.log('updateFollowJokeCreator', jokeCreator, isFollowing)
     const updatedJokes = cloneDeep(jokes)
-    updatedJokes.forEach((joke) => {
+    updatedJokes.forEach((joke: Joke) => {
       if (joke.username === jokeCreator) {
         joke.userFollowingCreator = isFollowing
       }
@@ -165,7 +173,7 @@ function JokesWrapper(props: Props) {
     setJokes(updatedJokes)
   }
 
-  const handleSortByChange = (e) => {
+  const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('sort by changed to: ', e.currentTarget.value)
     setCriteria({
       ...criteria,
@@ -173,7 +181,9 @@ function JokesWrapper(props: Props) {
     })
   }
 
-  const handleResultsPerPageChange = (e) => {
+  const handleResultsPerPageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setCriteria({
       ...criteria,
       page: 1,
