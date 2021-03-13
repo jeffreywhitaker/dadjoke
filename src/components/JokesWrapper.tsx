@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
@@ -173,7 +173,7 @@ function JokesWrapper(props: Props) {
     setJokes(updatedJokes)
   }
 
-  const handleSortByChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortByChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log('sort by changed to: ', e.currentTarget.value)
     setCriteria({
       ...criteria,
@@ -181,9 +181,7 @@ function JokesWrapper(props: Props) {
     })
   }
 
-  const handleResultsPerPageChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleResultsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCriteria({
       ...criteria,
       page: 1,

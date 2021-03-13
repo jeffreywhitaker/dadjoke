@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ChangeEvent, ReactElement } from 'react'
 
 import Button from 'react-bootstrap/Button'
 
@@ -17,8 +17,8 @@ interface Props {
   }
   handlePageDown: () => void
   handlePageUp: () => void
-  handleResultsPerPageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleSortByChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleResultsPerPageChange: (event: ChangeEvent<HTMLSelectElement>) => void
+  handleSortByChange: (event: ChangeEvent<HTMLSelectElement>) => void
   hasNextPage: boolean
   searchString: string
   setAdvancedFilter: (val: boolean) => void
