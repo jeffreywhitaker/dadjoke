@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
-import { CommentResponse, Joke } from '../types/types'
+import { CommentResponse, Joke, NewJoke } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default {
-  addNewJoke(jokeToAdd: Joke): Promise<AxiosPromise> {
+  addNewJoke(jokeToAdd: NewJoke): Promise<AxiosPromise> {
     return axios.post(`${URI_STRING}/api/jokes/add`, jokeToAdd, { withCredentials: true})
   },
 

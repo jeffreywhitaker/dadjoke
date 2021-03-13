@@ -10,7 +10,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
-import { Joke } from '../../types/types'
+import { NewJoke } from '../../types/types'
 
 type Props = {
   callAddJoke: (event: React.MouseEvent<HTMLElement>) => void
@@ -18,7 +18,7 @@ type Props = {
   handleKeywordsChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleValueChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSetIsPrivate: (isprviate: boolean) => void
-  newJoke: Joke
+  newJoke: NewJoke
   showAddJokeModal: boolean
 }
 

@@ -14,6 +14,7 @@ import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 import FilterJokesDashboard from './small/FilterJokesDashboard'
+import { Joke } from '../types/types'
 
 // joke display page component
 function JokesWrapper(props: Props) {
@@ -254,7 +255,7 @@ function JokesWrapper(props: Props) {
               <h2>No jokes are in the database - add them now!</h2>
             </div>
           ) : (
-            jokes.map((joke) => {
+            jokes.map((joke: Joke) => {
               return (
                 <SingleJokeCard
                   joke={joke}

@@ -24,17 +24,21 @@ export interface AvatarResponse {
   }
 }
 
-export type Joke = {
-  dadjokequestion: string
-  _id?: string
+export type NewJoke = {
   dadjokeanswer: string
+  dadjokequestion: string
   isprivate: boolean
-  username?: string
+  keywords: string[]
+}
+
+// TODO: check which of these need changed
+export type Joke = NewJoke & {
+  _id: string
+  username: string
   error?: string
-  createdAt?: Date
-  karma?: number
+  createdAt: Date
+  karma: number
   userVote?: string
-  keywords?: string[]
   userFollowingCreator?: boolean
   creator?: string
 }

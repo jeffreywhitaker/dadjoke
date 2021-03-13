@@ -10,7 +10,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
 // import functions
-import { Joke } from '../types/types'
+import { Joke, NewJoke } from '../types/types'
 import jokesData from '../ajax/jokesData'
 import { userLogout } from '../actions/actions'
 
@@ -29,7 +29,7 @@ export const Header: React.FC<Props> = (props: Props) => {
       return false
     } else return true
   }
-  const blankJoke: Joke = {
+  const blankJoke: NewJoke = {
     dadjokequestion: '',
     dadjokeanswer: '',
     keywords: [],
