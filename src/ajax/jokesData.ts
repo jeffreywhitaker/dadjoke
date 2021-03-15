@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
-import { CommentResponse, Joke, NewJoke } from '../types/types'
+import { CommentResponse, Criteria, Joke, JokesResponse, NewJoke } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -23,8 +23,8 @@ export default {
     return axios.post(`${URI_STRING}/api/comments/${jokeId}`, criteria)
   },
 
-  getJokes(criteria: Record<string, unknown>, publicOrPrivate: string): Promise<AxiosPromise> {
-    console.log(`get ${publicOrPrivate} Jokes with: `, criteria)
+  getJokes(criteria: Criteria): Promise<JokesResponse> {
+    console.log(`get ${criteria.isprivate ? 'Private': 'Public'} Jokes with: `, criteria)
 
     const { sortBy, resultsPerPage, searchString, page, isprivate, submittedBy } = criteria
 

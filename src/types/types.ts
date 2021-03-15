@@ -16,12 +16,30 @@ export interface CommentResponse {
   }
 }
 
+export interface JokesResponse {
+  data: {
+    jokes: Joke[]
+    hasNextPage: boolean
+  }
+}
+
 export interface AvatarResponse {
   data: {
     data: {
       data: Buffer
     }
   }
+}
+
+export interface Criteria {
+  sortBy: string
+  // TODO: make results per page a number
+  resultsPerPage: string
+  searchString: string
+  page: number
+  isprivate: boolean
+  submittedBy: string
+  keywords: string[] | string
 }
 
 export type NewJoke = {

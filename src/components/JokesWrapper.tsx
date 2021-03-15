@@ -14,7 +14,7 @@ import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 import FilterJokesDashboard from './small/FilterJokesDashboard'
-import { Joke } from '../types/types'
+import { Criteria, Joke } from '../types/types'
 
 // joke display page component
 function JokesWrapper(props: Props) {
@@ -44,16 +44,6 @@ function JokesWrapper(props: Props) {
     page: 1,
   }
 
-  interface Criteria {
-    sortBy: string
-    // TODO: make results per page a number
-    resultsPerPage: string
-    searchString: string
-    page: number
-    isprivate: boolean
-    submittedBy: string
-  }
-
   const [criteria, setCriteria] = useState<Criteria>({
     // set criteria by URL first, then by default if no URL search param
     // TODO: one saved as number, one saved as string
@@ -67,6 +57,7 @@ function JokesWrapper(props: Props) {
         ((defaultCriteria.page as unknown) as string),
     ), // TODO: change this to always be number
     isprivate: location.pathname === '/privatejokes',
+    keywords: '',
     submittedBy:
       (parsedQuery.submittedBy as string) || defaultCriteria.submittedBy,
   })
@@ -122,7 +113,7 @@ function JokesWrapper(props: Props) {
           setIsLoading(false)
         })
         .catch((err) => {
-          window.alert('Unable to find jokes: ', err)
+          window.alert('Unable to find jokes: ' + err)
         })
     }
   }, [criteria])
