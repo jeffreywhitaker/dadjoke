@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
-import { CommentResponse, Criteria, Joke, JokesResponse, NewJoke } from '../types/types'
+import { CommentResponse, Criteria, Joke, JokeResponse, JokesResponse, NewJoke } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -35,7 +35,7 @@ export default {
     return axios.post(`${URI_STRING}/api/comments/add`, comment, { withCredentials: true})
   },
 
-  updateJoke(jokeToUpdate: Joke, jokeId: string): Promise<AxiosPromise> {
+  updateJoke(jokeToUpdate: Joke, jokeId: string): Promise<JokeResponse> {
     return axios.put(`${URI_STRING}/api/jokes/${jokeId}`, jokeToUpdate, { withCredentials: true})
   },
 

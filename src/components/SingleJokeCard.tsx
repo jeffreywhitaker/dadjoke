@@ -7,7 +7,12 @@ import Card from 'react-bootstrap/Card'
 
 import jokesData from '../ajax/jokesData'
 import userData from '../ajax/userData'
-import { AvatarResponse, Joke } from '../types/types'
+import {
+  AvatarResponse,
+  Joke,
+  JokesResponse,
+  UpdatedJoke,
+} from '../types/types'
 
 import CommentModal from './modals/CommentModal'
 import JokeCardHeader from './small/JokeCardHeader'
@@ -15,7 +20,6 @@ import JokeCardBody from './small/JokeCardBody'
 import JokeCardFooter from './small/JokeCardFooter'
 
 import '../styles/styles.css'
-import { AxiosPromise } from 'axios'
 
 // joke card component
 function SingleJokeCard(props: Props) {
@@ -31,12 +35,13 @@ function SingleJokeCard(props: Props) {
   } = props
 
   // empty joke object
-  const emptyJoke: Joke = {
+  const emptyJoke: UpdatedJoke = {
     _id: '',
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
     username: '',
+    keywords: [],
   }
 
   // modal stuff
@@ -242,7 +247,7 @@ type Props = PropsFromRedux & {
   joke: Joke
   username?: string
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
-  updateJokeDetails: (jokeId: string, res: AxiosPromise) => void
+  updateJokeDetails: (jokeId: string, res: JokesResponse) => void
   updateFollowJokeCreator: (username: string, isFollowing: boolean) => void
   removeDeletedJoke: (id: string) => void
 }

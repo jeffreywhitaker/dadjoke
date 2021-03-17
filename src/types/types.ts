@@ -61,6 +61,15 @@ export type Joke = NewJoke & {
   creator?: string
 }
 
+export interface JokeResonse {
+  data: Joke
+}
+
+export type UpdatedJoke = NewJoke & {
+  _id: string
+  username: string
+}
+
 export type Thunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
