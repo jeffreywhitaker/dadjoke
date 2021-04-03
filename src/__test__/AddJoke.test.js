@@ -42,3 +42,9 @@ describe('AddJoke component', () => {
     expect(tree).toMatchSnapshot()
   })
 })
+
+// notes for tests
+// expect add joke button to call function
+// expect data to appear in appropriate places when entered
+// expect the modal to load when the showAddJokeModal is true
+// expect keywords to be saved and sent properly
