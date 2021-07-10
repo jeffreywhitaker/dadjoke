@@ -7,12 +7,7 @@ import Card from 'react-bootstrap/Card'
 
 import jokesData from '../ajax/jokesData'
 import userData from '../ajax/userData'
-import {
-  AvatarResponse,
-  Joke,
-  JokesResponse,
-  UpdatedJoke,
-} from '../types/types'
+import { AvatarResponse, Joke, JokeResponse } from '../types/types'
 
 import CommentModal from './modals/CommentModal'
 import JokeCardHeader from './small/JokeCardHeader'
@@ -35,13 +30,15 @@ function SingleJokeCard(props: Props) {
   } = props
 
   // empty joke object
-  const emptyJoke: UpdatedJoke = {
+  const emptyJoke: Joke = {
     _id: '',
+    createdAt: undefined,
     dadjokequestion: '',
     dadjokeanswer: '',
     isprivate: false,
-    username: '',
+    karma: undefined,
     keywords: [],
+    username: '',
   }
 
   // modal stuff
@@ -126,10 +123,13 @@ function SingleJokeCard(props: Props) {
       setIsBeingUpdated(true)
       setUpdatedJoke({
         _id: joke._id,
+        createdAt: joke.createdAt,
         dadjokequestion: joke.dadjokequestion,
         dadjokeanswer: joke.dadjokeanswer,
+        karma: joke.karma,
         isprivate: joke.isprivate,
         username: joke.username,
+        keywords: joke.keywords,
       })
     }
   }
@@ -247,7 +247,7 @@ type Props = PropsFromRedux & {
   joke: Joke
   username?: string
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
-  updateJokeDetails: (jokeId: string, res: JokesResponse) => void
+  updateJokeDetails: (jokeId: string, res: JokeResponse) => void
   updateFollowJokeCreator: (username: string, isFollowing: boolean) => void
   removeDeletedJoke: (id: string) => void
 }

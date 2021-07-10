@@ -76,7 +76,9 @@ const Signup: FC<Props> = (props) => {
                 value={values.username}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={(touched.username && errors.username) as boolean}
+                isInvalid={
+                  ((touched.username && errors.username) as unknown) as boolean
+                }
               />
               {errors.username ? <ErrorP>{errors.username}</ErrorP> : ''}
             </Form.Group>
@@ -89,7 +91,9 @@ const Signup: FC<Props> = (props) => {
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={(touched.password && errors.password) as boolean}
+                isInvalid={
+                  ((touched.password && errors.password) as unknown) as boolean
+                }
               />
               {errors.password ? <ErrorP>{errors.password}</ErrorP> : ''}
             </Form.Group>
@@ -103,7 +107,8 @@ const Signup: FC<Props> = (props) => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isInvalid={
-                  (touched.primaryemail && errors.primaryemail) as boolean
+                  ((touched.primaryemail &&
+                    errors.primaryemail) as unknown) as boolean
                 }
               />
               {errors.primaryemail ? (

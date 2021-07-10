@@ -14,7 +14,7 @@ import jokesData from '../ajax/jokesData'
 import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 import FilterJokesDashboard from './small/FilterJokesDashboard'
-import { Criteria, Joke, JokesResponse } from '../types/types'
+import { Criteria, Joke, JokeResponse } from '../types/types'
 
 // joke display page component
 function JokesWrapper(props: Props) {
@@ -195,7 +195,7 @@ function JokesWrapper(props: Props) {
     })
   }
 
-  const updateJokeDetails = (jokeID: string, res: JokesResponse) => {
+  const updateJokeDetails = (jokeID: string, res: JokeResponse) => {
     // replace values of updated joke with response
     let index
     for (let i = 0; i < jokes.length; i++) {

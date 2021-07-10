@@ -12,7 +12,7 @@ export type Comment = {
 export interface CommentResponse {
   data: {
     comments: Comment[]
-    hasNextPage: boolean      
+    hasNextPage: boolean
   }
 }
 
@@ -61,13 +61,20 @@ export type Joke = NewJoke & {
   creator?: string
 }
 
-export interface JokeResonse {
+export type BlankJoke = NewJoke & {
+  _id: string
+  username: string
+}
+
+export interface JokeResponse {
   data: Joke
 }
 
 export type UpdatedJoke = NewJoke & {
   _id: string
   username: string
+  createdAt: Date
+  karma: number
 }
 
 export type Thunk<ReturnType = void> = ThunkAction<
