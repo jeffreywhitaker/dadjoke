@@ -11,9 +11,6 @@ import Button from 'react-bootstrap/Button'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-// import actions
-// TODO: why does it think this isn't being used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { userSignup } from '../actions/actions'
 
 // signup page component
@@ -159,7 +156,7 @@ const mapStateToProps = (state: State) => {
 }
 
 // export component
-const connector = connect(mapStateToProps, {})
+const connector = connect(mapStateToProps, { userSignup })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   userSignup: (values: unknown) => void
