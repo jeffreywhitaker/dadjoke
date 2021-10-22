@@ -13,7 +13,7 @@ import { userLogin } from '../actions/actions'
 // login page component
 const Login: React.FC<Props> = (props) => {
   // destructure props
-  const { userLogin, isLoggedIn, loginError } = props
+  const { userLogin, isFetching, isLoggedIn, loginError } = props
   // useHistory
   const history = useHistory()
 
@@ -129,7 +129,9 @@ const Login: React.FC<Props> = (props) => {
           <br />
           <br />
           {loginError && <p className="error">{loginError}</p>}
-          <button disabled={buttonDisabled}>Log in</button>
+          <button disabled={buttonDisabled || isFetching}>
+            {isFetching ? 'Loading...' : 'Log in'}
+          </button>
         </form>
         <h2>Not registered?</h2>
         <Link to="/signup">Sign Up!</Link>
@@ -141,6 +143,7 @@ const Login: React.FC<Props> = (props) => {
 interface LoginReducer {
   isLoggedIn: boolean
   loginError: string
+  isFetching: boolean
 }
 
 // connect component to redux store
@@ -148,6 +151,7 @@ const mapStateToProps = (state: { loginReducer: LoginReducer }) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     loginError: state.loginReducer.loginError,
+    isFetching: state.loginReducer.isFetching,
   }
 }
 
