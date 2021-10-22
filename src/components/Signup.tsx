@@ -11,15 +11,12 @@ import Button from 'react-bootstrap/Button'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-// import actions
-// TODO: why does it think this isn't being used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { userSignup } from '../actions/actions'
 
 // signup page component
 const Signup: FC<Props> = (props) => {
   // destructure props
-  const { userSignup, isLoggedIn, signupError } = props
+  const { userSignup, isFetching, isLoggedIn, signupError } = props
   // use history
   const history = useHistory()
 
@@ -126,13 +123,14 @@ const Signup: FC<Props> = (props) => {
                   : 'primary'
               }
               disabled={
-                (errors.username ||
+                (isFetching ||
+                  errors.username ||
                   errors.password ||
                   errors.primaryemail ||
                   isSubmitting) as boolean
               }
             >
-              Submit
+              {isFetching ? 'Loading...' : 'Submit'}
             </Button>
           </Form>
           <h4>Already registered?</h4>
@@ -149,22 +147,25 @@ interface State {
   loginReducer: {
     isLoggedIn: boolean
     signupError: string
+    isFetching: boolean
   }
 }
 const mapStateToProps = (state: State) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
     signupError: state.loginReducer.signupError,
+    isFetching: state.loginReducer.isFetching,
   }
 }
 
 // export component
-const connector = connect(mapStateToProps, {})
+const connector = connect(mapStateToProps, { userSignup })
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   userSignup: (values: unknown) => void
   isLoggedIn: boolean
   signupError: string
+  isFetching: boolean
 }
 
 export default connector(Signup)
