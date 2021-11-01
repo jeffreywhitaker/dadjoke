@@ -126,9 +126,14 @@ export const Header: React.FC<Props> = (props: Props) => {
               Private Jokes
             </Nav.Link>
             {isLoggedIn ? (
-              <Nav.Link as={NavLink} to={`/profile/${username}`}>
-                {username}'s Profile
-              </Nav.Link>
+              <>
+                <Nav.Link as={NavLink} to={`/profile/${username}`}>
+                  {username}'s Profile
+                </Nav.Link>
+                <Nav.Link as={NavLink} to={'/messageboard'}>
+                  Message Board
+                </Nav.Link>
+              </>
             ) : null}
           </Nav>
           <Nav>

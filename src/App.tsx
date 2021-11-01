@@ -9,6 +9,7 @@ import Header from './components/Header'
 import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
+import MessageBoard from './components/messageBoard'
 import Profile from './components/Profile'
 import Signup from './components/Signup'
 
@@ -54,6 +55,7 @@ function App(props: Props) {
         </Route>
         <Route path="/publicjokes" component={JokesWrapper} />
         <Route path="/privatejokes" component={JokesWrapper} />
+        <Route path="/messageboard" component={MessageBoard} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:username" component={Profile} />
