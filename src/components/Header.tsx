@@ -111,64 +111,7 @@ export const Header: React.FC<Props> = (props: Props) => {
 
   // return Header
   return (
-    <HeaderWrapper>
-      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
-        <Navbar.Brand as={NavLink} to="/publicjokes">
-          JeffsDadJokes
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link as={NavLink} to="/publicjokes">
-              Public Jokes
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/privatejokes">
-              Private Jokes
-            </Nav.Link>
-            {isLoggedIn ? (
-              <>
-                <Nav.Link as={NavLink} to={`/profile/${username}`}>
-                  {username}'s Profile
-                </Nav.Link>
-                <Nav.Link as={NavLink} to={'/messageboard'}>
-                  Message Board
-                </Nav.Link>
-              </>
-            ) : null}
-          </Nav>
-          <Nav>
-            {isLoggedIn ? (
-              <>
-                <Button
-                  variant="primary"
-                  className="button"
-                  onClick={handleShow}
-                >
-                  Add Joke
-                </Button>
-                &nbsp;
-                <Button
-                  variant="danger"
-                  className="button"
-                  onClick={handleLogout}
-                >
-                  Log Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <Nav.Link as={NavLink} to="/login">
-                  Login
-                </Nav.Link>
-                <Nav.Link as={NavLink} to="/signup">
-                  Signup
-                </Nav.Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-
+    <>
       <AddJokeModal
         callAddJoke={callAddJoke}
         handleClose={handleClose}
@@ -178,7 +121,66 @@ export const Header: React.FC<Props> = (props: Props) => {
         newJoke={newJoke}
         showAddJokeModal={showAddJokeModal}
       />
-    </HeaderWrapper>
+
+      <HeaderWrapper>
+        <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+          <Navbar.Brand as={NavLink} to="/publicjokes">
+            JeffsDadJokes
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link as={NavLink} to="/publicjokes">
+                Public Jokes
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/privatejokes">
+                Private Jokes
+              </Nav.Link>
+              {isLoggedIn ? (
+                <>
+                  <Nav.Link as={NavLink} to={`/profile/${username}`}>
+                    {username}'s Profile
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to={'/messageboard'}>
+                    Message Board
+                  </Nav.Link>
+                </>
+              ) : null}
+            </Nav>
+            <Nav>
+              {isLoggedIn ? (
+                <>
+                  <Button
+                    variant="primary"
+                    className="button"
+                    onClick={handleShow}
+                  >
+                    Add Joke
+                  </Button>
+                  &nbsp;
+                  <Button
+                    variant="danger"
+                    className="button"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Nav.Link as={NavLink} to="/login">
+                    Login
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/signup">
+                    Signup
+                  </Nav.Link>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </HeaderWrapper>
+    </>
   )
 }
 
