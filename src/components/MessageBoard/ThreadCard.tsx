@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/esm/Button'
 
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 import styled from 'styled-components'
 
 export default ({ thread, handleDeleteThread }) => {
@@ -28,7 +30,7 @@ export default ({ thread, handleDeleteThread }) => {
             <NavLink to={`/profile/${thread.creatorName}`}>
               {thread.creatorName}
             </NavLink>{' '}
-            | {dayjs(thread.createdAt).format('DD/MM/YY')}
+            | {dayjs(thread.createdAt).fromNow()}
           </span>
         </div>
       </div>
@@ -41,9 +43,7 @@ export default ({ thread, handleDeleteThread }) => {
           {thread.lastComment ? (
             <>
               <div className="text-wrapper">
-                <span>
-                  {dayjs(thread.lastComment.createdAt).format('DD/MM/YY')}
-                </span>
+                <span>{dayjs(thread.lastComment.createdAt).fromNow()}</span>
                 <span>{thread.lastComment.creatorName}</span>
               </div>
               <div className="avatar-wrapper">
