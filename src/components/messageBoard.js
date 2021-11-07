@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Header from './small/PageHeader'
 
 import AddThreadModal from './modals/AddThreadModal'
-import ThreadCard from '@/components/MessageBoard/ThreadCard'
+import ThreadCard from './MessageBoard/ThreadCard'
 import mbData from '../ajax/mbData'
 
 const MessageBoard = (props) => {
@@ -56,6 +56,7 @@ const MessageBoard = (props) => {
           {threads.map((thread) => {
             return (
               <ThreadCard
+                key={thread._id}
                 thread={thread}
                 handleDeleteThread={handleDeleteThread}
               />
@@ -81,6 +82,7 @@ const Wrapper = styled.section`
     margin: 10px 0;
     width: 900px;
     height: 400px;
-    /* background-color: blue; */
+    border: 1px solid black;
+    border-radius: 10px;
   }
 `
