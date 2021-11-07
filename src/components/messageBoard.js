@@ -20,16 +20,25 @@ const MessageBoard = (props) => {
   const [showNewThreadModal, setShowNewThreadModal] = useState(false)
   const [newThread, setNewThread] = useState(blankThreadObj)
 
-  useEffect(() => {
+  function fetchThreads() {
     mbData
       .getThreads()
       .then(({ data }) => setThreads(data))
       .catch(() => alert('Error fetching message board threads'))
+  }
+
+  useEffect(() => {
+    fetchThreads()
   }, [])
 
-  const handleAddNewThread = () => {
+  function handleAddNewThread() {
+    console.log('calling handleAddNewThread')
     if (newThread.title && newThread.text) {
-      mbData.createThread(newThread).then((res) => console.log('res is', res))
+      mbData.createThread(newThread).then((res) => {
+        console.log('res is', res)
+        setShowNewThreadModal(false)
+        fetchTheads()
+      })
     }
   }
 
@@ -47,12 +56,12 @@ const MessageBoard = (props) => {
         setShowNewThreadModal={setShowNewThreadModal}
         setNewThread={setNewThread}
         newThread={newThread}
-        handleAddNewTopic={handleAddNewThread}
+        handleAddNewThread={handleAddNewThread}
       />
 
       <Wrapper>
         <Header text={'Message Board'} />
-        <div class="topic-wrapper">
+        <div className="topic-wrapper">
           {threads.map((thread) => {
             return (
               <ThreadCard
