@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Header from './small/PageHeader'
 
 import AddThreadModal from './modals/AddThreadModal'
+import ThreadCard from '@/components/MessageBoard/ThreadCard'
 import mbData from '../ajax/mbData'
 
 const MessageBoard = (props) => {
@@ -26,7 +27,7 @@ const MessageBoard = (props) => {
       .catch(() => alert('Error fetching message board threads'))
   }, [])
 
-  const handleAddNewTopic = () => {
+  const handleAddNewThread = () => {
     if (newThread.title && newThread.text) {
       mbData.createThread(newThread).then((res) => console.log('res is', res))
     }
@@ -46,7 +47,7 @@ const MessageBoard = (props) => {
         setShowNewThreadModal={setShowNewThreadModal}
         setNewThread={setNewThread}
         newThread={newThread}
-        handleAddNewTopic={handleAddNewTopic}
+        handleAddNewTopic={handleAddNewThread}
       />
 
       <Wrapper>
@@ -54,14 +55,10 @@ const MessageBoard = (props) => {
         <div class="topic-wrapper">
           {threads.map((thread) => {
             return (
-              <div>
-                <span>
-                  {thread.title} {thread.text}
-                </span>
-                <Button onClick={() => handleDeleteThread(thread._id)}>
-                  Del
-                </Button>
-              </div>
+              <ThreadCard
+                thread={thread}
+                handleDeleteThread={handleDeleteThread}
+              />
             )
           })}
         </div>

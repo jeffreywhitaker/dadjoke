@@ -11,7 +11,7 @@ export default (props) => {
     setShowNewThreadModal,
     setNewThread,
     newThread,
-    handleAddNewTopic,
+    handleAddNewThread,
   } = props
 
   return (
@@ -48,8 +48,8 @@ export default (props) => {
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleAddNewTopic}>
-          Add Joke
+        <Button variant="primary" onClick={handleAddNewThread}>
+          Add Thread
         </Button>
       </Modal.Footer>
     </Modal>
