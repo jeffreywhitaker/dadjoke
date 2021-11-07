@@ -23,7 +23,7 @@ export default ({ thread, handleDeleteThread }) => {
           />
         </div>
         <div className="title-wrapper">
-          <NavLink className="title" to={`/mboard/${thread.title}`}>
+          <NavLink className="title" to={`/mboard/${thread._id}`}>
             {thread.title}
           </NavLink>
           <span className="creator">

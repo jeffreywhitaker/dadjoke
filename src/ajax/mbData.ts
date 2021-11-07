@@ -20,6 +20,10 @@ export default {
     return axios.get(`${URI_STRING}/api/mbthread`)
   },
 
+  getThreadById(id: string): Promise<AxiosPromise> {
+    return axios.get(`${URI_STRING}/api/mbthread/${id}`)
+  },
+
   deleteThread(id: string): Promise<AxiosPromise> {
     return axios.delete(`${URI_STRING}/api/mbthread/${id}`)
   },

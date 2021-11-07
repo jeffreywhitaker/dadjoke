@@ -141,7 +141,7 @@ export const Header: React.FC<Props> = (props: Props) => {
                   <Nav.Link as={NavLink} to={`/profile/${username}`}>
                     {username}'s Profile
                   </Nav.Link>
-                  <Nav.Link as={NavLink} to={'/messageboard'}>
+                  <Nav.Link as={NavLink} to={'/mboard'}>
                     Message Board
                   </Nav.Link>
                 </>
