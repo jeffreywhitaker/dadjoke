@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import mbData from '../../ajax/mbData'
 
+import AddCommentCard from '../MessageBoard/AddCommentCard'
 import Button from 'react-bootstrap/esm/Button'
 import CommentCard from '../MessageBoard/CommentCard'
 import styled from 'styled-components'
@@ -18,6 +19,12 @@ export default () => {
       setThread(data)
     })
   }, [])
+
+  function addNewComment(text) {
+    mbData.postNewComment(thread._id, text).then(() => {
+      console.log('success')
+    })
+  }
 
   if (!thread) return <div>Loading...</div>
 
@@ -35,6 +42,7 @@ export default () => {
       {thread.comments.map((comment) => (
         <CommentCard comment={comment} />
       ))}
+      <AddCommentCard addNewComment={addNewComment} />
     </Wrapper>
   )
 }

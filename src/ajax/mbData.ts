@@ -27,4 +27,12 @@ export default {
   deleteThread(id: string): Promise<AxiosPromise> {
     return axios.delete(`${URI_STRING}/api/mbthread/${id}`)
   },
+
+  postNewComment(threadId: string, commentText: string): Promise<AxiosPromise> {
+    return axios.post(
+      `${URI_STRING}/api/mbcomment`,
+      { threadId, commentText },
+      { withCredentials: true },
+    )
+  },
 }
