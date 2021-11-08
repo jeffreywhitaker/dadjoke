@@ -24,7 +24,7 @@ export default ({ addNewComment }) => {
           onChange={(e) => setNewCommentText(e.target.value)}
         />
       </InputGroup>
-      <Button onClick={addNewComment(newCommentText)}>Post</Button>
+      <Button onClick={() => addNewComment(newCommentText)}>Post</Button>
     </Wrapper>
   )
 }

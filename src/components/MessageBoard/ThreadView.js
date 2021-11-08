@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/esm/Button'
 import CommentCard from '../MessageBoard/CommentCard'
 import styled from 'styled-components'
 
-export default () => {
+const ThreadView = () => {
   // sdf
   const { threadId } = useParams()
 
@@ -46,6 +46,8 @@ export default () => {
     </Wrapper>
   )
 }
+
+export default ThreadView
 
 // styled
 const Wrapper = styled.section`

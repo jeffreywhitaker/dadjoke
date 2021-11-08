@@ -28,10 +28,11 @@ export default {
     return axios.delete(`${URI_STRING}/api/mbthread/${id}`)
   },
 
-  postNewComment(threadId: string, commentText: string): Promise<AxiosPromise> {
+  postNewComment(threadId: string, text: string): Promise<AxiosPromise> {
+    console.log('oisndfosndf', threadId, text)
     return axios.post(
       `${URI_STRING}/api/mbcomment`,
-      { threadId, commentText },
+      { threadId, text },
       { withCredentials: true },
     )
   },
