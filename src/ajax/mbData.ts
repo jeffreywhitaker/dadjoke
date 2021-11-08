@@ -29,7 +29,6 @@ export default {
   },
 
   postNewComment(threadId: string, text: string): Promise<AxiosPromise> {
-    console.log('oisndfosndf', threadId, text)
     return axios.post(
       `${URI_STRING}/api/mbcomment`,
       { threadId, text },
