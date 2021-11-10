@@ -27,9 +27,15 @@ export default ({ comment }) => {
           <NavLink to={`/profile/${comment.creatorName}`} className="name-text">
             {comment.creatorName}
           </NavLink>
-          <span className="small-text">Join Date</span>
-          <span className="small-text">Threads</span>
-          <span className="small-text">Comments</span>
+          <span className="small-text">
+            Joined: {dayjs(comment.creator.createdAt).format('DD.MM.YY')}
+          </span>
+          <span className="small-text">
+            Threads: {comment.creator.mbThreadCount}
+          </span>
+          <span className="small-text">
+            Comments: {comment.creator.mbCommentCount}
+          </span>
         </div>
       </div>
       <div className="content">
