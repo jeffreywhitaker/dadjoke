@@ -3,6 +3,8 @@ import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import mbData from '../../ajax/mbData'
 
+import Loading from '../Loading'
+
 import AddCommentCard from '../MessageBoard/AddCommentCard'
 import Button from 'react-bootstrap/esm/Button'
 import CommentCard from '../MessageBoard/CommentCard'
@@ -14,19 +16,23 @@ const ThreadView = () => {
 
   const [thread, setThread] = useState(null)
 
-  useEffect(() => {
+  function fetchThread() {
     mbData.getThreadById(threadId).then(({ data }) => {
       setThread(data)
     })
+  }
+
+  useEffect(() => {
+    fetchThread()
   }, [])
 
   function addNewComment(text) {
     mbData.postNewComment(thread._id, text).then(() => {
-      console.log('success')
+      fetchThread()
     })
   }
 
-  if (!thread) return <div>Loading...</div>
+  if (!thread) return <Loading />
 
   return (
     <Wrapper>
