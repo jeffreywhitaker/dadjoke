@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Header from './small/PageHeader'
 
 import AddThreadModal from './modals/AddThreadModal'
+import Loading from './Loading'
 import ThreadCard from './MessageBoard/ThreadCard'
 import mbData from '../ajax/mbData'
 
@@ -16,15 +17,17 @@ const MessageBoard = (props) => {
 
   // state
   const [threads, setThreads] = useState([])
-  const [isLoadingTopics, setIsLoadingTopics] = useState(false)
+  const [isLoadingThreads, setIsLoadingThreads] = useState(false)
   const [showNewThreadModal, setShowNewThreadModal] = useState(false)
   const [newThread, setNewThread] = useState(blankThreadObj)
 
   function fetchThreads() {
+    setIsLoadingThreads(true)
     mbData
       .getThreads()
       .then(({ data }) => setThreads(data))
       .catch(() => alert('Error fetching message board threads'))
+      .finally(() => setIsLoadingThreads(false))
   }
 
   useEffect(() => {
@@ -61,7 +64,8 @@ const MessageBoard = (props) => {
 
       <Wrapper>
         <Header text={'Message Board'} />
-        <div className="topic-wrapper">
+        <div className="thread-wrapper">
+          {isLoadingThreads && <Loading />}
           {threads.map((thread) => {
             return (
               <ThreadCard
@@ -87,7 +91,7 @@ const Wrapper = styled.section`
   padding: 10px;
   align-items: center;
 
-  .topic-wrapper {
+  .thread-wrapper {
     margin: 10px 0;
     width: 900px;
     height: 400px;
