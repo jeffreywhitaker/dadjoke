@@ -9,8 +9,10 @@ import Header from './components/Header'
 import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
+import MessageBoard from './components/messageBoard'
 import Profile from './components/Profile'
 import Signup from './components/Signup'
+import ThreadView from './components/MessageBoard/ThreadView'
 
 import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 
@@ -54,6 +56,8 @@ function App(props: Props) {
         </Route>
         <Route path="/publicjokes" component={JokesWrapper} />
         <Route path="/privatejokes" component={JokesWrapper} />
+        <Route path="/mboard/:threadId" component={ThreadView} />
+        <Route path="/mboard" component={MessageBoard} exact />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:username" component={Profile} />
