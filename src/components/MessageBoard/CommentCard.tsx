@@ -1,12 +1,16 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import Button from 'react-bootstrap/esm/Button'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import styled from 'styled-components'
 
-export default ({ comment }) => {
+function CommentCard(props: Props) {
+  const { comment, username } = props
+
   return (
     <Wrapper>
       <div className="user-info">
@@ -38,13 +42,38 @@ export default ({ comment }) => {
           </span>
         </div>
       </div>
-      <div className="content">
-        <div className="date-text">{dayjs(comment.createdAt).fromNow()}</div>
-        <div>{comment.text}</div>
+      <div className="main">
+        <div className="content">
+          <div className="date-text">{dayjs(comment.createdAt).fromNow()}</div>
+          <div>{comment.text}</div>
+        </div>
+        {username === comment.creatorName && (
+          <div className="controls">
+            <Button size="sm" variant="danger">
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     </Wrapper>
   )
 }
+
+// connect component to redux store
+const mapStateToProps = (state) => {
+  return {
+    username: state.loginReducer.username,
+  }
+}
+
+// export component
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux & {
+  comment: Record<string, any>
+}
+
+export default connector(CommentCard)
 
 // styled
 const Wrapper = styled.article`
@@ -87,11 +116,27 @@ const Wrapper = styled.article`
     }
   }
 
-  .content {
-    padding: 10px;
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
 
-    .date-text {
-      font-size: 12px;
+    .content {
+      padding: 10px;
+      height: 100%;
+
+      .date-text {
+        font-size: 12px;
+      }
+    }
+
+    .controls {
+      max-height: min-content;
+      flex: 0 0 auto;
+      margin: 5px;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 `

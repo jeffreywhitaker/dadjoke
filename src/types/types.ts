@@ -92,3 +92,7 @@ export interface LoginCredentials {
 export interface SignupCredentials extends LoginCredentials {
   primaryemail: string
 }
+
+export interface ThreadResponse {
+  data: Record<string, any>
+}

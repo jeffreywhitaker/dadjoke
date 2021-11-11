@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import mbData from '../../ajax/mbData'
-
+import { connect, ConnectedProps } from 'react-redux'
 import Loading from '../Loading'
 
 import AddCommentCard from '../MessageBoard/AddCommentCard'
@@ -10,15 +10,16 @@ import Button from 'react-bootstrap/esm/Button'
 import CommentCard from '../MessageBoard/CommentCard'
 import styled from 'styled-components'
 
-const ThreadView = () => {
-  // sdf
-  const { threadId } = useParams()
+function ThreadView(props: Props) {
+  const { isLoggedIn } = props
+
+  const { threadId } = useParams<{ threadId: string }>()
 
   const [thread, setThread] = useState(null)
 
   function fetchThread() {
-    mbData.getThreadById(threadId).then(({ data }) => {
-      setThread(data)
+    mbData.getThreadById(threadId).then((res) => {
+      setThread(res.data)
     })
   }
 
@@ -48,12 +49,24 @@ const ThreadView = () => {
       {thread.comments.map((comment) => (
         <CommentCard comment={comment} />
       ))}
-      <AddCommentCard addNewComment={addNewComment} />
+      {isLoggedIn && <AddCommentCard addNewComment={addNewComment} />}
     </Wrapper>
   )
 }
 
-export default ThreadView
+// connect component to redux store
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.loginReducer.isLoggedIn,
+  }
+}
+
+// export component
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux
+
+export default connector(ThreadView)
 
 // styled
 const Wrapper = styled.section`

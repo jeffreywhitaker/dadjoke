@@ -9,7 +9,7 @@ import Loading from './Loading'
 import ThreadCard from './MessageBoard/ThreadCard'
 import mbData from '../ajax/mbData'
 
-const MessageBoard = (props) => {
+const MessageBoard = () => {
   const blankThreadObj = {
     title: '',
     text: '',
@@ -40,7 +40,7 @@ const MessageBoard = (props) => {
       mbData.createThread(newThread).then((res) => {
         console.log('res is', res)
         setShowNewThreadModal(false)
-        fetchTheads()
+        fetchThreads()
       })
     }
   }

@@ -1,8 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import Button from 'react-bootstrap/esm/Button'
-
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -44,25 +42,30 @@ export default ({ thread, handleDeleteThread }) => {
             <>
               <div className="text-wrapper">
                 <span>{dayjs(thread.lastComment.createdAt).fromNow()}</span>
-                <span>{thread.lastComment.creatorName}</span>
+                <NavLink to={`/profile/${thread.lastComment.creatorName}`}>
+                  {thread.lastComment.creatorName}
+                </NavLink>
               </div>
-              <div className="avatar-wrapper">
+              <NavLink
+                to={`/profile/${thread.lastComment.creatorName}`}
+                className="avatar-wrapper"
+              >
                 <img
-                  src={thread.lastComment.creator.image}
+                  className="avatar"
+                  src={
+                    thread.lastComment.creator.image
+                      ? thread.lastComment.creator.image
+                      : '/img/defaultAvatar.png'
+                  }
                   alt="Avatar of last reply author"
                 />
-              </div>
+              </NavLink>
             </>
           ) : (
             <div>No comment yet</div>
           )}
         </div>
       </div>
-
-      {/* <span>
-        {thread.title} {thread.text}
-      </span>
-      <Button onClick={() => handleDeleteThread(thread._id)}>Del</Button> */}
     </Wrapper>
   )
 }
@@ -121,7 +124,25 @@ const Wrapper = styled.article`
     }
 
     .last-reply-wrapper {
-      width: 50%;
+      width: 55%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .text-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .avatar-wrapper {
+        margin: 5px;
+
+        .avatar {
+          height: 30px;
+          width: 30px;
+        }
+      }
     }
   }
 `

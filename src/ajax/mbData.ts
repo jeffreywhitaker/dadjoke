@@ -1,4 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
+import { ThreadResponse } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -16,11 +17,11 @@ export default {
     })
   },
 
-  getThreads(): Promise<AxiosPromise> {
+  getThreads(): Promise<{ data: Record<string, any>[] }> {
     return axios.get(`${URI_STRING}/api/mbthread`)
   },
 
-  getThreadById(id: string): Promise<AxiosPromise> {
+  getThreadById(id: string): Promise<ThreadResponse> {
     return axios.get(`${URI_STRING}/api/mbthread/${id}`)
   },
 
