@@ -10,7 +10,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
 // import functions
-import { Joke, NewJoke } from '../types/types'
+import { NewJoke } from '../types/types'
 import jokesData from '../ajax/jokesData'
 import { userLogout } from '../actions/actions'
 
@@ -141,11 +141,11 @@ export const Header: React.FC<Props> = (props: Props) => {
                   <Nav.Link as={NavLink} to={`/profile/${username}`}>
                     {username}'s Profile
                   </Nav.Link>
-                  <Nav.Link as={NavLink} to={'/mboard'}>
-                    Message Board
-                  </Nav.Link>
                 </>
               ) : null}
+              <Nav.Link as={NavLink} to={'/mboard'}>
+                Message Board
+              </Nav.Link>
             </Nav>
             <Nav>
               {isLoggedIn ? (
