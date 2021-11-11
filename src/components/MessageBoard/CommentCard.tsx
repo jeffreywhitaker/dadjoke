@@ -85,7 +85,7 @@ const Wrapper = styled.article`
   .user-info {
     max-width: 150px;
     width: 20%;
-    border: 1px solid black;
+    border-right: 1px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
