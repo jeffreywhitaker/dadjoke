@@ -95,7 +95,5 @@ const Wrapper = styled.section`
     margin: 10px 0;
     width: 900px;
     height: 400px;
-    background-color: lightblue;
-    border-radius: 10px;
   }
 `

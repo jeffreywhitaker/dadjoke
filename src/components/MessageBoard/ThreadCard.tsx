@@ -76,6 +76,7 @@ const Wrapper = styled.article`
   display: flex;
   padding: 5px 10px;
   justify-content: space-between;
+  border-top: 1px solid black;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
