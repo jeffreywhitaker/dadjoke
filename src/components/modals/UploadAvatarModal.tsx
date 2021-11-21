@@ -44,7 +44,7 @@ const UploadAvatarModal = (props) => {
     canvas.toBlob(
       (blob) => {
         // create a form data to send, and append the blob
-        let data = new FormData()
+        const data = new FormData()
         data.append('image', blob)
 
         // send the image
