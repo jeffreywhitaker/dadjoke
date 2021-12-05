@@ -20,7 +20,7 @@ import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 function App(props: Props) {
   // destructure props
   const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
-
+  const [isDarkModeOn, setIsDarkModeOn] = useState(false)
   // for intro modal
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => {
@@ -40,16 +40,26 @@ function App(props: Props) {
 
   // use effect to check for token
   useEffect(() => {
+    if (localStorage.getItem('dark-mode') === 'true') {
+      setIsDarkModeOn(true)
+    }
+
     ifSessionExistsLogIn()
     if (localStorage.getItem('doNotShowIntroModal') !== 'true') {
       setShowModal(true)
     }
   }, [ifSessionExistsLogIn])
 
+  const toggleDarkMode = () => {
+    console.log('dark mode is: ', isDarkModeOn)
+    localStorage.setItem('dark-mode', isDarkModeOn.toString())
+    setIsDarkModeOn(!isDarkModeOn)
+  }
+
   // return components
   return (
     <>
-      <Route component={Header} />
+      <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
       <AppWrapper className="App">
         <Route exact path="/">
           <Redirect to="/publicjokes" />
