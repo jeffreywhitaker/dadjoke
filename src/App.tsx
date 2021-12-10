@@ -10,7 +10,7 @@ import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
 import MessageBoard from './components/messageBoard'
-import Profile from './components/Profile'
+import Profile from './components/Profile/Profile'
 import Signup from './components/Signup'
 import ThreadView from './components/MessageBoard/ThreadView'
 
