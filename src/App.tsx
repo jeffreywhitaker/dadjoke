@@ -58,7 +58,7 @@ function App(props: Props) {
 
   // return components
   return (
-    <>
+    <Main isDarkModeOn={isDarkModeOn}>
       <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
       <AppWrapper className="App">
         <Route exact path="/">
@@ -81,7 +81,7 @@ function App(props: Props) {
         setShowModal={setShowModal}
         showModal={showModal}
       />
-    </>
+    </Main>
   )
 }
 
@@ -103,7 +103,15 @@ type Props = PropsFromRedux
 export default connector(App)
 
 // styled components
-const AppWrapper = styled.main`
+interface MainProps {
+  isDarkModeOn: boolean
+}
+const Main = styled.main`
+  background-color: ${(props: MainProps) =>
+    props.isDarkModeOn ? 'darkgray' : 'white'};
+`
+
+const AppWrapper = styled.section`
   max-width: 1100px;
   width: 100%;
   height: 100%;
