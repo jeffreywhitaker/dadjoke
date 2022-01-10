@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
+import Stats from './Stats'
+
 import Chart from 'chart.js'
 
 // bootstrap
@@ -13,12 +15,12 @@ import Card from 'react-bootstrap/Card'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 
-import Loading from '../components/Loading'
+import Loading from '../Loading'
 
-import imageData from '../ajax/imageData'
-import userData from '../ajax/userData'
+import imageData from '../../ajax/imageData'
+import userData from '../../ajax/userData'
 
-import UploadAvatarModal from './modals/UploadAvatarModal'
+import UploadAvatarModal from '../modals/UploadAvatarModal'
 
 const Profile = (props) => {
   const inputRef = useRef(null)
@@ -206,68 +208,15 @@ const Profile = (props) => {
         ) : (
           <div className="mainContainer">
             {/* LEFT COLUMN */}
-            <div className="leftColumn">
-              {/* AVATAR */}
-              <div className="avatarWrapper">
-                <h2 className="subTitle">Avatar</h2>
-
-                <img
-                  className="avatar"
-                  src={!isUserHaveAvatar ? '/img/defaultAvatar.png' : binary}
-                />
-                {username === loggedInUsername && (
-                  <div>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            'For best results, please upload an image 200 x 200 pixels or larger.',
-                          )
-                        ) {
-                          inputRef.current.click()
-                        }
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    &nbsp;
-                    {isUserHaveAvatar && (
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              'Are you sure you want to delete this image? This action cannot be undone.',
-                            )
-                          ) {
-                            handleDeleteAvatar()
-                          }
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    )}
-                    <input
-                      type="file"
-                      id="image"
-                      name="image"
-                      ref={inputRef}
-                      accept="image/*"
-                      onChange={handleUploadAvatar}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* STATS */}
-              <div>
-                <h2 className="subTitle">Statistics</h2>
-
-                <canvas id="myChart" width="400" height="400" />
-              </div>
-            </div>
+            <Stats
+              binary={binary}
+              handleDeleteAvatar={handleDeleteAvatar}
+              handleUploadAvatar={handleUploadAvatar}
+              inputRef={inputRef}
+              isUserHaveAvatar={isUserHaveAvatar}
+              loggedInUsername={loggedInUsername}
+              username={username}
+            />
 
             <div className="verticalSpacer" />
 
@@ -474,36 +423,9 @@ const WrapperDiv = styled.div`
     display: flex;
     justify-content: space-between;
 
-    .leftColumn {
-      width: 420px;
-      background-color: lightblue;
-    }
-
     .rightColumn {
       width: 420px;
       background-color: lightblue;
-    }
-
-    .avatarWrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 10px;
-
-      .avatar {
-        display: block;
-        max-width: 200px;
-        max-height: 200px;
-        width: auto;
-        height: auto;
-        border-radius: 10px;
-        margin-bottom: 10px;
-      }
-
-      input {
-        align-self: flex-end;
-        display: none;
-      }
     }
 
     .descWrapper {

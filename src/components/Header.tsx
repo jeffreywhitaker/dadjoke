@@ -20,7 +20,13 @@ import AddJokeModal from './modals/AddJokeModal'
 // Header component
 export const Header: React.FC<Props> = (props: Props) => {
   // destructure props
-  const { isLoggedIn, userLogout, username } = props
+  const {
+    isDarkModeOn,
+    isLoggedIn,
+    userLogout,
+    username,
+    toggleDarkMode,
+  } = props
 
   // modal
   // local state for adding new joke
@@ -148,6 +154,13 @@ export const Header: React.FC<Props> = (props: Props) => {
               </Nav.Link>
             </Nav>
             <Nav>
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={toggleDarkMode}
+              >
+                <i className={isDarkModeOn ? 'fa fa-sun' : 'fa fa-moon'} />
+              </Button>
               {isLoggedIn ? (
                 <>
                   <Button
@@ -197,7 +210,10 @@ const mapStateToProps = (state: {
 // export component
 const connector = connect(mapStateToProps, { userLogout })
 type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
+type Props = PropsFromRedux & {
+  toggleDarkMode: () => void
+  isDarkModeOn: boolean
+}
 export default connector(Header)
 
 const HeaderWrapper = styled.header`

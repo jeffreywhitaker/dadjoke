@@ -10,7 +10,7 @@ import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
 import Login from './components/Login'
 import MessageBoard from './components/messageBoard'
-import Profile from './components/Profile'
+import Profile from './components/Profile/Profile'
 import Signup from './components/Signup'
 import ThreadView from './components/MessageBoard/ThreadView'
 
@@ -20,7 +20,7 @@ import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 function App(props: Props) {
   // destructure props
   const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
-
+  const [isDarkModeOn, setIsDarkModeOn] = useState(false)
   // for intro modal
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => {
@@ -40,16 +40,26 @@ function App(props: Props) {
 
   // use effect to check for token
   useEffect(() => {
+    if (localStorage.getItem('dark-mode') === 'true') {
+      setIsDarkModeOn(true)
+    }
+
     ifSessionExistsLogIn()
     if (localStorage.getItem('doNotShowIntroModal') !== 'true') {
       setShowModal(true)
     }
   }, [ifSessionExistsLogIn])
 
+  const toggleDarkMode = () => {
+    console.log('dark mode is: ', isDarkModeOn)
+    localStorage.setItem('dark-mode', isDarkModeOn.toString())
+    setIsDarkModeOn(!isDarkModeOn)
+  }
+
   // return components
   return (
-    <>
-      <Route component={Header} />
+    <Main isDarkModeOn={isDarkModeOn}>
+      <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
       <AppWrapper className="App">
         <Route exact path="/">
           <Redirect to="/publicjokes" />
@@ -71,7 +81,7 @@ function App(props: Props) {
         setShowModal={setShowModal}
         showModal={showModal}
       />
-    </>
+    </Main>
   )
 }
 
@@ -93,7 +103,15 @@ type Props = PropsFromRedux
 export default connector(App)
 
 // styled components
-const AppWrapper = styled.main`
+interface MainProps {
+  isDarkModeOn: boolean
+}
+const Main = styled.main`
+  background-color: ${(props: MainProps) =>
+    props.isDarkModeOn ? 'darkgray' : 'white'};
+`
+
+const AppWrapper = styled.section`
   max-width: 1100px;
   width: 100%;
   height: 100%;
