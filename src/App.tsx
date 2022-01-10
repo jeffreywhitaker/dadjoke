@@ -53,7 +53,7 @@ function App(props: Props) {
 
   const toggleDarkMode = () => {
     console.log('dark mode is: ', isDarkModeOn)
-    localStorage.setItem('dark-mode', isDarkModeOn.toString())
+    localStorage.setItem('dark-mode', (!isDarkModeOn).toString())
     setIsDarkModeOn(!isDarkModeOn)
   }
 
