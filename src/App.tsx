@@ -20,7 +20,8 @@ import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 function App(props: Props) {
   // destructure props
   const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
-  const [isDarkModeOn, setIsDarkModeOn] = useState(false)
+  const [isDarkModeOn, setIsDarkModeOn] = useState(true)
+
   // for intro modal
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => {
@@ -40,8 +41,8 @@ function App(props: Props) {
 
   // use effect to check for token
   useEffect(() => {
-    if (localStorage.getItem('dark-mode') === 'true') {
-      setIsDarkModeOn(true)
+    if (localStorage.getItem('dark-mode') === 'false') {
+      setIsDarkModeOn(false)
     }
 
     ifSessionExistsLogIn()
@@ -59,7 +60,7 @@ function App(props: Props) {
   // return components
   return (
     <Main isDarkModeOn={isDarkModeOn}>
-      <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
+      <Route component={Header} />
       <AppWrapper className="App">
         <Route exact path="/">
           <Redirect to="/publicjokes" />
@@ -106,12 +107,11 @@ export default connector(App)
 interface MainProps {
   isDarkModeOn: boolean
 }
-const Main = styled.main`
-  background-color: ${(props: MainProps) =>
-    props.isDarkModeOn ? 'darkgray' : 'white'};
-`
 
-const AppWrapper = styled.section`
+const Main = styled.main<MainProps>`
+  background-color: ${(props) => (props.isDarkModeOn ? 'darkgray' : 'white')};
+`
+const AppWrapper = styled.main`
   max-width: 1100px;
   width: 100%;
   height: 100%;
