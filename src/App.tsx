@@ -60,7 +60,7 @@ function App(props: Props) {
   // return components
   return (
     <Main isDarkModeOn={isDarkModeOn}>
-      <Route component={Header} />
+      <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
       <AppWrapper className="App">
         <Route exact path="/">
           <Redirect to="/publicjokes" />
@@ -111,7 +111,7 @@ interface MainProps {
 const Main = styled.main<MainProps>`
   background-color: ${(props) => (props.isDarkModeOn ? 'darkgray' : 'white')};
 `
-const AppWrapper = styled.main`
+const AppWrapper = styled.section`
   max-width: 1100px;
   width: 100%;
   height: 100%;
