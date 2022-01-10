@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
-import Stats from '@/components/Profile/Stats'
+import Stats from './Stats'
 
 import Chart from 'chart.js'
 
@@ -15,12 +15,12 @@ import Card from 'react-bootstrap/Card'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 
-import Loading from '../components/Loading'
+import Loading from '../Loading'
 
-import imageData from '../ajax/imageData'
-import userData from '../ajax/userData'
+import imageData from '../../ajax/imageData'
+import userData from '../../ajax/userData'
 
-import UploadAvatarModal from './modals/UploadAvatarModal'
+import UploadAvatarModal from '../modals/UploadAvatarModal'
 
 const Profile = (props) => {
   const inputRef = useRef(null)
