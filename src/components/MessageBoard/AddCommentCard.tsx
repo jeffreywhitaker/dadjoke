@@ -34,4 +34,5 @@ const Wrapper = styled.article`
   width: 100%;
   border: 1px solid black;
   padding: 12px;
+  margin: 10px 0;
 `

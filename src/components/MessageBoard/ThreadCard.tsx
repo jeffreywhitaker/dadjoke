@@ -73,6 +73,7 @@ export default ({ thread, handleDeleteThread }) => {
 // styled
 const Wrapper = styled.article`
   width: 100%;
+  max-width: 100%;
   display: flex;
   padding: 5px 10px;
   justify-content: space-between;
@@ -100,6 +101,7 @@ const Wrapper = styled.article`
     .title-wrapper {
       display: flex;
       flex-direction: column;
+      flex-grow: 20;
 
       .title {
         font-size: 16px;
@@ -114,7 +116,6 @@ const Wrapper = styled.article`
   }
 
   .right {
-    width: 30%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -122,13 +123,21 @@ const Wrapper = styled.article`
     .replies-wrapper {
       display: flex;
       flex-direction: column;
+      margin: 0 10px;
+      min-width: 90px;
     }
 
     .last-reply-wrapper {
       width: 55%;
+      min-width: 145px;
+      margin: 0 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      @media screen and (max-width: 550px) {
+        display: none;
+      }
 
       .text-wrapper {
         display: flex;

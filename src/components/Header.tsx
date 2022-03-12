@@ -157,6 +157,7 @@ export const Header: React.FC<Props> = (props: Props) => {
               <Button
                 variant="outline-primary"
                 size="sm"
+                className="button"
                 onClick={toggleDarkMode}
               >
                 <i className={isDarkModeOn ? 'fa fa-sun' : 'fa fa-moon'} />
@@ -170,7 +171,6 @@ export const Header: React.FC<Props> = (props: Props) => {
                   >
                     Add Joke
                   </Button>
-                  &nbsp;
                   <Button
                     variant="danger"
                     className="button"
@@ -219,5 +219,6 @@ export default connector(Header)
 const HeaderWrapper = styled.header`
   .button {
     max-width: 150px;
+    margin: 2px;
   }
 `
