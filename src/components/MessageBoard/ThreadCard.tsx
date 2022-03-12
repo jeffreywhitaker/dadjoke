@@ -73,6 +73,7 @@ export default ({ thread, handleDeleteThread }) => {
 // styled
 const Wrapper = styled.article`
   width: 100%;
+  max-width: 100%;
   display: flex;
   padding: 5px 10px;
   justify-content: space-between;

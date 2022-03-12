@@ -94,6 +94,7 @@ const Wrapper = styled.section`
   .thread-wrapper {
     margin: 10px 0;
     width: 900px;
+    max-width: 100%;
     height: 400px;
   }
 `
