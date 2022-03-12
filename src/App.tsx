@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import { ThemeProvider } from 'styled-components'
+import { GlobalStyles } from './styles/globalStyles'
+import { lightTheme, darkTheme } from './styles/theme'
 
 // import components
 import Header from './components/Header'
@@ -59,30 +62,33 @@ function App(props: Props) {
 
   // return components
   return (
-    <Main isDarkModeOn={isDarkModeOn}>
-      <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
-      <AppWrapper className="App">
-        <Route exact path="/">
-          <Redirect to="/publicjokes" />
-        </Route>
-        <Route path="/publicjokes" component={JokesWrapper} />
-        <Route path="/privatejokes" component={JokesWrapper} />
-        <Route path="/mboard/:threadId" component={ThreadView} />
-        <Route path="/mboard" component={MessageBoard} exact />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/profile/:username" component={Profile} />
-      </AppWrapper>
+    <ThemeProvider theme={isDarkModeOn ? darkTheme : lightTheme}>
+      <GlobalStyles />
+      <Main isDarkModeOn={isDarkModeOn}>
+        <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
+        <AppWrapper className="App">
+          <Route exact path="/">
+            <Redirect to="/publicjokes" />
+          </Route>
+          <Route path="/publicjokes" component={JokesWrapper} />
+          <Route path="/privatejokes" component={JokesWrapper} />
+          <Route path="/mboard/:threadId" component={ThreadView} />
+          <Route path="/mboard" component={MessageBoard} exact />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/profile/:username" component={Profile} />
+        </AppWrapper>
 
-      <IntroModal
-        handleClose={handleClose}
-        handleDemo={handleDemo}
-        handleDoNotShowAgain={handleDoNotShowAgain}
-        isLoggedIn={isLoggedIn}
-        setShowModal={setShowModal}
-        showModal={showModal}
-      />
-    </Main>
+        <IntroModal
+          handleClose={handleClose}
+          handleDemo={handleDemo}
+          handleDoNotShowAgain={handleDoNotShowAgain}
+          isLoggedIn={isLoggedIn}
+          setShowModal={setShowModal}
+          showModal={showModal}
+        />
+      </Main>
+    </ThemeProvider>
   )
 }
 
@@ -109,13 +115,13 @@ interface MainProps {
 }
 
 const Main = styled.main<MainProps>`
-  background-color: ${(props) => (props.isDarkModeOn ? 'darkgray' : 'white')};
+  /* background-color: ${(props) =>
+    props.isDarkModeOn ? 'darkgray' : 'white'}; */
+  height: 100%;
 `
 const AppWrapper = styled.section`
   max-width: 1100px;
   width: 100%;
-  height: 100%;
-  min-height: 100vh;
   margin: 0 auto;
   /* background: lightslategray; */
 `
