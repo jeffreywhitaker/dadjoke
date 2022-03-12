@@ -84,6 +84,7 @@ const Wrapper = styled.article`
 
   .user-info {
     max-width: 150px;
+    min-width: 80px;
     width: 20%;
     border-right: 1px solid black;
     display: flex;
