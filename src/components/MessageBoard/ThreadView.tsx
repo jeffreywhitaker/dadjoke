@@ -11,7 +11,7 @@ import CommentCard from '../MessageBoard/CommentCard'
 import styled from 'styled-components'
 
 function ThreadView(props: Props) {
-  const { isLoggedIn } = props
+  const { isLoggedIn, username } = props
 
   const { threadId } = useParams<{ threadId: string }>()
 
@@ -33,6 +33,13 @@ function ThreadView(props: Props) {
     })
   }
 
+  function handleDeleteThread(id) {
+    mbData
+      .deleteThread(id)
+      .then(() => alert('Deleted successfully'))
+      .catch(() => alert('Unable to delete thread'))
+  }
+
   if (!thread) return <Loading />
 
   return (
@@ -40,6 +47,11 @@ function ThreadView(props: Props) {
       <div className="top-wrapper">
         <NavLink to="/mboard">
           <Button size="sm">Back</Button>
+          {username === thread.creatorname && (
+            <Button size="sm" onClick={() => handleDeleteThread(thread.id)}>
+              Delete
+            </Button>
+          )}
         </NavLink>
         <h1>{thread.title}</h1>
         <div />
@@ -47,7 +59,7 @@ function ThreadView(props: Props) {
 
       <CommentCard comment={thread} />
       {thread.comments.map((comment) => (
-        <CommentCard comment={comment} />
+        <CommentCard comment={comment} key={comment.id} />
       ))}
       {isLoggedIn && <AddCommentCard addNewComment={addNewComment} />}
     </Wrapper>
@@ -58,6 +70,7 @@ function ThreadView(props: Props) {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.loginReducer.isLoggedIn,
+    username: state.loginReducer.username,
   }
 }
 
