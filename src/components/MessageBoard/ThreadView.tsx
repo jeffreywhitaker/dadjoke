@@ -57,9 +57,9 @@ function ThreadView(props: Props) {
         <div />
       </div>
 
-      <CommentCard comment={thread} />
+      <CommentCard comment={thread} isThread={true} />
       {thread.comments.map((comment) => (
-        <CommentCard comment={comment} key={comment.id} />
+        <CommentCard comment={comment} key={comment.id} isThread={false} />
       ))}
       {isLoggedIn && <AddCommentCard addNewComment={addNewComment} />}
     </Wrapper>

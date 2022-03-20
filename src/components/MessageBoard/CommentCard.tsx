@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import Button from 'react-bootstrap/esm/Button'
+import InputGroup from 'react-bootstrap/esm/InputGroup'
+import FormControl from 'react-bootstrap/esm/FormControl'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -9,7 +11,22 @@ dayjs.extend(relativeTime)
 import styled from 'styled-components'
 
 function CommentCard(props: Props) {
-  const { comment, username } = props
+  const { comment, username, isThread } = props
+
+  const [updateText, setUpdateText] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
+
+  function handleUpdate(id) {
+    // TODO: needs to be different based on comment or thread
+    if 
+  }
+
+    // handle change values, save to local state
+    const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setUpdateText(value)
+      console.log('updated text', value)
+    }
 
   return (
     <Wrapper>
@@ -45,10 +62,30 @@ function CommentCard(props: Props) {
       <div className="main">
         <div className="content">
           <div className="date-text">{dayjs(comment.createdAt).fromNow()}</div>
-          <div>{comment.text}</div>
+          {isUpdating && <div>{comment.text}</div>}
+          {!isUpdating && <div>
+            <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text>Text</InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              aria-label="Thread or Comment Update"
+              name="updateText"
+              value={updateText}
+              onChange={handleValueChange}
+            />
+          </InputGroup>
+            </div>}
         </div>
         {username === comment.creatorName && (
           <div className="controls">
+            <Button
+              size="sm"
+              variant="success"
+              onClick={() => setIsUpdating(!isUpdating)}
+            >
+              Update
+            </Button>
             <Button size="sm" variant="danger">
               Delete
             </Button>
@@ -71,6 +108,7 @@ const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   comment: Record<string, any>
+  isThread: boolean
 }
 
 export default connector(CommentCard)
