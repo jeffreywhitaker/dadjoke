@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios'
-import { ThreadResponse } from '../types/types'
+import { ThreadResponse, SingleCommentResponse } from '../types/types'
 
 // const URI_STRING = 'https://jwhit-dadjokes.herokuapp.com'
 let URI_STRING = ''
@@ -33,6 +33,17 @@ export default {
     return axios.post(
       `${URI_STRING}/api/mbcomment`,
       { threadId, text },
+      { withCredentials: true },
+    )
+  },
+
+  updateMbComment(
+    commentId: string,
+    text: string,
+  ): Promise<SingleCommentResponse> {
+    return axios.put(
+      `${URI_STRING}/api/mbcomment`,
+      { commentId, text },
       { withCredentials: true },
     )
   },

@@ -96,3 +96,37 @@ export interface SignupCredentials extends LoginCredentials {
 export interface ThreadResponse {
   data: Record<string, any>
 }
+
+export interface SingleCommentResponse {
+  data: Record<string, any>
+}
+
+export interface MbThread {
+  text: string
+  isDeleted: boolean
+  comments: MbComment[]
+  commentCount: number
+  viewCount: number
+  lastEditedAt: Date | null
+  lastCommentAt: Date | null
+  _id: string
+  creator: Record<string, any>
+  creatorName: string
+  title: string
+  textHistory: Record<string, any>
+  titleHistory: Record<string, any>
+  createdAt: Date
+  lastComment: Date | null
+}
+
+export interface MbComment {
+  text: string
+  isDeleted: boolean
+  lastEditedAt: Date | null
+  _id: string
+  creator: string
+  creatorName: string
+  threadId: string
+  textHistory: Record<string, any>
+  createdAt: Date | null
+}
