@@ -11,22 +11,26 @@ dayjs.extend(relativeTime)
 import styled from 'styled-components'
 
 function CommentCard(props: Props) {
-  const { comment, username, isThread } = props
+  const { comment, handleUpdateMbComment, username, isThread } = props
 
   const [updateText, setUpdateText] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
 
   function handleUpdate(id) {
     // TODO: needs to be different based on comment or thread
-    if 
+    if (isThread) {
+      return
+    }
+
+    handleUpdateMbComment(id, updateText)
   }
 
-    // handle change values, save to local state
-    const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      setUpdateText(value)
-      console.log('updated text', value)
-    }
+  // handle change values, save to local state
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setUpdateText(value)
+    console.log('updated text', value)
+  }
 
   return (
     <Wrapper>
@@ -63,19 +67,21 @@ function CommentCard(props: Props) {
         <div className="content">
           <div className="date-text">{dayjs(comment.createdAt).fromNow()}</div>
           {isUpdating && <div>{comment.text}</div>}
-          {!isUpdating && <div>
-            <InputGroup className="mb-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text>Text</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              aria-label="Thread or Comment Update"
-              name="updateText"
-              value={updateText}
-              onChange={handleValueChange}
-            />
-          </InputGroup>
-            </div>}
+          {!isUpdating && (
+            <div>
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Text</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  aria-label="Thread or Comment Update"
+                  name="updateText"
+                  value={updateText}
+                  onChange={handleValueChange}
+                />
+              </InputGroup>
+            </div>
+          )}
         </div>
         {username === comment.creatorName && (
           <div className="controls">
@@ -109,6 +115,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   comment: Record<string, any>
   isThread: boolean
+  handleUpdateMbComment: (id: string | number, text: string) => void
 }
 
 export default connector(CommentCard)

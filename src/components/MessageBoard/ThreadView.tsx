@@ -27,6 +27,13 @@ function ThreadView(props: Props) {
     fetchThread()
   }, [])
 
+  function handleUpdateMbComment(id: string | number, text: string) {
+    const comment = thread.comments.find((cmnt) => cmnt.id === id)
+    if (!comment) return
+    comment.text = text
+    return
+  }
+
   function addNewComment(text) {
     mbData.postNewComment(thread._id, text).then(() => {
       fetchThread()
@@ -57,9 +64,18 @@ function ThreadView(props: Props) {
         <div />
       </div>
 
-      <CommentCard comment={thread} isThread={true} />
+      <CommentCard
+        comment={thread}
+        isThread={true}
+        handleUpdateMbComment={handleUpdateMbComment}
+      />
       {thread.comments.map((comment) => (
-        <CommentCard comment={comment} key={comment.id} isThread={false} />
+        <CommentCard
+          comment={comment}
+          key={comment.id}
+          isThread={false}
+          handleUpdateMbComment={handleUpdateMbComment}
+        />
       ))}
       {isLoggedIn && <AddCommentCard addNewComment={addNewComment} />}
     </Wrapper>
