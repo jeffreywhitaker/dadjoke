@@ -8,6 +8,7 @@ import FormControl from 'react-bootstrap/esm/FormControl'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
+import { MbComment } from '../../types/types'
 import styled from 'styled-components'
 
 function CommentCard(props: Props) {
@@ -18,11 +19,15 @@ function CommentCard(props: Props) {
 
   function handleUpdate(id) {
     // TODO: needs to be different based on comment or thread
+    console.log('is thread: ', isThread)
     if (isThread) {
       return
     }
 
-    handleUpdateMbComment(id, updateText)
+    handleUpdateMbComment(id, updateText).then(() => {
+      setUpdateText('')
+      setIsUpdating(false)
+    })
   }
 
   // handle change values, save to local state
@@ -66,8 +71,8 @@ function CommentCard(props: Props) {
       <div className="main">
         <div className="content">
           <div className="date-text">{dayjs(comment.createdAt).fromNow()}</div>
-          {isUpdating && <div>{comment.text}</div>}
-          {!isUpdating && (
+          {!isUpdating && <div>{comment.text}</div>}
+          {isUpdating && (
             <div>
               <InputGroup className="mb-3">
                 <InputGroup.Prepend>
@@ -85,16 +90,35 @@ function CommentCard(props: Props) {
         </div>
         {username === comment.creatorName && (
           <div className="controls">
-            <Button
-              size="sm"
-              variant="success"
-              onClick={() => setIsUpdating(!isUpdating)}
-            >
-              Update
-            </Button>
-            <Button size="sm" variant="danger">
+            {isUpdating && (
+              <Button
+                size="sm"
+                className="btn"
+                variant="success"
+                onClick={() => handleUpdate(comment._id)}
+              >
+                Save
+              </Button>
+            )}
+
+            {!isThread && (
+              <Button
+                size="sm"
+                variant="warning"
+                className="btn"
+                onClick={function() {
+                  setUpdateText(comment.text)
+                  setIsUpdating(!isUpdating)
+                }}
+              >
+                Toggle Update
+              </Button>
+            )}
+
+            {/* TODO: build delete logic */}
+            {/* <Button size="sm" variant="danger" className="btn">
               Delete
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>
@@ -115,7 +139,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
   comment: Record<string, any>
   isThread: boolean
-  handleUpdateMbComment: (id: string | number, text: string) => void
+  handleUpdateMbComment: (
+    id: string | number,
+    text: string,
+  ) => Promise<MbComment>
 }
 
 export default connector(CommentCard)
@@ -183,6 +210,10 @@ const Wrapper = styled.article`
       margin: 5px;
       display: flex;
       justify-content: flex-end;
+
+      .btn {
+        margin: 0 5px;
+      }
     }
   }
 `
