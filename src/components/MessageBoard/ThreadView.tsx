@@ -28,7 +28,7 @@ function ThreadView(props: Props) {
     fetchThread()
   }, [])
 
-  async function handleUpdateMbComment(
+  function handleUpdateMbComment(
     id: string | number,
     text: string,
   ): Promise<MbComment> {
