@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
-import Button from 'react-bootstrap/esm/Button'
+import CommentCardControls from './CommentCardControls'
+import CardHistoryModal from './CardHistoryModal'
+
 import InputGroup from 'react-bootstrap/esm/InputGroup'
 import FormControl from 'react-bootstrap/esm/FormControl'
 
-import Modal from 'react-bootstrap/Modal'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -91,71 +92,25 @@ function CommentCard(props: Props) {
           )}
         </div>
 
-        <div className="controls">
-          {comment.textHistory && comment.textHistory.length > 1 && (
-            <Button
-              size="sm"
-              className="btn"
-              variant="success"
-              onClick={() => setShowHistoryModal(!showHistoryModal)}
-            >
-              Edit History
-            </Button>
-          )}
-
-          {username === comment.creatorName && isUpdating && (
-            <Button
-              size="sm"
-              className="btn"
-              variant="success"
-              onClick={() => handleUpdate(comment._id)}
-            >
-              Save
-            </Button>
-          )}
-
-          {username === comment.creatorName && !isThread && (
-            <Button
-              size="sm"
-              variant="warning"
-              className="btn"
-              onClick={function() {
-                setUpdateText(comment.text)
-                setIsUpdating(!isUpdating)
-              }}
-            >
-              Toggle Update
-            </Button>
-          )}
-
-          {/* TODO: build delete logic */}
-          {/* <Button size="sm" variant="danger" className="btn">
-              Delete
-            </Button> */}
-        </div>
+        <CommentCardControls
+          comment={comment}
+          isUpdating={isUpdating}
+          isThread={isThread}
+          username={username}
+          showHistoryModal={showHistoryModal}
+          setShowHistoryModal={setShowHistoryModal}
+          handleUpdate={handleUpdate}
+          setUpdateText={setUpdateText}
+          setIsUpdating={setIsUpdating}
+        />
       </div>
 
       {/* MODAL */}
-      <Modal
-        show={showHistoryModal}
-        onHide={() => setShowHistoryModal(!showHistoryModal)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Text History</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {comment.textHistory.map((entry) => {
-            return (
-              <EntryDiv key={entry._id} className="modal-div">
-                <span className="modal-text">
-                  {dayjs(entry.createdAt).format('MMM DD YY, hh:mm:ss a')}:
-                </span>{' '}
-                {entry.text}
-              </EntryDiv>
-            )
-          })}
-        </Modal.Body>
-      </Modal>
+      <CardHistoryModal
+        comment={comment}
+        setShowHistoryModal={setShowHistoryModal}
+        showHistoryModal={showHistoryModal}
+      />
     </Wrapper>
   )
 }
@@ -182,15 +137,6 @@ type Props = PropsFromRedux & {
 export default connector(CommentCard)
 
 // styled
-const EntryDiv = styled.div`
-  margin-bottom: 5px;
-
-  .modal-text {
-    color: gray;
-    font-size: 12px;
-  }
-`
-
 const Wrapper = styled.article`
   width: 100%;
   border: 1px solid black;
@@ -244,18 +190,6 @@ const Wrapper = styled.article`
 
       .date-text {
         font-size: 12px;
-      }
-    }
-
-    .controls {
-      max-height: min-content;
-      flex: 0 0 auto;
-      margin: 5px;
-      display: flex;
-      justify-content: flex-end;
-
-      .btn {
-        margin: 0 5px;
       }
     }
   }
