@@ -124,9 +124,9 @@ export interface MbComment {
   isDeleted: boolean
   lastEditedAt: Date | null
   _id: string
-  creator: string
+  creator: Record<string, any>
   creatorName: string
-  threadId: string
+  threadId?: string
   textHistory: Record<string, any>
   createdAt: Date | null
 }

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
-import Button from 'react-bootstrap/esm/Button'
+import CommentCardControls from './CommentCardControls'
+import CardHistoryModal from './CardHistoryModal'
+
 import InputGroup from 'react-bootstrap/esm/InputGroup'
 import FormControl from 'react-bootstrap/esm/FormControl'
 
@@ -16,6 +18,7 @@ function CommentCard(props: Props) {
 
   const [updateText, setUpdateText] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
 
   function handleUpdate(id) {
     // TODO: needs to be different based on comment or thread
@@ -88,40 +91,26 @@ function CommentCard(props: Props) {
             </div>
           )}
         </div>
-        {username === comment.creatorName && (
-          <div className="controls">
-            {isUpdating && (
-              <Button
-                size="sm"
-                className="btn"
-                variant="success"
-                onClick={() => handleUpdate(comment._id)}
-              >
-                Save
-              </Button>
-            )}
 
-            {!isThread && (
-              <Button
-                size="sm"
-                variant="warning"
-                className="btn"
-                onClick={function() {
-                  setUpdateText(comment.text)
-                  setIsUpdating(!isUpdating)
-                }}
-              >
-                Toggle Update
-              </Button>
-            )}
-
-            {/* TODO: build delete logic */}
-            {/* <Button size="sm" variant="danger" className="btn">
-              Delete
-            </Button> */}
-          </div>
-        )}
+        <CommentCardControls
+          comment={comment}
+          isUpdating={isUpdating}
+          isThread={isThread}
+          username={username}
+          showHistoryModal={showHistoryModal}
+          setShowHistoryModal={setShowHistoryModal}
+          handleUpdate={handleUpdate}
+          setUpdateText={setUpdateText}
+          setIsUpdating={setIsUpdating}
+        />
       </div>
+
+      {/* MODAL */}
+      <CardHistoryModal
+        comment={comment}
+        setShowHistoryModal={setShowHistoryModal}
+        showHistoryModal={showHistoryModal}
+      />
     </Wrapper>
   )
 }
@@ -137,7 +126,7 @@ const mapStateToProps = (state) => {
 const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
-  comment: Record<string, any>
+  comment: MbComment
   isThread: boolean
   handleUpdateMbComment: (
     id: string | number,
@@ -201,18 +190,6 @@ const Wrapper = styled.article`
 
       .date-text {
         font-size: 12px;
-      }
-    }
-
-    .controls {
-      max-height: min-content;
-      flex: 0 0 auto;
-      margin: 5px;
-      display: flex;
-      justify-content: flex-end;
-
-      .btn {
-        margin: 0 5px;
       }
     }
   }
