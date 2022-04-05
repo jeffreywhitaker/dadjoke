@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/esm/Button'
 import InputGroup from 'react-bootstrap/esm/InputGroup'
 import FormControl from 'react-bootstrap/esm/FormControl'
 
+import Modal from 'react-bootstrap/Modal'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -16,6 +17,7 @@ function CommentCard(props: Props) {
 
   const [updateText, setUpdateText] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
 
   function handleUpdate(id) {
     // TODO: needs to be different based on comment or thread
@@ -88,40 +90,72 @@ function CommentCard(props: Props) {
             </div>
           )}
         </div>
-        {username === comment.creatorName && (
-          <div className="controls">
-            {isUpdating && (
-              <Button
-                size="sm"
-                className="btn"
-                variant="success"
-                onClick={() => handleUpdate(comment._id)}
-              >
-                Save
-              </Button>
-            )}
 
-            {!isThread && (
-              <Button
-                size="sm"
-                variant="warning"
-                className="btn"
-                onClick={function() {
-                  setUpdateText(comment.text)
-                  setIsUpdating(!isUpdating)
-                }}
-              >
-                Toggle Update
-              </Button>
-            )}
+        <div className="controls">
+          {comment.textHistory && comment.textHistory.length > 1 && (
+            <Button
+              size="sm"
+              className="btn"
+              variant="success"
+              onClick={() => setShowHistoryModal(!showHistoryModal)}
+            >
+              Edit History
+            </Button>
+          )}
 
-            {/* TODO: build delete logic */}
-            {/* <Button size="sm" variant="danger" className="btn">
+          {username === comment.creatorName && isUpdating && (
+            <Button
+              size="sm"
+              className="btn"
+              variant="success"
+              onClick={() => handleUpdate(comment._id)}
+            >
+              Save
+            </Button>
+          )}
+
+          {username === comment.creatorName && !isThread && (
+            <Button
+              size="sm"
+              variant="warning"
+              className="btn"
+              onClick={function() {
+                setUpdateText(comment.text)
+                setIsUpdating(!isUpdating)
+              }}
+            >
+              Toggle Update
+            </Button>
+          )}
+
+          {/* TODO: build delete logic */}
+          {/* <Button size="sm" variant="danger" className="btn">
               Delete
             </Button> */}
-          </div>
-        )}
+        </div>
       </div>
+
+      {/* MODAL */}
+      <Modal
+        show={showHistoryModal}
+        onHide={() => setShowHistoryModal(!showHistoryModal)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Text History</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {comment.textHistory.map((entry) => {
+            return (
+              <EntryDiv key={entry._id} className="modal-div">
+                <span className="modal-text">
+                  {dayjs(entry.createdAt).format('MMM DD YY, hh:mm:ss a')}:
+                </span>{' '}
+                {entry.text}
+              </EntryDiv>
+            )
+          })}
+        </Modal.Body>
+      </Modal>
     </Wrapper>
   )
 }
@@ -137,7 +171,7 @@ const mapStateToProps = (state) => {
 const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {
-  comment: Record<string, any>
+  comment: MbComment
   isThread: boolean
   handleUpdateMbComment: (
     id: string | number,
@@ -148,6 +182,15 @@ type Props = PropsFromRedux & {
 export default connector(CommentCard)
 
 // styled
+const EntryDiv = styled.div`
+  margin-bottom: 5px;
+
+  .modal-text {
+    color: gray;
+    font-size: 12px;
+  }
+`
+
 const Wrapper = styled.article`
   width: 100%;
   border: 1px solid black;
