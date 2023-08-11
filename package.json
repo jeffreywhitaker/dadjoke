@@ -91,8 +91,8 @@
     "yup": "^0.28.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "vite",
+    "build": "vite build",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
@@ -118,10 +118,12 @@
   },
   "devDependencies": {
     "@types/react-test-renderer": "^17.0.1",
+    "@vitejs/plugin-react": "^4.0.4",
     "eslint": "^7.13.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "vite": "^4.4.9"
   },
   "husky": {
     "hooks": {
