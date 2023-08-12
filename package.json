@@ -8,7 +8,7 @@
     "btoa": "^1.2.1",
     "chart.js": "^2.9.4",
     "clone-deep": "^4.0.1",
-    "dayjs": "^1.9.7",
+    "dayjs": "^1.11.9",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "form-data": "^3.0.0",
