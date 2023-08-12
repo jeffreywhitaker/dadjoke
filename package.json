@@ -24,7 +24,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
     "typescript": "^5.1.0",
-    "yup": "^0.28.3"
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "vite",
