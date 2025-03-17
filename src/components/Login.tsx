@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import * as Yup from 'yup'
 import styled from 'styled-components'
@@ -14,8 +14,8 @@ import { userLogin } from '../actions/actions'
 const Login: React.FC<Props> = (props) => {
   // destructure props
   const { userLogin, isFetching, isLoggedIn, loginError } = props
-  // useHistory
-  const history = useHistory()
+  // useNavigate
+  const navigate = useNavigate()
 
   // local state login credentials and errors
   const [credentials, setCredentials] = useState({
@@ -51,7 +51,7 @@ const Login: React.FC<Props> = (props) => {
   // if logged in, redirect to jokes
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/publicjokes')
+      navigate('/publicjokes')
     } else {
       formSchema.isValid(credentials).then((valid: boolean) => {
         setButtonDisabled(!valid)

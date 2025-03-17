@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 // bootstrap
@@ -97,7 +97,7 @@ export const Header: React.FC<Props> = (props: Props) => {
   const handleShow = () => setShowAddJokeModal(true)
 
   // use history
-  const history = useHistory()
+  const navigate = useNavigate()
 
   console.log('is logged in', isLoggedIn)
 
@@ -111,7 +111,7 @@ export const Header: React.FC<Props> = (props: Props) => {
     e.preventDefault()
     if (window.confirm('Are you sure you want to log out?')) {
       userLogout()
-      history.push('/publicjokes')
+      navigate('/publicjokes')
     }
   }
 
@@ -152,6 +152,9 @@ export const Header: React.FC<Props> = (props: Props) => {
               <Nav.Link as={NavLink} to={'/mboard'}>
                 Message Board
               </Nav.Link>
+              {/* <Nav.Link as={NavLink} to={'/chat'}>
+                Chat
+              </Nav.Link> */}
             </Nav>
             <Nav>
               <Button

@@ -1,13 +1,14 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles } from './styles/globalStyles'
 import { lightTheme, darkTheme } from './styles/theme'
 
 // import components
+import Chat from './components/Chat/Chat'
 import Header from './components/Header'
 import IntroModal from './components/modals/IntroModal'
 import JokesWrapper from './components/JokesWrapper'
@@ -21,6 +22,9 @@ import { ifSessionExistsLogIn, userLogin } from './actions/actions'
 
 // App component
 function App(props: Props) {
+  const location = useLocation()
+  const navigate = useNavigate()
+
   // destructure props
   const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
   const [isDarkModeOn, setIsDarkModeOn] = useState(true)
@@ -60,6 +64,10 @@ function App(props: Props) {
     setIsDarkModeOn(!isDarkModeOn)
   }
 
+  if (location.pathname === '/') {
+    navigate('/publicjokes')
+  }
+
   // return components
   return (
     <ThemeProvider theme={isDarkModeOn ? darkTheme : lightTheme}>
@@ -67,16 +75,16 @@ function App(props: Props) {
       <Main isDarkModeOn={isDarkModeOn}>
         <Header isDarkModeOn={isDarkModeOn} toggleDarkMode={toggleDarkMode} />
         <AppWrapper className="App">
-          <Route exact path="/">
-            <Redirect to="/publicjokes" />
-          </Route>
-          <Route path="/publicjokes" component={JokesWrapper} />
-          <Route path="/privatejokes" component={JokesWrapper} />
-          <Route path="/mboard/:threadId" component={ThreadView} />
-          <Route path="/mboard" component={MessageBoard} exact />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/profile/:username" component={Profile} />
+          <Routes>
+            <Route path="/publicjokes" element={<JokesWrapper />} />
+            <Route path="/privatejokes" element={<JokesWrapper />} />
+            <Route path="/mboard/:threadId" element={<ThreadView />} />
+            <Route path="/mboard" element={<MessageBoard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            {/* <Route path="/chat" element={<Chat />} /> */}
+          </Routes>
         </AppWrapper>
 
         <IntroModal

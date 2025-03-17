@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // bootstrap
 import Button from 'react-bootstrap/Button'
@@ -16,8 +16,8 @@ interface Props {
 }
 
 export default function(props: Props): ReactElement {
-  // history
-  const history = useHistory()
+  // useNavigate
+  const navigate = useNavigate()
 
   // destructure props
   const {
@@ -55,7 +55,7 @@ export default function(props: Props): ReactElement {
                 <Button
                   onClick={() => {
                     setShowModal(false)
-                    history.push('/login')
+                    navigate('/login')
                   }}
                 >
                   Login
@@ -64,7 +64,7 @@ export default function(props: Props): ReactElement {
                 <Button
                   onClick={() => {
                     setShowModal(false)
-                    history.push('/signup')
+                    navigate('/signup')
                   }}
                 >
                   Signup
