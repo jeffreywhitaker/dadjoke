@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 
@@ -23,10 +23,11 @@ import userData from '../../ajax/userData'
 import UploadAvatarModal from '../modals/UploadAvatarModal'
 
 const Profile = (props) => {
+  const params = useParams()
   const inputRef = useRef(null)
   const loggedInUsername = props.loggedInUsername
   const [isUpdatingDesc, setIsUpdatingDesc] = useState(false)
-  const [username, setUsername] = useState(props.match.params.username)
+  const [username, setUsername] = useState(params.username)
   const [user, setUser] = useState(null)
   const [binary, setBinary] = useState(null)
   const [isUserHaveAvatar, setIsUserHaveAvatar] = useState(false)

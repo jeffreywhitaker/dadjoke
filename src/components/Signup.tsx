@@ -1,6 +1,6 @@
 // import dependencies
 import React, { FC, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
@@ -17,13 +17,13 @@ import { userSignup } from '../actions/actions'
 const Signup: FC<Props> = (props) => {
   // destructure props
   const { userSignup, isFetching, isLoggedIn, signupError } = props
-  // use history
-  const history = useHistory()
+  // useNavigate
+  const navigate = useNavigate()
 
   // if logged in, redirect to game list
   useEffect(() => {
     if (isLoggedIn) {
-      history.push('/publicjokes')
+      navigate('/publicjokes')
     }
   }, [history, isLoggedIn])
 

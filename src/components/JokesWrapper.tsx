@@ -1,7 +1,7 @@
 // import dependencies
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, createSearchParams } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
@@ -23,7 +23,7 @@ function JokesWrapper(props: Props) {
 
   // set location and get query
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const parsedQuery = queryString.parse(location.search)
 
   // set up state
@@ -92,7 +92,8 @@ function JokesWrapper(props: Props) {
     })
 
     // add search params
-    history.push({ search: params.toString() })
+    navigate({ search: createSearchParams(params).toString() })
+    // history.push({ search: params.toString() })
 
     // change searchCriteria based on advancedFilter
     const searchCriteria = criteria
@@ -117,6 +118,13 @@ function JokesWrapper(props: Props) {
         })
     }
   }, [criteria])
+
+  useEffect(() => {
+    setCriteria((c) => ({
+      ...c,
+      isprivate: location.pathname === '/privatejokes',
+    }))
+  }, [location.pathname])
 
   // set advanced filters to criteria, triggering joke GET call
   const setAdvancedFilterCriteria = () => {
