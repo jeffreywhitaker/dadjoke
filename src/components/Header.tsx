@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -16,17 +16,18 @@ import { userLogout } from '../actions/actions'
 
 // components
 import AddJokeModal from './modals/AddJokeModal'
+import { RootState } from '../reducers/rootReducer'
+
+type Props = { isDarkModeOn: boolean; toggleDarkMode: () => {} }
 
 // Header component
 export const Header: React.FC<Props> = (props: Props) => {
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+  const username = useSelector((s: RootState) => s.loginReducer.username)
+
   // destructure props
-  const {
-    isDarkModeOn,
-    isLoggedIn,
-    userLogout,
-    username,
-    toggleDarkMode,
-  } = props
+  const { isDarkModeOn, toggleDarkMode } = props
 
   // modal
   // local state for adding new joke
@@ -110,7 +111,7 @@ export const Header: React.FC<Props> = (props: Props) => {
     console.log('handle logout called')
     e.preventDefault()
     if (window.confirm('Are you sure you want to log out?')) {
-      userLogout()
+      dispatch(userLogout())
       navigate('/publicjokes')
     }
   }
@@ -200,24 +201,8 @@ export const Header: React.FC<Props> = (props: Props) => {
   )
 }
 
-// connect component to redux store
-const mapStateToProps = (state: {
-  loginReducer: { isLoggedIn: boolean; username: string }
-}) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-    username: state.loginReducer.username,
-  }
-}
-
 // export component
-const connector = connect(mapStateToProps, { userLogout })
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux & {
-  toggleDarkMode: () => void
-  isDarkModeOn: boolean
-}
-export default connector(Header)
+export default Header
 
 const HeaderWrapper = styled.header`
   .button {
