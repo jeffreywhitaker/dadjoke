@@ -1,13 +1,16 @@
 // import reducers
 import { combineReducers } from 'redux'
 import { loginReducer } from './loginReducer'
+import { configureStore } from '@reduxjs/toolkit'
 // import { dadjokeReducer } from './dadjokeReducer'
 
 // export combined reducers
-const rootReducer = combineReducers({
+const reducer = combineReducers({
   loginReducer: loginReducer,
   // jokeReducer: dadjokeReducer,
 })
-export default rootReducer
+export default reducer
 
-export type RootState = ReturnType<typeof rootReducer>
+export const store = configureStore({ reducer })
+
+export type RootState = ReturnType<typeof reducer>
