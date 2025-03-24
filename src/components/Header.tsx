@@ -18,10 +18,10 @@ import { userLogout } from '../actions/actions'
 import AddJokeModal from './modals/AddJokeModal'
 import { RootState } from '../reducers/rootReducer'
 
-type Props = { isDarkModeOn: boolean; toggleDarkMode: () => {} }
+type Props = { isDarkModeOn: boolean; toggleDarkMode: () => void }
 
 // Header component
-export const Header: React.FC<Props> = (props: Props) => {
+export const Header = (props: Props) => {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
   const username = useSelector((s: RootState) => s.loginReducer.username)

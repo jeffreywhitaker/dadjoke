@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
+import { useSelector } from 'react-redux'
 import CommentCardControls from './CommentCardControls'
 import CardHistoryModal from './CardHistoryModal'
 
@@ -12,9 +12,12 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import { MbComment } from '../../types/types'
 import styled from 'styled-components'
+import { RootState } from '../../reducers/rootReducer'
 
 function CommentCard(props: Props) {
-  const { comment, handleUpdateMbComment, username, isThread } = props
+  const username = useSelector((s: RootState) => s.loginReducer.username)
+
+  const { comment, handleUpdateMbComment, isThread } = props
 
   const [updateText, setUpdateText] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
@@ -115,17 +118,7 @@ function CommentCard(props: Props) {
   )
 }
 
-// connect component to redux store
-const mapStateToProps = (state) => {
-  return {
-    username: state.loginReducer.username,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, {})
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux & {
+type Props = {
   comment: MbComment
   isThread: boolean
   handleUpdateMbComment: (
@@ -134,7 +127,7 @@ type Props = PropsFromRedux & {
   ) => Promise<MbComment>
 }
 
-export default connector(CommentCard)
+export default CommentCard
 
 // styled
 const Wrapper = styled.article`

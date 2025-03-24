@@ -1,7 +1,7 @@
 // import dependencies
-import React, { FC, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 // bootstrap
@@ -12,11 +12,15 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 import { userSignup } from '../actions/actions'
+import { RootState } from '../reducers/rootReducer'
 
 // signup page component
-const Signup: FC<Props> = (props) => {
-  // destructure props
-  const { userSignup, isFetching, isLoggedIn, signupError } = props
+const Signup = () => {
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+  const signupError = useSelector((s: RootState) => s.loginReducer.signupError)
+  const isFetching = useSelector((s: RootState) => s.loginReducer.isFetching)
+  const dispatch = useDispatch()
+
   // useNavigate
   const navigate = useNavigate()
 
@@ -49,7 +53,7 @@ const Signup: FC<Props> = (props) => {
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setSubmitting(true)
-        userSignup(values)
+        dispatch(userSignup(values))
         setSubmitting(false)
         resetForm()
       }}
@@ -142,33 +146,7 @@ const Signup: FC<Props> = (props) => {
   )
 }
 
-// connect component to redux store
-interface State {
-  loginReducer: {
-    isLoggedIn: boolean
-    signupError: string
-    isFetching: boolean
-  }
-}
-const mapStateToProps = (state: State) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-    signupError: state.loginReducer.signupError,
-    isFetching: state.loginReducer.isFetching,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, { userSignup })
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux & {
-  userSignup: (values: unknown) => void
-  isLoggedIn: boolean
-  signupError: string
-  isFetching: boolean
-}
-
-export default connector(Signup)
+export default Signup
 
 // styled components
 const SignupDiv = styled.div`

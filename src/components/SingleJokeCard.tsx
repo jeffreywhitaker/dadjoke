@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import Card from 'react-bootstrap/Card'
@@ -15,9 +15,12 @@ import JokeCardBody from './small/JokeCardBody'
 import JokeCardFooter from './small/JokeCardFooter'
 
 import '../styles/styles.css'
+import { RootState } from '../reducers/rootReducer'
 
 // joke card component
 function SingleJokeCard(props: Props) {
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+
   // destructure props
   const {
     joke,
@@ -25,7 +28,6 @@ function SingleJokeCard(props: Props) {
     updateFollowJokeCreator,
     updateJokeDetails,
     updateJokeKarma,
-    isLoggedIn,
     removeDeletedJoke,
   } = props
 
@@ -234,16 +236,8 @@ function SingleJokeCard(props: Props) {
   )
 }
 
-const mapStateToProps = (state: { loginReducer: { isLoggedIn: boolean } }) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-  }
-}
-
 // export component
-const connector = connect(mapStateToProps, {})
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux & {
+type Props = {
   joke: Joke
   username?: string
   updateJokeKarma: (jokeId: string, newKarma: number, newVote: number) => void
@@ -252,7 +246,7 @@ type Props = PropsFromRedux & {
   removeDeletedJoke: (id: string) => void
 }
 
-export default connector(SingleJokeCard)
+export default SingleJokeCard
 
 const DivWrapper = styled.article`
   margin: 10px;
