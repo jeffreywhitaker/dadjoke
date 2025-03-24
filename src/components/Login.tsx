@@ -1,7 +1,7 @@
 // import dependencies
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import styled from 'styled-components'
 
@@ -9,11 +9,15 @@ import Header from './small/PageHeader'
 
 // import actions
 import { userLogin } from '../actions/actions'
+import { RootState } from '../reducers/rootReducer'
 
 // login page component
-const Login: React.FC<Props> = (props) => {
-  // destructure props
-  const { userLogin, isFetching, isLoggedIn, loginError } = props
+const Login = () => {
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+  const loginError = useSelector((s: RootState) => s.loginReducer.loginError)
+  const isFetching = useSelector((s: RootState) => s.loginReducer.isFetching)
+  const dispatch = useDispatch()
+
   // useNavigate
   const navigate = useNavigate()
 
@@ -45,7 +49,7 @@ const Login: React.FC<Props> = (props) => {
   // call login function
   const callLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    userLogin(credentials)
+    dispatch(userLogin(credentials))
   }
 
   // if logged in, redirect to jokes
@@ -140,26 +144,7 @@ const Login: React.FC<Props> = (props) => {
   )
 }
 
-interface LoginReducer {
-  isLoggedIn: boolean
-  loginError: string
-  isFetching: boolean
-}
-
-// connect component to redux store
-const mapStateToProps = (state: { loginReducer: LoginReducer }) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-    loginError: state.loginReducer.loginError,
-    isFetching: state.loginReducer.isFetching,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, { userLogin })
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
-export default connector(Login)
+export default Login
 
 // styled components
 const Wrapper = styled.div`

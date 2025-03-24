@@ -1,6 +1,6 @@
 // import dependencies
 import React, { useEffect, useState } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
@@ -19,14 +19,17 @@ import Signup from './components/Signup'
 import ThreadView from './components/MessageBoard/ThreadView'
 
 import { ifSessionExistsLogIn, userLogin } from './actions/actions'
+import { RootState } from './reducers/rootReducer'
 
 // App component
-function App(props: Props) {
+function App() {
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+  const dispatch = useDispatch()
   const location = useLocation()
   const navigate = useNavigate()
 
   // destructure props
-  const { ifSessionExistsLogIn, isLoggedIn, userLogin } = props
+  // const { ifSessionExistsLogIn, userLogin } = props
   const [isDarkModeOn, setIsDarkModeOn] = useState(true)
 
   // for intro modal
@@ -37,7 +40,8 @@ function App(props: Props) {
 
   function handleDemo() {
     console.log('handleDemo')
-    userLogin({ username: 'testuser', password: 'password' })
+    dispatch(userLogin({ username: 'testuser', password: 'password' }))
+
     setShowModal(false)
   }
 
@@ -52,7 +56,7 @@ function App(props: Props) {
       setIsDarkModeOn(false)
     }
 
-    ifSessionExistsLogIn()
+    dispatch(ifSessionExistsLogIn())
     if (localStorage.getItem('doNotShowIntroModal') !== 'true') {
       setShowModal(true)
     }
@@ -100,22 +104,7 @@ function App(props: Props) {
   )
 }
 
-interface LoginReducer {
-  isLoggedIn: boolean
-}
-
-// connect component to redux store
-const mapStateToProps = (state: { loginReducer: LoginReducer }) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, { ifSessionExistsLogIn, userLogin })
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
-export default connector(App)
+export default App
 
 // styled components
 interface MainProps {

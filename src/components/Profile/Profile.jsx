@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
@@ -23,9 +23,10 @@ import userData from '../../ajax/userData'
 import UploadAvatarModal from '../modals/UploadAvatarModal'
 
 const Profile = (props) => {
+  const loggedInUsername = useSelector((s) => s.loginReducer.loggedInUsername)
+
   const params = useParams()
   const inputRef = useRef(null)
-  const loggedInUsername = props.loggedInUsername
   const [isUpdatingDesc, setIsUpdatingDesc] = useState(false)
   const [username, setUsername] = useState(params.username)
   const [user, setUser] = useState(null)
@@ -386,15 +387,8 @@ const Profile = (props) => {
   )
 }
 
-// connect to redux
-const mapStateToProps = (state) => {
-  return {
-    loggedInUsername: state.loginReducer.username,
-  }
-}
-
 // export
-export default connect(mapStateToProps, {})(Profile)
+export default Profile
 
 const WrapperDiv = styled.div`
   padding: 10px;

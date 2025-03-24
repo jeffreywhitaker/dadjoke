@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { socket } from '../../socket'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
@@ -11,6 +11,7 @@ dayjs.extend(relativeTime)
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
+import { RootState } from '../../reducers/rootReducer'
 
 type Message = {
   text: string
@@ -18,9 +19,9 @@ type Message = {
   timestamp: number
 }
 
-const Chat: React.FC<Props> = (props: Props) => {
-  // props
-  const { username, isLoggedIn } = props
+const Chat = () => {
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
+  const username = useSelector((s: RootState) => s.loginReducer.username)
 
   const location = useLocation()
 
@@ -161,24 +162,7 @@ const Chat: React.FC<Props> = (props: Props) => {
   )
 }
 
-interface State {
-  loginReducer: { username: string; isLoggedIn: boolean }
-}
-
-// connect component to redux store
-const mapStateToProps = (state: State) => {
-  return {
-    username: state.loginReducer.username,
-    isLoggedIn: state.loginReducer.isLoggedIn,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, {})
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
-
-export default connector(Chat)
+export default Chat
 
 // styled components
 const Wrapper = styled.section`

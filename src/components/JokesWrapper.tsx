@@ -1,11 +1,12 @@
 // import dependencies
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
 import { useNavigate, useLocation, createSearchParams } from 'react-router-dom'
 import '../styles/loadingSpinner.css'
 import styled from 'styled-components'
 import cloneDeep from 'clone-deep'
 import queryString from 'query-string'
+
+import { useSelector } from 'react-redux'
 
 import Header from './small/PageHeader'
 
@@ -15,11 +16,12 @@ import SingleJokeCard from './SingleJokeCard'
 import Loading from './Loading'
 import FilterJokesDashboard from './small/FilterJokesDashboard'
 import { Criteria, Joke, JokeResponse } from '../types/types'
+import { RootState } from '../reducers/rootReducer'
 
 // joke display page component
-function JokesWrapper(props: Props) {
-  // destructure props
-  const { isLoggedIn, username } = props
+function JokesWrapper() {
+  const username = useSelector((s: RootState) => s.loginReducer.username)
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
 
   // set location and get query
   const location = useLocation()
@@ -282,31 +284,8 @@ function JokesWrapper(props: Props) {
   )
 }
 
-interface State {
-  loginReducer: {
-    username: string
-    jokesUpvoted: number
-    jokesDownvoted: number
-    isLoggedIn: boolean
-  }
-}
-
-// connect component to redux store
-const mapStateToProps = (state: State) => {
-  return {
-    username: state.loginReducer.username,
-    jokesUpvoted: state.loginReducer.jokesUpvoted,
-    jokesDownvoted: state.loginReducer.jokesDownvoted,
-    isLoggedIn: state.loginReducer.isLoggedIn,
-  }
-}
-
 // export component
-const connector = connect(mapStateToProps, {})
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
-
-export default connector(JokesWrapper)
+export default JokesWrapper
 
 // styled components
 const Wrapper = styled.div`

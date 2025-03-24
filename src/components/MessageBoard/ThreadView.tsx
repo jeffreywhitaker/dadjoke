@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import mbData from '../../ajax/mbData'
-import { connect, ConnectedProps } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Loading from '../Loading'
 import { MbThread, MbComment } from '../../types/types'
 
@@ -10,9 +10,11 @@ import AddCommentCard from '../MessageBoard/AddCommentCard'
 import Button from 'react-bootstrap/esm/Button'
 import CommentCard from '../MessageBoard/CommentCard'
 import styled from 'styled-components'
+import { RootState } from '../../reducers/rootReducer'
 
-function ThreadView(props: Props) {
-  const { isLoggedIn, username } = props
+function ThreadView() {
+  const username = useSelector((s: RootState) => s.loginReducer.username)
+  const isLoggedIn = useSelector((s: RootState) => s.loginReducer.isLoggedIn)
 
   const { threadId } = useParams<{ threadId: string }>()
 
@@ -108,20 +110,7 @@ function ThreadView(props: Props) {
   )
 }
 
-// connect component to redux store
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: state.loginReducer.isLoggedIn,
-    username: state.loginReducer.username,
-  }
-}
-
-// export component
-const connector = connect(mapStateToProps, {})
-type PropsFromRedux = ConnectedProps<typeof connector>
-type Props = PropsFromRedux
-
-export default connector(ThreadView)
+export default ThreadView
 
 // styled
 const Wrapper = styled.section`
