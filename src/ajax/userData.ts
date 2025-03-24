@@ -8,8 +8,8 @@ export default {
       withCredentials: true,
     })
   },
-  getProfileStats(username: string): Promise<AxiosPromise> {
-    return axios.get(`/api/users/profile/${username}`, {
+  getProfileStats(username: string) {
+    return axios.get<ProfileStatsRes>(`/api/users/profile/${username}`, {
       withCredentials: true,
     })
   },
@@ -26,4 +26,16 @@ export default {
       headers: { 'content-type': 'multipart/form-data' },
     })
   },
+}
+
+interface ProfileStatsRes {
+  publicJokesCount: number
+  privateJokesCount: number
+  upvoteCount: number
+  downvoteCount: number
+  accountCreationDate: string
+  username: string
+  followingUsers: string[]
+  followedByUsers: string[]
+  description: string
 }

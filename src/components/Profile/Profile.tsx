@@ -21,9 +21,12 @@ import imageData from '../../ajax/imageData'
 import userData from '../../ajax/userData'
 
 import UploadAvatarModal from '../modals/UploadAvatarModal'
+import { RootState } from '../../reducers/rootReducer'
 
 const Profile = (props) => {
-  const loggedInUsername = useSelector((s) => s.loginReducer.loggedInUsername)
+  const loggedInUsername = useSelector(
+    (s: RootState) => s.loginReducer.username,
+  )
 
   const params = useParams()
   const inputRef = useRef(null)
@@ -62,7 +65,8 @@ const Profile = (props) => {
         .getProfileStats(username)
         .then((res) => {
           setUser(res.data)
-          setIsUserHaveAvatar(res.data.hasAvatar)
+          // TODO: looks like hasAvatar never implemented
+          // setIsUserHaveAvatar(res.data.hasAvatar)
           setNewDescription(res.data.description)
           setIsLoading(false)
         })
@@ -92,7 +96,7 @@ const Profile = (props) => {
     } else {
       // correct user, delete avatar
       imageData
-        .deleteAvatar(username)
+        .deleteAvatar()
         .then(() => {
           window.alert('Avatar successfully deleted.')
           setIsUserHaveAvatar(false)
