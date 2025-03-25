@@ -3,6 +3,8 @@
   "rewrites": [
     { "source": "/publicjokes", "destination": "/index.html" },
     { "source": "/privatejokes", "destination": "/index.html" },
-    { "source": "/profile/", "destination": "/index.html" }
+    { "source": "/profile/*", "destination": "/index.html" },
+    { "source": "/mboard/*", "destination": "/index.html" },
+    { "source": "/chat", "destination": "/index.html" }
   ]
 }
