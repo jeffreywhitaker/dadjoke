@@ -107,6 +107,10 @@ const Chat = () => {
       creator: username || 'Guest',
       timestamp: Date.now(),
     })
+    setTimeout(() => {
+      const m = document.getElementById('messages')
+      m.scrollTop = m.offsetHeight
+    })
   }
 
   function handleDisconnect(e) {
@@ -126,25 +130,35 @@ const Chat = () => {
   // }, [])
 
   function dateFormat(timestamp: number) {
-    return `(${dayjs(timestamp).fromNow()})`
+    return `(${dayjs(timestamp).format('h:mm a')})`
   }
 
   return (
     <Wrapper>
-      <p>
-        You are connected: {isConnected.toString()} .. Users connected:{' '}
-        {userCount}{' '}
-        <Button variant="secondary" size="sm" onClick={handleDisconnect}>
-          Disconnect
-        </Button>
-      </p>
-      {messages.map((msg, i) => (
-        <p className="message" key={msg.text + i}>
-          <span className="creator">{msg.creator}</span>{' '}
-          <span className="timestamp">{dateFormat(msg.timestamp)}</span>:{' '}
-          <span className="text">{msg.text}</span>
-        </p>
-      ))}
+      <div className="top-section">
+        <div>
+          {isConnected && <p>You are connected!</p>}{' '}
+          {!isConnected && <p>Not connected.</p>}
+        </div>
+        <div>
+          <p>
+            {userCount} user(s) online
+            {/* <Button variant="secondary" size="sm" onClick={handleDisconnect}>
+              Disconnect
+            </Button> */}
+          </p>
+        </div>
+      </div>
+
+      <div className="messages" id="messages">
+        {messages.map((msg, i) => (
+          <p className="message" key={msg.text + i}>
+            <span className="creator">{msg.creator}</span>{' '}
+            <span className="timestamp">{dateFormat(msg.timestamp)}</span>:{' '}
+            <span className="text">{msg.text}</span>
+          </p>
+        ))}
+      </div>
 
       <div className="spacer"></div>
 
@@ -171,6 +185,20 @@ const Wrapper = styled.section`
   flex-direction: column;
   padding: 20px 0;
   margin: 20px 0;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 60px;
+  padding: 20px;
+  height: 80vh;
+
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .messages {
+    overflow-y: scroll;
+  }
 
   .message {
     font-size: 16px;

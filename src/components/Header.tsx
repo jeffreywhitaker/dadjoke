@@ -153,9 +153,9 @@ export const Header = (props: Props) => {
               <Nav.Link as={NavLink} to={'/mboard'}>
                 Message Board
               </Nav.Link>
-              {/* <Nav.Link as={NavLink} to={'/chat'}>
+              <Nav.Link as={NavLink} to={'/chat'}>
                 Chat
-              </Nav.Link> */}
+              </Nav.Link>
             </Nav>
             <Nav>
               <Button
